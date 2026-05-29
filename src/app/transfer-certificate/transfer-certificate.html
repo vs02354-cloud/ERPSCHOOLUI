@@ -1,0 +1,132 @@
+<div class="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+  <div class="flex justify-between items-end mb-6">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Transfer Certificate Module</h2>
+      <p class="text-slate-500 text-sm mt-1">Generate and manage Transfer Certificates for students.</p>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div *ngIf="successMessage" class="p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center shadow-sm">
+    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center shadow-sm">
+    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+    {{ errorMessage }}
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Generate TC Form -->
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Issue New TC
+          </h3>
+        </div>
+        
+        <div class="p-6 space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Select Student *</label>
+            <select [(ngModel)]="newTc.studentId" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="">-- Choose Active Student --</option>
+              <option *ngFor="let student of activeStudents" [value]="student.id">
+                {{ student.admissionNumber }} - {{ student.firstName }} {{ student.lastName }} (Class: {{student.currentClass}})
+              </option>
+            </select>
+            <p class="text-xs text-slate-500 mt-1" *ngIf="activeStudents.length === 0">No active students available.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Reason for Leaving *</label>
+            <textarea [(ngModel)]="newTc.reasonForLeaving" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g., Parent transferred to another city"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">Progress</label>
+              <select [(ngModel)]="newTc.academicProgress" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Satisfactory">Satisfactory</option>
+                <option value="Needs Improvement">Needs Improvement</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">Conduct</label>
+              <select [(ngModel)]="newTc.conduct" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Satisfactory">Satisfactory</option>
+              </select>
+            </div>
+          </div>
+          
+          <button (click)="generateTC()" [disabled]="isGenerating || !newTc.studentId || !newTc.reasonForLeaving" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center disabled:opacity-50 shadow-sm">
+            <svg *ngIf="isGenerating" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            {{ isGenerating ? 'Processing...' : 'Generate Transfer Certificate' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issued TCs Table -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden h-full">
+        <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Issued Certificates Directory
+          </h3>
+        </div>
+        
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">TC Number</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Student Details</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Issue Date</th>
+                <th class="px-6 py-3 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-slate-200">
+              <tr *ngFor="let tc of issuedTCs" class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+                    {{ tc.tcNumber }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-slate-900">{{ tc.student?.firstName }} {{ tc.student?.lastName }}</div>
+                  <div class="text-xs text-slate-500">Adm: {{ tc.student?.admissionNumber }} | Class: {{ tc.student?.currentClass }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
+                  {{ tc.issueDate | date:'mediumDate' }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button (click)="printTC(tc)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors inline-flex items-center">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Print TC
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="issuedTCs.length === 0">
+                <td colspan="4" class="px-6 py-12 text-center">
+                  <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  <h3 class="mt-2 text-sm font-medium text-slate-900">No records found</h3>
+                  <p class="mt-1 text-sm text-slate-500">No transfer certificates have been issued yet.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,209 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in print-container">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6 no-print">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Attendance Report</h1>
+      <p class="text-sm text-slate-500 mt-1">View date and class-wise attendance statistics and records.</p>
+    </div>
+    <button *ngIf="report" (click)="printReport()" class="flex items-center px-4 py-2 bg-slate-800 text-white rounded-xl hover:bg-slate-700 transition shadow-sm text-sm font-medium">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+      Print Report
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="glass-card p-6 mb-8 border border-slate-200/50 shadow-sm no-print">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Select Date</label>
+        <input type="date" [(ngModel)]="selectedDate" [max]="maxDate" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Class</label>
+        <select [(ngModel)]="selectedClass" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+          <option value="">-- Select Class --</option>
+          <option *ngFor="let cls of classes" [value]="cls">Class {{cls}}</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Section</label>
+        <select [(ngModel)]="selectedSection" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+          <option value="">-- Select Section --</option>
+          <option *ngFor="let sec of sections" [value]="sec">Section {{sec}}</option>
+        </select>
+      </div>
+      <div class="flex items-end">
+        <button (click)="generateReport()" [disabled]="isLoading" class="w-full bg-indigo-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 transition shadow-sm disabled:opacity-50 flex justify-center items-center">
+          <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          {{ isLoading ? 'Generating...' : 'Generate Report' }}
+        </button>
+      </div>
+    </div>
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="mt-4 p-3 bg-red-50 text-red-600 text-sm font-medium rounded-lg flex items-center">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      {{errorMessage}}
+    </div>
+  </div>
+
+  <!-- Report Print Header (Only visible on print) -->
+  <div class="hidden print-header mb-8 text-center pb-6 border-b-2 border-slate-800">
+    <h2 class="text-3xl font-bold text-slate-900">School ERP</h2>
+    <h3 class="text-xl font-semibold text-slate-700 mt-2">Daily Attendance Report</h3>
+    <div class="flex justify-center space-x-8 mt-4 text-sm font-bold text-slate-600">
+      <span>Date: {{ selectedDate | date:'mediumDate' }}</span>
+      <span>Class: {{ selectedClass }}</span>
+      <span>Section: {{ selectedSection }}</span>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div *ngIf="report && !isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="glass p-6 rounded-2xl border border-slate-200/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+      <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
+      <div class="flex justify-between items-start relative z-10">
+        <div>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Total Students</p>
+          <h3 class="text-3xl font-black text-slate-800">{{report.totalStudents}}</h3>
+        </div>
+        <div class="p-3 bg-indigo-50 rounded-xl">
+          <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass p-6 rounded-2xl border border-slate-200/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+      <div class="absolute -right-4 -top-4 w-24 h-24 bg-green-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
+      <div class="flex justify-between items-start relative z-10">
+        <div>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Present</p>
+          <h3 class="text-3xl font-black text-slate-800">{{report.present}}</h3>
+        </div>
+        <div class="p-3 bg-green-50 rounded-xl">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass p-6 rounded-2xl border border-slate-200/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+      <div class="absolute -right-4 -top-4 w-24 h-24 bg-red-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
+      <div class="flex justify-between items-start relative z-10">
+        <div>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Absent</p>
+          <h3 class="text-3xl font-black text-slate-800">{{report.absent}}</h3>
+        </div>
+        <div class="p-3 bg-red-50 rounded-xl">
+          <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass p-6 rounded-2xl border border-slate-200/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+      <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
+      <div class="flex justify-between items-start relative z-10">
+        <div>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Attendance %</p>
+          <h3 class="text-3xl font-black text-slate-800">{{report.attendancePercentage}}%</h3>
+        </div>
+        <div class="p-3 bg-blue-50 rounded-xl">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div *ngIf="report && !isLoading" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden print-table">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider w-16">#</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Student Name</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Admission No.</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Remarks</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-slate-200">
+          <tr *ngFor="let rec of report.records; let i = index" class="hover:bg-slate-50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-medium">
+              {{ i + 1 }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-bold text-slate-900">{{rec.studentName}}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                {{rec.admissionNumber}}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full border" 
+                    [ngClass]="{
+                      'bg-green-100 text-green-800 border-green-200': rec.status === 'Present',
+                      'bg-red-100 text-red-800 border-red-200': rec.status === 'Absent',
+                      'bg-yellow-100 text-yellow-800 border-yellow-200': rec.status === 'Late',
+                      'bg-slate-100 text-slate-600 border-slate-200': rec.status === 'Not Marked'
+                    }">
+                {{rec.status}}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+              {{rec.remarks || '-'}}
+            </td>
+          </tr>
+          <tr *ngIf="report.records.length === 0">
+            <td colspan="5" class="px-6 py-12 text-center">
+              <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-slate-900">No Students Found</h3>
+              <p class="mt-1 text-sm text-slate-500">There are no students enrolled in Class {{selectedClass}} Section {{selectedSection}}.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media print {
+    body {
+      background-color: white !important;
+    }
+    .no-print {
+      display: none !important;
+    }
+    .print-container {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+    }
+    .print-header {
+      display: block !important;
+    }
+    .glass {
+      border: 1px solid #e2e8f0 !important;
+      background: white !important;
+      box-shadow: none !important;
+    }
+    .print-table {
+      border: 1px solid #000 !important;
+      box-shadow: none !important;
+    }
+    table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+    }
+    th, td {
+      border: 1px solid #cbd5e1 !important;
+    }
+    /* Force background colors for badges to print */
+    .bg-green-100 { background-color: #dcfce7 !important; color: #166534 !important; }
+    .bg-red-100 { background-color: #fee2e2 !important; color: #991b1b !important; }
+    .bg-yellow-100 { background-color: #fef9c3 !important; color: #854d0e !important; }
+    .bg-slate-100 { background-color: #f1f5f9 !important; color: #475569 !important; }
+  }
+</style>

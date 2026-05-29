@@ -1,0 +1,168 @@
+<div class="max-w-7xl mx-auto space-y-8 animate-fade-in py-6">
+  
+  <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+    <div>
+      <h2 class="text-3xl font-bold text-slate-800 tracking-tight flex items-center">
+        <svg class="w-8 h-8 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Fee Structure Management
+      </h2>
+      <p class="text-sm text-slate-500 mt-2">Manage class-wise fee breakdowns and academic year configurations.</p>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div *ngIf="successMessage" class="p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center shadow-sm">
+    <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center shadow-sm">
+    <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    {{ errorMessage }}
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Form Side -->
+    <div class="lg:col-span-1">
+      <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl p-6 border border-white/40 sticky top-24">
+        <h3 class="text-lg font-bold text-slate-800 mb-6">{{ editMode ? 'Update' : 'Create New' }} Structure</h3>
+        
+        <form [formGroup]="feeForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Class</label>
+              <select formControlName="className" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+                <option value="">Select</option>
+                <option *ngFor="let cls of classes" [value]="cls">Class {{ cls }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Academic Year</label>
+              <select formControlName="academicYear" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+                <option *ngFor="let year of academicYears" [value]="year">{{ year }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="border-t border-slate-200 pt-4 mt-4 space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Tuition Fee (₹)</label>
+              <input type="number" formControlName="tuitionFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Transport Fee (₹)</label>
+              <input type="number" formControlName="transportFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Library Fee (₹)</label>
+              <input type="number" formControlName="libraryFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Miscellaneous Fee (₹)</label>
+              <input type="number" formControlName="miscellaneousFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
+            </div>
+          </div>
+
+          <!-- Total Auto Calculation -->
+          <div class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100 flex justify-between items-center">
+            <span class="text-sm font-bold text-indigo-900 uppercase tracking-wider">Total Fee</span>
+            <span class="text-xl font-bold text-indigo-700 font-mono">₹{{ totalCalculatedFee | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="pt-6 flex gap-3">
+            <button *ngIf="editMode" type="button" (click)="resetForm()" class="flex-1 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-sm">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="isSubmitting" class="flex-1 glass-button py-2.5 text-sm flex justify-center items-center group relative overflow-hidden disabled:opacity-70">
+              <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-600 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span class="relative flex items-center">
+                {{ isSubmitting ? 'Saving...' : (editMode ? 'Update Details' : 'Save Structure') }}
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- List Side -->
+    <div class="lg:col-span-2">
+      <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-white/40 overflow-hidden">
+        
+        <!-- Search Bar -->
+        <div class="p-4 border-b border-slate-200/50 bg-slate-50/50 flex flex-col sm:flex-row gap-4 justify-between items-center">
+          <div class="flex gap-4 w-full sm:w-auto">
+            <select (change)="onSearchClassChange($event)" class="glass-input flex-1 sm:w-40 p-2 text-sm rounded-lg border-slate-200">
+              <option value="">All Classes</option>
+              <option *ngFor="let cls of classes" [value]="cls">Class {{ cls }}</option>
+            </select>
+            <select (change)="onSearchYearChange($event)" class="glass-input flex-1 sm:w-40 p-2 text-sm rounded-lg border-slate-200">
+              <option value="">All Years</option>
+              <option *ngFor="let year of academicYears" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+          <div class="text-sm text-slate-500 font-medium">
+            Showing {{ filteredStructures.length }} records
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto relative min-h-[300px]">
+          
+          <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white/50 z-10 backdrop-blur-sm">
+            <div class="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-full text-indigo-500 bg-white border border-indigo-100 transition ease-in-out duration-150">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Loading Records...
+            </div>
+          </div>
+
+          <table class="min-w-full divide-y divide-slate-200/60">
+            <thead class="bg-white/50">
+              <tr>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Class & Year</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Tuition</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Transport</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Misc/Lib</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-indigo-600 uppercase tracking-wider">Total</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 bg-transparent">
+              <tr *ngFor="let s of filteredStructures" class="hover:bg-slate-50/50 transition-colors group">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-bold text-slate-900">Class {{ s.className }}</div>
+                  <div class="text-xs text-slate-500">{{ s.academicYear }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-600 font-mono">
+                  ₹{{ s.tuitionFee | number:'1.0-0' }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-600 font-mono">
+                  ₹{{ s.transportFee | number:'1.0-0' }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500 font-mono">
+                  <div title="Library: ₹{{s.libraryFee}} | Misc: ₹{{s.miscellaneousFee}}">
+                    ₹{{ (s.libraryFee + s.miscellaneousFee) | number:'1.0-0' }}
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-indigo-600 font-mono">
+                  ₹{{ s.totalFee | number:'1.0-0' }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button (click)="editStructure(s)" class="text-indigo-600 hover:text-indigo-900 mr-4 transition-colors">Edit</button>
+                  <button (click)="deleteStructure(s.id!)" class="text-red-500 hover:text-red-700 transition-colors">Delete</button>
+                </td>
+              </tr>
+              <tr *ngIf="filteredStructures.length === 0 && !isLoading">
+                <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">
+                  No fee structures match your search criteria.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

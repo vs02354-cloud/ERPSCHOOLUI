@@ -1,0 +1,332 @@
+<div class="max-w-7xl mx-auto space-y-6 animate-fade-in py-6">
+  
+  <div class="flex justify-between items-center border-b border-slate-200 pb-4 print:hidden">
+    <div>
+      <h2 class="text-3xl font-bold text-slate-800 tracking-tight flex items-center">
+        <svg class="w-8 h-8 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        Fee Collection & Reports
+      </h2>
+      <p class="text-sm text-slate-500 mt-2">Manage fee collections, track pending balances, and generate receipts.</p>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="flex space-x-1 border-b border-slate-200 print:hidden">
+    <button (click)="switchTab('dashboard')" [class.border-indigo-500]="activeTab === 'dashboard'" [class.text-indigo-600]="activeTab === 'dashboard'" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors hover:text-indigo-600 border-transparent text-slate-500">
+      Dashboard & Reports
+    </button>
+    <button (click)="switchTab('collect')" [class.border-indigo-500]="activeTab === 'collect'" [class.text-indigo-600]="activeTab === 'collect'" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors hover:text-indigo-600 border-transparent text-slate-500">
+      Collect Fee
+    </button>
+    <button (click)="switchTab('history')" [class.border-indigo-500]="activeTab === 'history'" [class.text-indigo-600]="activeTab === 'history'" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors hover:text-indigo-600 border-transparent text-slate-500">
+      Payment History
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div *ngIf="successMessage" class="p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center shadow-sm print:hidden">
+    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center shadow-sm print:hidden">
+    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    {{ errorMessage }}
+  </div>
+
+  <!-- TAB 1: DASHBOARD -->
+  <div *ngIf="activeTab === 'dashboard'" class="space-y-6 animate-fade-in print:hidden">
+    
+    <!-- Stat Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6" *ngIf="dashboardStats">
+      <div class="glass-card p-6 border-l-4 border-indigo-500 rounded-xl">
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Today's Collection</p>
+        <p class="text-3xl font-bold text-slate-800 mt-2 font-mono">₹{{ dashboardStats.todayCollection | number:'1.0-0' }}</p>
+      </div>
+      <div class="glass-card p-6 border-l-4 border-green-500 rounded-xl">
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Collection</p>
+        <p class="text-3xl font-bold text-slate-800 mt-2 font-mono">₹{{ dashboardStats.totalCollection | number:'1.0-0' }}</p>
+      </div>
+      <div class="glass-card p-6 border-l-4 border-red-500 rounded-xl">
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pending Fees</p>
+        <p class="text-3xl font-bold text-slate-800 mt-2 font-mono">₹{{ dashboardStats.pendingFees | number:'1.0-0' }}</p>
+      </div>
+      <div class="glass-card p-6 border-l-4 border-blue-500 rounded-xl">
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Students Paid</p>
+        <p class="text-3xl font-bold text-slate-800 mt-2">{{ dashboardStats.totalStudentsPaid }}</p>
+      </div>
+    </div>
+
+    <!-- Pending Report Table -->
+    <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-white/40 overflow-hidden">
+      <div class="p-5 border-b border-slate-200 bg-slate-50/50">
+        <h3 class="text-lg font-bold text-slate-800">Pending Fees Report</h3>
+      </div>
+      <div class="overflow-x-auto relative min-h-[300px]">
+        <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white/50 z-10 backdrop-blur-sm">
+          <div class="text-indigo-600 font-semibold text-sm">Loading Report...</div>
+        </div>
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-white/50">
+            <tr>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Student</th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Class</th>
+              <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Total Fee</th>
+              <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Paid</th>
+              <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-red-600 uppercase tracking-wider">Pending</th>
+              <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr *ngFor="let r of pendingReport" class="hover:bg-slate-50/50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-bold text-slate-900">{{ r.studentName }}</div>
+                <div class="text-xs text-slate-500">Adm: {{ r.admissionNumber }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Class {{ r.class }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-600 font-mono">₹{{ r.totalFee | number:'1.0-0' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-green-600 font-bold font-mono">₹{{ r.paidFee | number:'1.0-0' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-red-600 font-bold font-mono">₹{{ r.pendingFee | number:'1.0-0' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+                      [ngClass]="{
+                        'bg-green-100 text-green-800': r.status === 'Paid',
+                        'bg-yellow-100 text-yellow-800': r.status === 'Partially Paid',
+                        'bg-red-100 text-red-800': r.status === 'Pending',
+                        'bg-slate-100 text-slate-800': r.status === 'N/A'
+                      }">
+                  {{ r.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: COLLECT FEE -->
+  <div *ngIf="activeTab === 'collect'" class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in print:hidden">
+    
+    <!-- Left: Select Student & Details -->
+    <div class="space-y-6">
+      <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl p-6 border border-white/40">
+        <h3 class="text-lg font-bold text-slate-800 mb-4">Select Student</h3>
+        <select class="glass-input w-full p-3 rounded-xl focus:ring-2 focus:ring-indigo-500" (change)="onStudentSelect($event)">
+          <option value="">-- Select a Student --</option>
+          <option *ngFor="let s of students" [value]="s.id">{{ s.firstName }} {{ s.lastName }} ({{ s.admissionNumber }}) - Class {{ s.currentClass }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="selectedStudent" class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl p-6 border border-white/40 animate-fade-in">
+        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">Student Profile</h3>
+        <div class="grid grid-cols-2 gap-y-4 gap-x-6">
+          <div><span class="block text-xs text-slate-500">Name</span><span class="font-bold text-slate-800">{{ selectedStudent.firstName }} {{ selectedStudent.lastName }}</span></div>
+          <div><span class="block text-xs text-slate-500">Class</span><span class="font-bold text-slate-800">Class {{ selectedStudent.currentClass }} - {{ selectedStudent.section }}</span></div>
+          <div><span class="block text-xs text-slate-500">Admission No</span><span class="font-bold text-slate-800">{{ selectedStudent.admissionNumber }}</span></div>
+          <div><span class="block text-xs text-slate-500">Parent Contact</span><span class="font-bold text-slate-800">{{ selectedStudent.parentContactNumber }}</span></div>
+        </div>
+
+        <div *ngIf="pendingFeeDetails" class="mt-6 p-4 rounded-xl" [ngClass]="pendingFeeDetails.pendingFee === 0 ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-bold text-slate-700">Total Assigned Fee:</span>
+            <span class="font-mono font-bold text-slate-900">₹{{ pendingFeeDetails.totalFee | number:'1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-bold text-slate-700">Amount Paid So Far:</span>
+            <span class="font-mono font-bold text-green-600">₹{{ pendingFeeDetails.paidFee | number:'1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between items-center pt-2 border-t border-slate-200/50 mt-2">
+            <span class="text-base font-bold text-slate-800 uppercase">Pending Balance:</span>
+            <span class="text-xl font-mono font-bold" [ngClass]="pendingFeeDetails.pendingFee === 0 ? 'text-green-600' : 'text-red-600'">
+              ₹{{ pendingFeeDetails.pendingFee | number:'1.0-0' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Payment Form -->
+    <div>
+      <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl p-6 border border-white/40 sticky top-24" [class.opacity-50]="!selectedStudent || (pendingFeeDetails && pendingFeeDetails.pendingFee === 0)" [class.pointer-events-none]="!selectedStudent || (pendingFeeDetails && pendingFeeDetails.pendingFee === 0)">
+        <h3 class="text-lg font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">Process Payment</h3>
+        
+        <form [formGroup]="collectForm" (ngSubmit)="onCollectSubmit()" class="space-y-5">
+          
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Amount to Pay (₹)</label>
+            <input type="number" formControlName="amountPaid" class="glass-input w-full p-4 rounded-xl text-2xl font-mono font-bold text-indigo-700 focus:ring-2 focus:ring-indigo-500 transition-all">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Payment Mode</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label *ngFor="let mode of paymentModes" class="flex items-center p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-indigo-50 transition-colors" [class.bg-indigo-50]="collectForm.get('paymentMode')?.value === mode" [class.border-indigo-500]="collectForm.get('paymentMode')?.value === mode">
+                <input type="radio" formControlName="paymentMode" [value]="mode" class="text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                <span class="ml-2 text-sm font-medium text-slate-700">{{ mode }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Remarks / Transaction ID</label>
+            <input type="text" formControlName="remarks" placeholder="Optional" class="glass-input w-full p-3 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500">
+          </div>
+
+          <button type="submit" [disabled]="isSubmitting" class="w-full glass-button py-4 text-lg font-bold mt-4 flex justify-center items-center group relative overflow-hidden disabled:opacity-70">
+            <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-600 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="relative flex items-center">
+              {{ isSubmitting ? 'Processing...' : 'Collect Payment' }}
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: PAYMENT HISTORY -->
+  <div *ngIf="activeTab === 'history'" class="space-y-6 animate-fade-in print:hidden">
+    <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-white/40 overflow-hidden">
+      
+      <div class="p-5 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
+        <h3 class="text-lg font-bold text-slate-800">Transaction Ledger</h3>
+        <input type="text" placeholder="Search receipt, student or mode..." (keyup)="onSearchHistory($event)" class="glass-input p-2.5 rounded-lg text-sm w-64 focus:ring-2 focus:ring-indigo-500">
+      </div>
+
+      <div class="overflow-x-auto relative min-h-[300px]">
+        <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white/50 z-10 backdrop-blur-sm">
+          <div class="text-indigo-600 font-semibold text-sm">Loading Records...</div>
+        </div>
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-white/50">
+            <tr>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Receipt Info</th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Student</th>
+              <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Amount</th>
+              <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Mode</th>
+              <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr *ngFor="let p of filteredPayments" class="hover:bg-slate-50/50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-bold text-indigo-600">{{ p.receiptNumber }}</div>
+                <div class="text-xs text-slate-500">{{ p.paymentDate | date:'mediumDate' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-bold text-slate-900">{{ p.student?.firstName }} {{ p.student?.lastName }}</div>
+                <div class="text-xs text-slate-500">Class {{ p.student?.currentClass }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-green-600 font-mono">
+                ₹{{ p.amountPaid | number:'1.0-0' }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-100 text-slate-600">{{ p.paymentMode }}</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button (click)="openReceipt(p)" class="text-indigo-600 hover:text-indigo-900 mr-4 transition-colors">View Receipt</button>
+                <button (click)="deletePayment(p.id!)" class="text-red-500 hover:text-red-700 transition-colors">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINTABLE RECEIPT MODAL -->
+  <div *ngIf="showReceiptModal && currentReceipt" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm print:absolute print:inset-0 print:bg-white print:p-0">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[95vh] print:shadow-none print:rounded-none print:max-h-none print:block">
+      
+      <!-- Modal Header (Hidden in Print) -->
+      <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0 print:hidden">
+        <h3 class="font-bold text-slate-700">Fee Receipt</h3>
+        <div class="space-x-3">
+          <button (click)="printReceipt()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm">
+            Print / Save PDF
+          </button>
+          <button (click)="closeReceipt()" class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-600 text-sm font-bold rounded-lg border border-slate-300 transition-colors">
+            Close
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Area -->
+      <div class="p-8 overflow-y-auto print:p-0 print:overflow-visible">
+        <!-- School Header -->
+        <div class="text-center border-b-2 border-slate-800 pb-6 mb-6">
+          <h1 class="text-3xl font-black text-slate-900 tracking-tight uppercase">Modern School ERP</h1>
+          <p class="text-slate-600 text-sm mt-1">123 Education Lane, Knowledge City, 110001</p>
+          <p class="text-slate-600 text-sm">Phone: +91 98765 43210 | Email: info&#64;schoolerp.com</p>
+          <div class="mt-4 inline-block px-4 py-1 border-2 border-slate-800 rounded-full font-bold text-slate-800 tracking-widest uppercase text-sm">
+            Fee Receipt
+          </div>
+        </div>
+
+        <div class="flex justify-between items-end mb-8">
+          <div>
+            <p class="text-sm text-slate-500 uppercase tracking-wider font-bold mb-1">Receipt No</p>
+            <p class="text-lg font-bold text-slate-900 font-mono">{{ currentReceipt.receiptNumber }}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm text-slate-500 uppercase tracking-wider font-bold mb-1">Date</p>
+            <p class="text-lg font-bold text-slate-900">{{ currentReceipt.paymentDate | date:'dd MMM, yyyy' }}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 bg-slate-50 p-6 rounded-xl border border-slate-200 mb-8 print:bg-white print:border-slate-800 print:rounded-none">
+          <div>
+            <p class="text-xs text-slate-500 uppercase font-bold mb-1">Student Name</p>
+            <p class="font-bold text-slate-900">{{ currentReceipt.student?.firstName }} {{ currentReceipt.student?.lastName }}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-slate-500 uppercase font-bold mb-1">Admission No</p>
+            <p class="font-bold text-slate-900">{{ currentReceipt.student?.admissionNumber }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 uppercase font-bold mb-1">Class</p>
+            <p class="font-bold text-slate-900">{{ currentReceipt.student?.currentClass }} - {{ currentReceipt.student?.section }}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-slate-500 uppercase font-bold mb-1">Payment Mode</p>
+            <p class="font-bold text-slate-900">{{ currentReceipt.paymentMode }}</p>
+          </div>
+        </div>
+
+        <table class="w-full mb-8">
+          <thead>
+            <tr class="border-b-2 border-slate-800 text-left">
+              <th class="py-3 text-sm font-bold text-slate-800 uppercase tracking-wider">Description</th>
+              <th class="py-3 text-sm font-bold text-slate-800 uppercase tracking-wider text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-200">
+              <td class="py-4 text-slate-800 font-medium">School Fee Installment</td>
+              <td class="py-4 text-right font-bold text-slate-900 font-mono">₹{{ currentReceipt.amountPaid | number:'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="currentReceipt.remarks">
+              <td colspan="2" class="py-3 text-sm text-slate-500 italic">
+                Remarks: {{ currentReceipt.remarks }}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="text-lg">
+              <td class="py-4 font-black text-slate-900 uppercase">Total Paid</td>
+              <td class="py-4 text-right font-black text-slate-900 font-mono">₹{{ currentReceipt.amountPaid | number:'1.2-2' }}</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="mt-16 pt-8 border-t-2 border-slate-800 flex justify-between items-end">
+          <p class="text-xs text-slate-500 italic">This is a computer generated receipt.</p>
+          <div class="text-center">
+            <div class="w-40 border-b border-slate-800 mb-2"></div>
+            <p class="text-sm font-bold text-slate-800 uppercase tracking-wider">Authorized Signatory</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
