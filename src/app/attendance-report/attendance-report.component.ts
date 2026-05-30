@@ -48,7 +48,7 @@ export class AttendanceReportComponent implements OnInit {
     this.report = null;
     this.cdr.detectChanges();
 
-    const url = `http://localhost:5120/api/Attendance/Report?date=${this.selectedDate}&className=${this.selectedClass}&section=${this.selectedSection}`;
+    const url = `https://erpschoolapi.onrender.com/api/Attendance/Report?date=${this.selectedDate}&className=${this.selectedClass}&section=${this.selectedSection}`;
     
     this.http.get<AttendanceReport>(url).subscribe({
       next: (data) => {

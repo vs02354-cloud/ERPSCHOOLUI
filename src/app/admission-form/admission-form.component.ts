@@ -66,7 +66,7 @@ export class AdmissionFormComponent implements OnInit {
   }
 
   loadStudentDetails(id: number) {
-    this.http.get<any>(`http://localhost:5120/api/Students/${id}`).subscribe({
+    this.http.get<any>(`https://erpschoolapi.onrender.com/api/Students/${id}`).subscribe({
       next: (student) => {
         // format date correctly for input[type=date]
         if (student.dateOfBirth) {
@@ -93,7 +93,7 @@ export class AdmissionFormComponent implements OnInit {
 
       if (this.isEditMode && this.studentId) {
         // PUT Request
-        this.http.put(`http://localhost:5120/api/Students/${this.studentId}`, payload).subscribe({
+        this.http.put(`https://erpschoolapi.onrender.com/api/Students/${this.studentId}`, payload).subscribe({
           next: () => {
             this.successMessage = 'Student details updated successfully!';
             this.isSubmitting = false;
@@ -105,7 +105,7 @@ export class AdmissionFormComponent implements OnInit {
         });
       } else {
         // POST Request
-        this.http.post<any>('http://localhost:5120/api/Students/Admission', payload).subscribe({
+        this.http.post<any>('https://erpschoolapi.onrender.com/api/Students/Admission', payload).subscribe({
           next: (response) => {
             this.successMessage = 'Student admission successful! Registration ID: ' + response.admissionNumber;
             this.isSubmitting = false;

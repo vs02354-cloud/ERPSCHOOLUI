@@ -59,7 +59,7 @@ export class AttendanceComponent implements OnInit {
     this.cdr.detectChanges();
 
     // 1. Fetch Students
-    this.http.get<Student[]>('http://localhost:5120/api/Students').subscribe({
+    this.http.get<Student[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
       next: (students) => {
         // Filter students by class and section
         const filteredStudents = students.filter(s => s.currentClass === this.selectedClass && s.section === this.selectedSection);
@@ -72,7 +72,7 @@ export class AttendanceComponent implements OnInit {
         }
 
         // 2. Fetch Attendance for this Date
-        this.http.get<any[]>(`http://localhost:5120/api/Attendance/ByDate/${this.selectedDate}`).subscribe({
+        this.http.get<any[]>(`https://erpschoolapi.onrender.com/api/Attendance/ByDate/${this.selectedDate}`).subscribe({
           next: (attendances) => {
             this.attendanceRecords = filteredStudents.map(student => {
               const existingAtt = attendances.find(a => a.studentId === student.id);
@@ -117,7 +117,7 @@ export class AttendanceComponent implements OnInit {
       remarks: record.remarks
     }));
 
-    this.http.post('http://localhost:5120/api/Attendance/MarkBulk', payload).subscribe({
+    this.http.post('https://erpschoolapi.onrender.com/api/Attendance/MarkBulk', payload).subscribe({
       next: () => {
         this.successMessage = 'Attendance saved successfully!';
         this.isSaving = false;

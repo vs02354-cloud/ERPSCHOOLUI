@@ -45,7 +45,7 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   openProfile() {
-    this.http.get('http://localhost:5120/api/Auth/profile').subscribe({
+    this.http.get('https://erpschoolapi.onrender.com/api/Auth/profile').subscribe({
       next: (data) => {
         this.userProfile = data;
         this.showProfileModal = true;

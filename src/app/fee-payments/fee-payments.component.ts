@@ -92,7 +92,7 @@ export class FeePaymentsComponent implements OnInit {
   // --- Dashboard Data ---
 
   loadDashboardStats() {
-    this.http.get<any>('http://localhost:5120/api/Fees/DashboardStats').subscribe({
+    this.http.get<any>('https://erpschoolapi.onrender.com/api/Fees/DashboardStats').subscribe({
       next: (data) => {
         this.dashboardStats = data;
         this.cdr.detectChanges();
@@ -103,7 +103,7 @@ export class FeePaymentsComponent implements OnInit {
 
   loadPendingReport() {
     this.isLoading = true;
-    this.http.get<any[]>('http://localhost:5120/api/Fees/PendingReport').subscribe({
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Fees/PendingReport').subscribe({
       next: (data) => {
         this.pendingReport = data;
         this.isLoading = false;
@@ -121,7 +121,7 @@ export class FeePaymentsComponent implements OnInit {
 
   loadPaymentHistory() {
     this.isLoading = true;
-    this.http.get<FeePayment[]>('http://localhost:5120/api/Fees/Payment').subscribe({
+    this.http.get<FeePayment[]>('https://erpschoolapi.onrender.com/api/Fees/Payment').subscribe({
       next: (data) => {
         this.allPayments = data;
         this.applyHistoryFilter();
@@ -156,7 +156,7 @@ export class FeePaymentsComponent implements OnInit {
 
   deletePayment(id: number) {
     if (confirm('Are you sure you want to delete this payment record? This action cannot be undone.')) {
-      this.http.delete(`http://localhost:5120/api/Fees/Payment/${id}`).subscribe({
+      this.http.delete(`https://erpschoolapi.onrender.com/api/Fees/Payment/${id}`).subscribe({
         next: () => {
           this.successMessage = 'Payment deleted successfully.';
           this.loadPaymentHistory();
@@ -188,7 +188,7 @@ export class FeePaymentsComponent implements OnInit {
   // --- Collect Fee ---
 
   loadStudents() {
-    this.http.get<Student[]>('http://localhost:5120/api/Students').subscribe({
+    this.http.get<Student[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
       next: (data) => {
         this.students = data;
         this.cdr.detectChanges();
@@ -205,7 +205,7 @@ export class FeePaymentsComponent implements OnInit {
     this.errorMessage = '';
 
     if (this.selectedStudent) {
-      this.http.get<any>(`http://localhost:5120/api/Fees/Pending/Student/${id}`).subscribe({
+      this.http.get<any>(`https://erpschoolapi.onrender.com/api/Fees/Pending/Student/${id}`).subscribe({
         next: (data) => {
           this.pendingFeeDetails = data;
           if (data.pendingFee === 0) {
@@ -244,7 +244,7 @@ export class FeePaymentsComponent implements OnInit {
     const payload = this.collectForm.value;
     payload.receiptNumber = 'TBD'; // Dummy value to pass [Required] backend validation, backend overwrites this
     
-    this.http.post<FeePayment>('http://localhost:5120/api/Fees/Payment', payload).subscribe({
+    this.http.post<FeePayment>('https://erpschoolapi.onrender.com/api/Fees/Payment', payload).subscribe({
       next: (response) => {
         this.successMessage = 'Payment collected successfully!';
         this.isSubmitting = false;

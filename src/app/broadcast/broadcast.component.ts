@@ -44,7 +44,7 @@ export class BroadcastComponent {
       this.successMessage = '';
       this.errorMessage = '';
       
-      this.http.post<any>('http://localhost:5120/api/Communication/Broadcast', this.broadcastForm.value).subscribe({
+      this.http.post<any>('https://erpschoolapi.onrender.com/api/Communication/Broadcast', this.broadcastForm.value).subscribe({
         next: (response) => {
           this.successMessage = `Successfully processed! Sent ${response.count} messages via ${this.broadcastForm.value.type}.`;
           this.isSubmitting = false;

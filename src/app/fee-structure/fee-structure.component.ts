@@ -68,7 +68,7 @@ export class FeeStructureComponent implements OnInit {
 
   loadFeeStructures() {
     this.isLoading = true;
-    this.http.get<FeeStructure[]>('http://localhost:5120/api/Fees/Structure').subscribe({
+    this.http.get<FeeStructure[]>('https://erpschoolapi.onrender.com/api/Fees/Structure').subscribe({
       next: (data) => {
         this.feeStructures = data;
         this.applyFilter();
@@ -118,7 +118,7 @@ export class FeeStructureComponent implements OnInit {
     if (this.editMode && this.currentEditId) {
       // Update
       payload.id = this.currentEditId;
-      this.http.put(`http://localhost:5120/api/Fees/Structure/${this.currentEditId}`, payload).subscribe({
+      this.http.put(`https://erpschoolapi.onrender.com/api/Fees/Structure/${this.currentEditId}`, payload).subscribe({
         next: () => {
           this.successMessage = 'Fee structure updated successfully!';
           this.resetForm();
@@ -132,7 +132,7 @@ export class FeeStructureComponent implements OnInit {
       });
     } else {
       // Create
-      this.http.post<FeeStructure>('http://localhost:5120/api/Fees/Structure', payload).subscribe({
+      this.http.post<FeeStructure>('https://erpschoolapi.onrender.com/api/Fees/Structure', payload).subscribe({
         next: () => {
           this.successMessage = 'Fee structure created successfully!';
           this.resetForm();
@@ -164,7 +164,7 @@ export class FeeStructureComponent implements OnInit {
 
   deleteStructure(id: number) {
     if (confirm('Are you sure you want to delete this fee structure?')) {
-      this.http.delete(`http://localhost:5120/api/Fees/Structure/${id}`).subscribe({
+      this.http.delete(`https://erpschoolapi.onrender.com/api/Fees/Structure/${id}`).subscribe({
         next: () => {
           this.successMessage = 'Deleted successfully!';
           this.loadFeeStructures();

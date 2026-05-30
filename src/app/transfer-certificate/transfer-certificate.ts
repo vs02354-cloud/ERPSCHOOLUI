@@ -34,7 +34,7 @@ export class TransferCertificateComponent implements OnInit {
   }
 
   loadActiveStudents() {
-    this.http.get<any[]>('http://localhost:5120/api/Students').subscribe({
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
       next: (data) => {
         this.activeStudents = data;
         this.cdr.detectChanges();
@@ -44,7 +44,7 @@ export class TransferCertificateComponent implements OnInit {
   }
 
   loadIssuedTCs() {
-    this.http.get<any[]>('http://localhost:5120/api/TC').subscribe({
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/TC').subscribe({
       next: (data) => {
         this.issuedTCs = data;
         this.cdr.detectChanges();
@@ -70,7 +70,7 @@ export class TransferCertificateComponent implements OnInit {
       tcNumber: 'TBD' // Bypass [Required] validation since backend generates it
     };
 
-    this.http.post('http://localhost:5120/api/TC/Generate', payload).subscribe({
+    this.http.post('https://erpschoolapi.onrender.com/api/TC/Generate', payload).subscribe({
       next: () => {
         this.isGenerating = false;
         this.successMessage = 'Transfer Certificate generated successfully! The student has been marked as inactive.';

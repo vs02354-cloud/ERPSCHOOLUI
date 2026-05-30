@@ -40,7 +40,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   loadEmployees() {
-    let url = `http://localhost:5120/api/HR/Employees?page=${this.page}&pageSize=${this.pageSize}`;
+    let url = `https://erpschoolapi.onrender.com/api/HR/Employees?page=${this.page}&pageSize=${this.pageSize}`;
     if (this.searchTerm) {
       url += `&searchTerm=${encodeURIComponent(this.searchTerm)}`;
     }
@@ -95,7 +95,7 @@ export class EmployeeListComponent implements OnInit {
     this.errorMessage = '';
     this.cdr.detectChanges();
 
-    this.http.put(`http://localhost:5120/api/HR/Employee/${this.editingEmployee.employee.id}`, this.editingEmployee).subscribe({
+    this.http.put(`https://erpschoolapi.onrender.com/api/HR/Employee/${this.editingEmployee.employee.id}`, this.editingEmployee).subscribe({
       next: () => {
         this.saving = false;
         this.successMessage = 'Employee record updated successfully.';
@@ -120,7 +120,7 @@ export class EmployeeListComponent implements OnInit {
   deleteEmployee(id: number) {
     if (!this.canDelete) return;
     if (confirm('Are you sure you want to delete this employee record?')) {
-      this.http.delete(`http://localhost:5120/api/HR/Employee/${id}`).subscribe({
+      this.http.delete(`https://erpschoolapi.onrender.com/api/HR/Employee/${id}`).subscribe({
         next: () => {
           this.loadEmployees();
         },
