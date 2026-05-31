@@ -72,7 +72,7 @@
           Admissions
         </a>
 
-        <a *ngIf="userRole === 'Admin' || userRole === 'Principal' || userRole === 'Operator'" routerLink="/dashboard/inquiries" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
+        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Operator'" routerLink="/dashboard/inquiries" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
           <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
           Inquiries
         </a>
