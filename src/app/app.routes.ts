@@ -13,12 +13,14 @@ import { FeePaymentsComponent } from './fee-payments/fee-payments.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { AttendanceReportComponent } from './attendance-report/attendance-report.component';
 import { TransferCertificateComponent } from './transfer-certificate/transfer-certificate';
-
 import { Home } from './home/home';
+import { PublicInquiryForm } from './public-inquiry-form/public-inquiry-form';
+import { InquiryDashboard } from './inquiry-dashboard/inquiry-dashboard';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'inquiry', component: PublicInquiryForm },
     { 
       path: 'dashboard', 
       component: DashboardLayoutComponent,
@@ -33,7 +35,8 @@ export const routes: Routes = [
         { path: 'attendance-report', component: AttendanceReportComponent },
         { path: 'fee-structure', component: FeeStructureComponent },
         { path: 'fee-payments', component: FeePaymentsComponent },
-        { path: 'tc', component: TransferCertificateComponent }
+        { path: 'tc', component: TransferCertificateComponent },
+        { path: 'inquiries', component: InquiryDashboard }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }
