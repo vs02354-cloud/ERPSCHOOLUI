@@ -36,12 +36,22 @@ export class InquiryDashboard implements OnInit {
 
   loadData() {
     this.isLoading = true;
-    this.inquiryService.getSummary().subscribe(res => this.summary = res);
+    
+    this.inquiryService.getSummary().subscribe({
+      next: res => this.summary = res,
+      error: err => console.error('Error loading inquiry summary', err)
+    });
     
     this.inquiryService.getInquiries(this.selectedStatus, this.searchQuery)
       .pipe(finalize(() => this.isLoading = false))
-      .subscribe(res => {
-        this.inquiries = res;
+      .subscribe({
+        next: res => {
+          this.inquiries = res;
+        },
+        error: err => {
+          console.error('Error loading inquiries', err);
+          // Optional: Display an error message to the user here
+        }
       });
   }
 
