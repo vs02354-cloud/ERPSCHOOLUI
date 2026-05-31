@@ -38,19 +38,39 @@ export class InquiryDashboard implements OnInit {
     this.isLoading = true;
     
     this.inquiryService.getSummary().subscribe({
-      next: res => this.summary = res,
+      next: (res: any) => {
+        if (res) {
+          this.summary = {
+            total: res.total !== undefined ? res.total : res.Total,
+            details: (res.details || res.Details || []).map((d: any) => ({
+              status: d.status || d.Status,
+              count: d.count !== undefined ? d.count : d.Count
+            }))
+          };
+        }
+      },
       error: err => console.error('Error loading inquiry summary', err)
     });
     
     this.inquiryService.getInquiries(this.selectedStatus, this.searchQuery)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
-        next: res => {
-          this.inquiries = res;
+        next: (res: any[]) => {
+          this.inquiries = (res || []).map(item => ({
+            inquiryId: item.inquiryId || item.InquiryId,
+            inquiryNo: item.inquiryNo || item.InquiryNo,
+            inquiryDate: item.inquiryDate || item.InquiryDate,
+            studentName: item.studentName || item.StudentName,
+            classApplyingFor: item.classApplyingFor || item.ClassApplyingFor,
+            parentName: item.parentName || item.ParentName,
+            mobileNo: item.mobileNo || item.MobileNo,
+            inquiryStatus: item.inquiryStatus || item.InquiryStatus,
+            followUpDate: item.followUpDate || item.FollowUpDate,
+            remarks: item.remarks || item.Remarks
+          })) as AdmissionInquiry[];
         },
         error: err => {
           console.error('Error loading inquiries', err);
-          // Optional: Display an error message to the user here
         }
       });
   }
