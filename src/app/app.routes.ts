@@ -14,6 +14,8 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { AttendanceReportComponent } from './attendance-report/attendance-report.component';
 import { TransferCertificateComponent } from './transfer-certificate/transfer-certificate';
 
+import { Home } from './home/home';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
@@ -34,5 +36,5 @@ export const routes: Routes = [
         { path: 'tc', component: TransferCertificateComponent }
       ]
     },
-    { path: '', redirectTo: '/login', pathMatch: 'full' }
+    { path: '', component: Home, pathMatch: 'full' }
 ];
