@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './home.css',
 })
 export class Home {
+  isMobileMenuOpen = false;
+
   announcements = [
     { title: 'Final Exams Timetable Published', date: 'Oct 15, 2026', type: 'Exam' },
     { title: 'Annual Science Fair Registration Open', date: 'Oct 18, 2026', type: 'Event' },

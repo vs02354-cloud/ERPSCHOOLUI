@@ -1,7 +1,13 @@
 <div class="min-h-screen flex items-center justify-center p-4">
-  <div class="glass-card max-w-md w-full p-8 animate-slide-up">
+  <div class="glass-card max-w-md w-full p-8 animate-slide-up relative">
     
-    <div class="text-center mb-10">
+    <!-- Back to Home Link -->
+    <a routerLink="/" class="absolute top-4 left-4 text-indigo-600 hover:text-indigo-800 flex items-center gap-1 text-sm font-medium transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      Home
+    </a>
+
+    <div class="text-center mb-10 mt-4">
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-500 bg-opacity-20 text-indigo-600 mb-4 shadow-inner">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
