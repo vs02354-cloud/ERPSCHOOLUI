@@ -16,8 +16,18 @@ export class DashboardLayoutComponent implements OnInit {
   userRole: string = 'Super Admin';
   showProfileModal: boolean = false;
   userProfile: any = null;
+  isMobileMenuOpen: boolean = false;
   
   constructor(private router: Router, private http: HttpClient) {}
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
+
 
   ngOnInit() {
     const token = localStorage.getItem('jwt_token');
