@@ -1,0 +1,110 @@
+<div class="min-h-screen bg-gray-50 text-gray-800 font-sans selection:bg-indigo-500 selection:text-white flex flex-col">
+  
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-20 items-center">
+        <a routerLink="/" class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">E</div>
+          <span class="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-purple-700">EduSchool</span>
+        </a>
+        <div class="hidden md:flex space-x-8 items-center">
+          <a routerLink="/about" class="text-indigo-600 font-medium transition-colors">About Us</a>
+          <a routerLink="/inquiry" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Admissions</a>
+          <a routerLink="/contact" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Contact</a>
+          <a routerLink="/login" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">ERP Login</a>
+        </div>
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button (click)="isMobileMenuOpen = !isMobileMenuOpen" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu Dropdown -->
+    <div *ngIf="isMobileMenuOpen" class="md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2 shadow-lg">
+      <a routerLink="/about" (click)="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50">About Us</a>
+      <a routerLink="/inquiry" (click)="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50">Admissions</a>
+      <a routerLink="/contact" (click)="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50">Contact</a>
+      <a routerLink="/login" class="block mt-4 text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-105 transition-transform">ERP Login</a>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 animate-fade-in">
+    <div class="text-center mb-16">
+      <span class="inline-block py-1 px-3 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-semibold tracking-wide mb-4">Discover Our Legacy</span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-6">About EduSchool</h1>
+      <p class="mt-4 text-xl text-gray-500 max-w-3xl mx-auto">Nurturing excellence and empowering the leaders of tomorrow through holistic education.</p>
+    </div>
+    
+    <div class="grid lg:grid-cols-2 gap-12 items-center mb-24">
+      <div class="rounded-3xl overflow-hidden shadow-2xl relative">
+        <div class="absolute inset-0 bg-indigo-600/10 mix-blend-overlay"></div>
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop" alt="Campus" class="w-full h-full object-cover">
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+          Our Mission
+        </h2>
+        <p class="text-lg text-gray-600 mb-6 leading-relaxed">At EduSchool, our mission is to provide a dynamic and inclusive learning environment that inspires students to achieve academic excellence, develop strong moral character, and embrace lifelong learning.</p>
+        <p class="text-lg text-gray-600 leading-relaxed mb-8">We believe in recognizing the unique potential within every student and offering them the tools, guidance, and opportunities they need to succeed in an ever-changing world.</p>
+        
+        <div class="flex items-center gap-4">
+          <div class="flex -space-x-4">
+            <img class="w-12 h-12 rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=John+Doe&background=random" alt="Principal">
+          </div>
+          <div>
+            <div class="text-sm font-bold text-gray-900">Dr. Sarah Jenkins</div>
+            <div class="text-sm text-gray-500">School Principal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-8 lg:p-12 text-center mb-16 border border-indigo-100/50 shadow-inner">
+      <h2 class="text-3xl font-bold text-gray-900 mb-10">Core Values</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+          <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-6">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Excellence</h3>
+          <p class="text-gray-600">Striving for the highest standards in everything we do, from academics to sports.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+          <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-6">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Integrity</h3>
+          <p class="text-gray-600">Acting with honesty, transparency, and moral courage in all our endeavors.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+          <div class="w-14 h-14 bg-pink-100 text-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-3">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Citizenship</h3>
+          <p class="text-gray-600">Preparing students to be responsible and active members of a global society.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 pt-16 pb-8 text-gray-300 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-500 flex flex-col md:flex-row justify-between items-center">
+        <p>&copy; 2026 EduSchool ERP. All rights reserved.</p>
+        <div class="mt-4 md:mt-0 flex gap-4">
+          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

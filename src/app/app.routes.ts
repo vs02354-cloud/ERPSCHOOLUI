@@ -17,10 +17,15 @@ import { Home } from './home/home';
 import { PublicInquiryForm } from './public-inquiry-form/public-inquiry-form';
 import { InquiryDashboard } from './inquiry-dashboard/inquiry-dashboard';
 
+import { AboutUs } from './about-us/about-us';
+import { Contact } from './contact/contact';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'inquiry', component: PublicInquiryForm },
+    { path: 'about', component: AboutUs },
+    { path: 'contact', component: Contact },
     { 
       path: 'dashboard', 
       component: DashboardLayoutComponent,
