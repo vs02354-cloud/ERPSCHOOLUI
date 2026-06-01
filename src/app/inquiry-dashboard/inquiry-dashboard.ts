@@ -53,9 +53,9 @@ export class InquiryDashboard implements OnInit {
     });
     
     this.inquiryService.getInquiries(this.selectedStatus, this.searchQuery)
-      .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (res: any[]) => {
+          this.isLoading = false;
           this.inquiries = (res || []).map(item => ({
             inquiryId: item.inquiryId || item.InquiryId,
             inquiryNo: item.inquiryNo || item.InquiryNo,
@@ -70,6 +70,7 @@ export class InquiryDashboard implements OnInit {
           })) as AdmissionInquiry[];
         },
         error: err => {
+          this.isLoading = false;
           console.error('Error loading inquiries', err);
         }
       });
