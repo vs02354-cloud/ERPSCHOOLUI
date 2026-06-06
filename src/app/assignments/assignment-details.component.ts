@@ -40,7 +40,7 @@ export class AssignmentDetailsComponent implements OnInit {
   isSavingEval = false;
 
   ngOnInit() {
-    this.userRole = this.authService.getUserRole();
+    this.userRole = this.authService.getUserRole() || 'Student';
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadDetails(Number(id));

@@ -20,7 +20,7 @@ export class AssignmentsComponent implements OnInit {
   userRole: string = 'Student';
 
   ngOnInit() {
-    this.userRole = this.authService.getUserRole();
+    this.userRole = this.authService.getUserRole() || 'Student';
     this.loadAssignments();
   }
 
