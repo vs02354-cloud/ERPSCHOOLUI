@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AssignmentService, AssignmentMaster } from '../services/assignment.service';
@@ -14,6 +14,7 @@ import { AuthService } from '../services/auth.service';
 export class AssignmentsComponent implements OnInit {
   private assignmentService = inject(AssignmentService);
   private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
   assignments: any[] = [];
   isLoading: boolean = true;
@@ -26,15 +27,19 @@ export class AssignmentsComponent implements OnInit {
 
   loadAssignments() {
     this.isLoading = true;
+    this.cdr.detectChanges();
+    
     if (this.userRole === 'Student') {
       this.assignmentService.getStudentAssignments().subscribe({
         next: (data) => {
           this.assignments = data;
           this.isLoading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading assignments', err);
           this.isLoading = false;
+          this.cdr.detectChanges();
         }
       });
     } else {
@@ -42,10 +47,12 @@ export class AssignmentsComponent implements OnInit {
         next: (data) => {
           this.assignments = data;
           this.isLoading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading assignments', err);
           this.isLoading = false;
+          this.cdr.detectChanges();
         }
       });
     }

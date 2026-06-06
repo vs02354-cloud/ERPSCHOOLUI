@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -17,6 +17,7 @@ export class AssignmentDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private assignmentService = inject(AssignmentService);
   private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
   assignment: any;
   allSubmissions: any[] = [];
@@ -58,10 +59,12 @@ export class AssignmentDetailsComponent implements OnInit {
           this.allSubmissions = res.allSubmissions || [];
         }
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load assignment', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -97,12 +100,14 @@ export class AssignmentDetailsComponent implements OnInit {
         this.assignmentService.submitAssignment(this.assignment.assignmentId, payload as any).subscribe({
           next: () => {
             this.isSubmitting = false;
+            this.cdr.detectChanges();
             this.loadDetails(this.assignment.assignmentId);
           },
           error: (err) => {
             console.error(err);
             alert('Failed to submit assignment.');
             this.isSubmitting = false;
+            this.cdr.detectChanges();
           }
         });
       },
@@ -110,6 +115,7 @@ export class AssignmentDetailsComponent implements OnInit {
         console.error(err);
         alert('File upload failed.');
         this.isSubmitting = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -138,11 +144,13 @@ export class AssignmentDetailsComponent implements OnInit {
       .subscribe({
         next: () => {
           this.evaluatingId = null;
+          this.cdr.detectChanges();
           this.loadDetails(this.assignment.assignmentId);
         },
         error: (err) => {
           console.error(err);
           alert('Failed to save evaluation.');
+          this.cdr.detectChanges();
         }
       });
   }

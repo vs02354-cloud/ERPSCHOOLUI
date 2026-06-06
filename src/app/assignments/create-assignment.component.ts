@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -15,6 +15,7 @@ import { finalize } from 'rxjs/operators';
 export class CreateAssignmentComponent {
   private assignmentService = inject(AssignmentService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   assignment = {
     title: '',
@@ -45,16 +46,19 @@ export class CreateAssignmentComponent {
 
     if (this.selectedFile) {
       this.uploadProgress = true;
+      this.cdr.detectChanges();
       this.assignmentService.uploadFile(this.selectedFile).subscribe({
         next: (res) => {
           this.assignment.attachmentPath = res.filePath;
           this.uploadProgress = false;
+          this.cdr.detectChanges();
           this.submitAssignmentData();
         },
         error: (err) => {
           console.error('File upload failed', err);
           this.uploadProgress = false;
           this.isSaving = false;
+          this.cdr.detectChanges();
           alert('Failed to upload file.');
         }
       });
@@ -68,10 +72,12 @@ export class CreateAssignmentComponent {
       .pipe(finalize(() => this.isSaving = false))
       .subscribe({
         next: () => {
+          this.cdr.detectChanges();
           this.router.navigate(['/dashboard/assignments']);
         },
         error: (err) => {
           console.error('Failed to create assignment', err);
+          this.cdr.detectChanges();
           alert('Failed to create assignment.');
         }
       });
