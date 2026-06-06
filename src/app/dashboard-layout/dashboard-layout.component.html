@@ -77,7 +77,7 @@
           Inquiries
         </a>
 
-        <a routerLink="/dashboard/assignments" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
+        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Student'" routerLink="/dashboard/assignments" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
           <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
           Assignments
         </a>
