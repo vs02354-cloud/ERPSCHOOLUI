@@ -35,14 +35,20 @@
 
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Class <span class="text-red-500">*</span></label>
-          <input type="text" name="className" [(ngModel)]="assignment.className" required
-                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border" placeholder="e.g. 10">
+          <select name="className" [(ngModel)]="assignment.className" required
+                  class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border bg-white">
+            <option value="" disabled>Select Class</option>
+            <option *ngFor="let cls of classes" [value]="cls">{{ cls }}</option>
+          </select>
         </div>
 
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Section <span class="text-red-500">*</span></label>
-          <input type="text" name="section" [(ngModel)]="assignment.section" required
-                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border" placeholder="e.g. A">
+          <select name="section" [(ngModel)]="assignment.section" required
+                  class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border bg-white">
+            <option value="" disabled>Select Section</option>
+            <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
+          </select>
         </div>
 
         <div>

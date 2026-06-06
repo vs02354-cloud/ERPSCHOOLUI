@@ -27,6 +27,9 @@ export class CreateAssignmentComponent {
     attachmentPath: ''
   };
 
+  classes = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
+  sections = ['A', 'B', 'C', 'D'];
+
   selectedFile: File | null = null;
   isSaving = false;
   uploadProgress = false;
