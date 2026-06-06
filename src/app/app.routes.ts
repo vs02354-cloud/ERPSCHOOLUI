@@ -17,6 +17,10 @@ import { Home } from './home/home';
 import { PublicInquiryForm } from './public-inquiry-form/public-inquiry-form';
 import { InquiryDashboard } from './inquiry-dashboard/inquiry-dashboard';
 
+import { AssignmentsComponent } from './assignments/assignments.component';
+import { CreateAssignmentComponent } from './assignments/create-assignment.component';
+import { AssignmentDetailsComponent } from './assignments/assignment-details.component';
+
 import { AboutUs } from './about-us/about-us';
 import { Contact } from './contact/contact';
 
@@ -41,7 +45,10 @@ export const routes: Routes = [
         { path: 'fee-structure', component: FeeStructureComponent },
         { path: 'fee-payments', component: FeePaymentsComponent },
         { path: 'tc', component: TransferCertificateComponent },
-        { path: 'inquiries', component: InquiryDashboard }
+        { path: 'inquiries', component: InquiryDashboard },
+        { path: 'assignments', component: AssignmentsComponent },
+        { path: 'assignments/create', component: CreateAssignmentComponent },
+        { path: 'assignments/:id', component: AssignmentDetailsComponent }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }

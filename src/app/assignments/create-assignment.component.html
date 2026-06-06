@@ -1,0 +1,103 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex items-center mb-6">
+    <a routerLink="/dashboard/assignments" class="text-slate-500 hover:text-indigo-600 transition-colors mr-4">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+    </a>
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">Create New Assignment</h2>
+      <p class="text-sm text-slate-500">Assign work to a specific class and section</p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <form (ngSubmit)="saveAssignment()" #form="ngForm" class="p-6 sm:p-8 space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Assignment Title <span class="text-red-500">*</span></label>
+          <input type="text" name="title" [(ngModel)]="assignment.title" required
+                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Description / Instructions</label>
+          <textarea name="description" [(ngModel)]="assignment.description" rows="4"
+                    class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Subject <span class="text-red-500">*</span></label>
+          <input type="text" name="subject" [(ngModel)]="assignment.subject" required
+                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border" placeholder="e.g. Mathematics">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Class <span class="text-red-500">*</span></label>
+          <input type="text" name="className" [(ngModel)]="assignment.className" required
+                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border" placeholder="e.g. 10">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Section <span class="text-red-500">*</span></label>
+          <input type="text" name="section" [(ngModel)]="assignment.section" required
+                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border" placeholder="e.g. A">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Due Date <span class="text-red-500">*</span></label>
+          <input type="datetime-local" name="dueDate" [(ngModel)]="assignment.dueDate" required
+                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Maximum Marks <span class="text-red-500">*</span></label>
+          <input type="number" name="maxMarks" [(ngModel)]="assignment.maxMarks" required
+                 class="block w-full rounded-xl border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2 px-3 border">
+        </div>
+
+        <div class="md:col-span-2 mt-2">
+          <label class="block text-sm font-medium text-slate-700 mb-2">Attach File (Optional)</label>
+          <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 border-dashed rounded-xl hover:border-indigo-400 transition-colors bg-slate-50 relative">
+            <div class="space-y-1 text-center">
+              <svg class="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div class="flex text-sm text-slate-600 justify-center">
+                <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500 px-1">
+                  <span>Upload a file</span>
+                  <input id="file-upload" name="file-upload" type="file" class="sr-only" (change)="onFileSelected($event)">
+                </label>
+                <p class="pl-1">or drag and drop</p>
+              </div>
+              <p class="text-xs text-slate-500">PDF, DOCX, PNG, JPG up to 10MB</p>
+              
+              <div *ngIf="selectedFile" class="mt-4 inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+                <svg class="mr-1.5 h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                </svg>
+                {{ selectedFile.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-4 border-t border-slate-200 flex justify-end space-x-3">
+        <button type="button" routerLink="/dashboard/assignments" class="px-4 py-2 border border-slate-300 rounded-xl shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+          Cancel
+        </button>
+        <button type="submit" [disabled]="!form.valid || isSaving" class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-colors">
+          <svg *ngIf="isSaving" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ isSaving ? (uploadProgress ? 'Uploading...' : 'Publishing...') : 'Publish Assignment' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
