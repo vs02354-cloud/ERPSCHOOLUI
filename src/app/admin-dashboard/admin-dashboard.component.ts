@@ -35,8 +35,9 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit() {
     this.userRole = this.authService.getUserRole() || 'Staff';
 
-    // If teacher, don't fetch these counts or trends
-    if (this.userRole === 'Teacher') {
+    // Only fetch these metrics if the user is an Admin, Super Admin, School Admin, or Principal
+    const adminRoles = ['Admin', 'Super Admin', 'School Admin', 'Principal'];
+    if (!adminRoles.includes(this.userRole)) {
       return;
     }
 
