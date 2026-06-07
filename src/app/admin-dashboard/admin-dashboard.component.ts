@@ -14,6 +14,7 @@ export class AdminDashboardComponent implements OnInit {
   trends: any[] = [];
   maxRevenue: number = 1000;
   userRole: string = 'Staff';
+  myChildren: any[] = [];
 
   // Mock Data
   metrics = [
@@ -34,6 +35,19 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.userRole = this.authService.getUserRole() || 'Staff';
+
+    // If Parent, fetch linked children
+    if (this.userRole === 'Parent') {
+      this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
+        next: (data) => {
+          this.myChildren = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Failed to fetch children', err);
+        }
+      });
+    }
 
     // Only fetch these metrics if the user is an Admin, Super Admin, School Admin, or Principal
     const adminRoles = ['Admin', 'Super Admin', 'School Admin', 'Principal'];

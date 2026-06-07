@@ -60,6 +60,58 @@
     </div>
   </div>
 
+  <!-- Parent's Linked Children Section -->
+  <div *ngIf="userRole === 'Parent'" class="mb-6">
+    <h3 class="text-lg font-bold text-slate-800 mb-4">My Children</h3>
+    
+    <div *ngIf="myChildren.length === 0" class="glass-card p-6 flex flex-col items-center justify-center text-center">
+      <div class="p-3 bg-red-100 text-red-500 rounded-full mb-3">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      </div>
+      <h4 class="text-lg font-bold text-slate-800">No student record linked</h4>
+      <p class="text-sm text-slate-500 max-w-md mt-1">We couldn't find any student records linked to your mobile number. Please contact the school administration to update your contact details.</p>
+    </div>
+
+    <div *ngIf="myChildren.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let child of myChildren" class="glass-card p-6 relative overflow-hidden group">
+        <div class="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-24 h-24 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21l9-5-9-5-9 5 9 5z"></path></svg>
+        </div>
+        
+        <div class="flex items-center space-x-4 mb-4">
+          <div class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
+            {{ child.firstName.charAt(0) }}{{ child.lastName ? child.lastName.charAt(0) : '' }}
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-slate-800">{{ child.firstName }} {{ child.lastName }}</h4>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mt-1">
+              Active Student
+            </span>
+          </div>
+        </div>
+
+        <div class="space-y-3 mt-6">
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Class & Section</span>
+            <span class="font-semibold text-slate-800">{{ child.currentClass }} - {{ child.section }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Admission No.</span>
+            <span class="font-semibold text-slate-800">{{ child.admissionNumber }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-500">Date of Birth</span>
+            <span class="font-semibold text-slate-800">{{ child.dateOfBirth | date:'mediumDate' }}</span>
+          </div>
+        </div>
+
+        <button class="w-full mt-6 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white rounded-lg text-sm font-medium transition-colors">
+          View Full Profile
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Charts & Activities Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     

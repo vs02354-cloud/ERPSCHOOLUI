@@ -20,7 +20,8 @@ export class RegisterComponent {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.email]], // Make it optional by removing Validators.required
+      mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       userType: ['Parent', Validators.required]
     });
@@ -34,7 +35,8 @@ export class RegisterComponent {
       const payload = {
         firstName: this.registerForm.value.firstName,
         lastName: this.registerForm.value.lastName,
-        email: this.registerForm.value.email,
+        email: this.registerForm.value.email || '',
+        mobileNumber: this.registerForm.value.mobileNumber,
         password: this.registerForm.value.password,
         userType: this.registerForm.value.userType
       };
