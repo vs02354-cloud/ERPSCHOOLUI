@@ -70,4 +70,8 @@ export class AssignmentService {
   getStudentAssignments(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/Student`);
   }
+
+  getParentAssignments(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/Parent`);
+  }
 }

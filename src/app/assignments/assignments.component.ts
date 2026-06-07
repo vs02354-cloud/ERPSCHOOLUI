@@ -50,51 +50,19 @@ export class AssignmentsComponent implements OnInit {
         }
       });
     } else if (this.userRole === 'Parent') {
-      // Mock data for Parent View
-      setTimeout(() => {
-        this.assignments = [
-          {
-            assignmentId: 101,
-            title: 'Algebra Variables Worksheet',
-            subject: 'Mathematics',
-            className: 'Class 8',
-            section: 'A',
-            assignedDate: '2026-06-05',
-            dueDate: '2026-06-10',
-            status: 'Pending',
-            childName: 'Vishendra Sharma',
-            maxMarks: 50
-          },
-          {
-            assignmentId: 102,
-            title: 'Solar System Essay',
-            subject: 'Science',
-            className: 'Class 8',
-            section: 'A',
-            assignedDate: '2026-06-02',
-            dueDate: '2026-06-06',
-            status: 'Submitted',
-            childName: 'Vishendra Sharma',
-            maxMarks: 20
-          },
-          {
-            assignmentId: 103,
-            title: 'Photosynthesis Diagram',
-            subject: 'Science',
-            className: 'Class 3',
-            section: 'B',
-            assignedDate: '2026-05-25',
-            dueDate: '2026-06-01',
-            status: 'Overdue',
-            childName: 'Moksh Sharma',
-            maxMarks: 25
-          }
-        ];
-        // Extract distinct children for filter dropdown
-        this.parentChildren = [...new Set(this.assignments.map(a => a.childName))];
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      }, 500); // Simulate network latency
+      this.assignmentService.getParentAssignments().subscribe({
+        next: (data) => {
+          this.assignments = data;
+          this.parentChildren = [...new Set(this.assignments.map(a => a.childName))];
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error loading parent assignments', err);
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
     } else {
       this.assignmentService.getAssignments().subscribe({
         next: (data) => {
