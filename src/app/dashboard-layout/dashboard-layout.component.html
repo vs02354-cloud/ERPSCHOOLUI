@@ -106,8 +106,8 @@
           Fee Master
         </a>
 
-        <!-- Fee Payments: Admin, Accountant, Principal -->
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Accountant' || userRole === 'Principal'" 
+        <!-- Fee Payments: Admin, Accountant, Principal, Parent -->
+        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Accountant' || userRole === 'Principal' || userRole === 'Parent'" 
            routerLink="/dashboard/fee-payments" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
           <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
           Fee Collection & Reports

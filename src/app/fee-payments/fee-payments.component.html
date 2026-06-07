@@ -15,7 +15,7 @@
     <button (click)="switchTab('dashboard')" [class.border-indigo-500]="activeTab === 'dashboard'" [class.text-indigo-600]="activeTab === 'dashboard'" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors hover:text-indigo-600 border-transparent text-slate-500">
       Dashboard & Reports
     </button>
-    <button (click)="switchTab('collect')" [class.border-indigo-500]="activeTab === 'collect'" [class.text-indigo-600]="activeTab === 'collect'" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors hover:text-indigo-600 border-transparent text-slate-500">
+    <button *ngIf="userRole !== 'Parent'" (click)="switchTab('collect')" [class.border-indigo-500]="activeTab === 'collect'" [class.text-indigo-600]="activeTab === 'collect'" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors hover:text-indigo-600 border-transparent text-slate-500">
       Collect Fee
     </button>
     <button (click)="switchTab('history')" [class.border-indigo-500]="activeTab === 'history'" [class.text-indigo-600]="activeTab === 'history'" class="px-6 py-3 border-b-2 font-medium text-sm transition-colors hover:text-indigo-600 border-transparent text-slate-500">
@@ -105,7 +105,7 @@
   </div>
 
   <!-- TAB 2: COLLECT FEE -->
-  <div *ngIf="activeTab === 'collect'" class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in print:hidden">
+  <div *ngIf="activeTab === 'collect' && userRole !== 'Parent'" class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in print:hidden">
     
     <!-- Left: Select Student & Details -->
     <div class="space-y-6">
@@ -224,7 +224,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button (click)="openReceipt(p)" class="text-indigo-600 hover:text-indigo-900 mr-4 transition-colors">View Receipt</button>
-                <button (click)="deletePayment(p.id!)" class="text-red-500 hover:text-red-700 transition-colors">Delete</button>
+                <button *ngIf="userRole !== 'Parent'" (click)="deletePayment(p.id!)" class="text-red-500 hover:text-red-700 transition-colors">Delete</button>
               </td>
             </tr>
           </tbody>

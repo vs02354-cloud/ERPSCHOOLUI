@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 interface Student {
   id: number;
@@ -61,7 +62,9 @@ export class FeePaymentsComponent implements OnInit {
 
   paymentModes = ['Cash', 'UPI', 'Debit/Credit Card', 'Net Banking', 'Cheque'];
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private cdr: ChangeDetectorRef) {
+  userRole: string = '';
+
+  constructor(private fb: FormBuilder, private http: HttpClient, private cdr: ChangeDetectorRef, private authService: AuthService) {
     this.collectForm = this.fb.group({
       studentId: ['', Validators.required],
       amountPaid: [0, [Validators.required, Validators.min(1)]],
@@ -71,9 +74,12 @@ export class FeePaymentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userRole = this.authService.getUserRole() || '';
     this.loadDashboardStats();
     this.loadPendingReport();
-    this.loadStudents();
+    if (this.userRole !== 'Parent') {
+      this.loadStudents();
+    }
   }
 
   switchTab(tab: 'dashboard' | 'collect' | 'history') {
@@ -92,7 +98,11 @@ export class FeePaymentsComponent implements OnInit {
   // --- Dashboard Data ---
 
   loadDashboardStats() {
-    this.http.get<any>('https://erpschoolapi.onrender.com/api/Fees/DashboardStats').subscribe({
+    const endpoint = this.userRole === 'Parent' 
+      ? 'https://erpschoolapi.onrender.com/api/Fees/Parent/DashboardStats'
+      : 'https://erpschoolapi.onrender.com/api/Fees/DashboardStats';
+      
+    this.http.get<any>(endpoint).subscribe({
       next: (data) => {
         this.dashboardStats = data;
         this.cdr.detectChanges();
@@ -103,7 +113,11 @@ export class FeePaymentsComponent implements OnInit {
 
   loadPendingReport() {
     this.isLoading = true;
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Fees/PendingReport').subscribe({
+    const endpoint = this.userRole === 'Parent' 
+      ? 'https://erpschoolapi.onrender.com/api/Fees/Parent/PendingReport'
+      : 'https://erpschoolapi.onrender.com/api/Fees/PendingReport';
+      
+    this.http.get<any[]>(endpoint).subscribe({
       next: (data) => {
         this.pendingReport = data;
         this.isLoading = false;
@@ -121,7 +135,11 @@ export class FeePaymentsComponent implements OnInit {
 
   loadPaymentHistory() {
     this.isLoading = true;
-    this.http.get<FeePayment[]>('https://erpschoolapi.onrender.com/api/Fees/Payment').subscribe({
+    const endpoint = this.userRole === 'Parent' 
+      ? 'https://erpschoolapi.onrender.com/api/Fees/Parent/Payment'
+      : 'https://erpschoolapi.onrender.com/api/Fees/Payment';
+      
+    this.http.get<FeePayment[]>(endpoint).subscribe({
       next: (data) => {
         this.allPayments = data;
         this.applyHistoryFilter();
