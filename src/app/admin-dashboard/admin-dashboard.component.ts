@@ -15,6 +15,25 @@ export class AdminDashboardComponent implements OnInit {
   maxRevenue: number = 1000;
   userRole: string = 'Staff';
   myChildren: any[] = [];
+  userName: string = 'Parent';
+
+  // Parent Mock Data
+  parentOverview = {
+    activeAssignments: 3,
+    assignmentsDueThisWeek: 2,
+    todayAttendance: 'Present',
+    checkInTime: '08:05 AM',
+    weeklyAttendance: 95,
+    monthlyAttendance: 92,
+    unreadNotifications: 4
+  };
+
+  parentNotifications = [
+    { title: 'Homework submission deadline extended.', time: '2 hours ago', read: false },
+    { title: 'Parent-Teacher Meeting on 25 Feb.', time: '1 day ago', read: false },
+    { title: 'School holiday announced for Friday.', time: '2 days ago', read: true },
+    { title: 'Fee payment reminder.', time: '1 week ago', read: true }
+  ];
 
   // Mock Data
   metrics = [
@@ -38,9 +57,32 @@ export class AdminDashboardComponent implements OnInit {
 
     // If Parent, fetch linked children
     if (this.userRole === 'Parent') {
+      this.userName = this.authService.getUserName() || 'Parent';
+      
       this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
         next: (data) => {
-          this.myChildren = data;
+          // Map real data to include mock stats for demonstration
+          this.myChildren = data.map((child, index) => {
+            if (index === 0) {
+              return {
+                ...child,
+                activeAssignments: 2,
+                todayAttendance: 'Present',
+                weeklyAttendance: 100,
+                monthlyAttendance: 94,
+                lastNotification: 'Science Project Due Tomorrow'
+              };
+            } else {
+              return {
+                ...child,
+                activeAssignments: 1,
+                todayAttendance: 'Present',
+                weeklyAttendance: 90,
+                monthlyAttendance: 91,
+                lastNotification: 'Parent-Teacher Meeting on Friday'
+              };
+            }
+          });
           this.cdr.detectChanges();
         },
         error: (err) => {

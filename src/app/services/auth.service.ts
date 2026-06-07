@@ -60,4 +60,22 @@ export class AuthService {
     }
     return null;
   }
+
+  getUserName(): string | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const firstName = payload['FirstName'] || '';
+        const lastName = payload['LastName'] || '';
+        if (firstName || lastName) {
+          return `${firstName} ${lastName}`.trim();
+        }
+        return payload['unique_name'] || null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
 }
