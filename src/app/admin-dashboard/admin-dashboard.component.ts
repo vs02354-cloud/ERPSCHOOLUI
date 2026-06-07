@@ -71,8 +71,8 @@ export class AdminDashboardComponent implements OnInit {
           // Initialize children with mock attendance/notifications (assignments will be real)
           this.myChildren = childrenData.map(child => ({
             ...child,
-            activeAssignments: 0, // Will be updated by assignment fetch
-            todayAttendance: 'Present',
+            activeAssignments: 0, 
+            todayAttendance: 'Not Marked', // Will be updated by attendance fetch
             weeklyAttendance: 95,
             monthlyAttendance: 92,
             lastNotification: 'No recent notifications'
@@ -105,6 +105,46 @@ export class AdminDashboardComponent implements OnInit {
             },
             error: (err) => {
               console.error('Failed to fetch parent assignments for dashboard', err);
+            }
+          });
+
+          // Fetch real attendance
+          this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Attendance/Parent/Today').subscribe({
+            next: (attendances) => {
+              let allPresent = true;
+              let anyAbsent = false;
+              let allNotMarked = true;
+
+              this.myChildren.forEach(child => {
+                const record = attendances.find(a => a.studentId === child.id);
+                if (record) {
+                  child.todayAttendance = record.status;
+                  if (record.status !== 'Not Marked') {
+                    allNotMarked = false;
+                  }
+                  if (record.status === 'Absent') {
+                    allPresent = false;
+                    anyAbsent = true;
+                  } else if (record.status !== 'Present' && record.status !== 'Late') {
+                    allPresent = false;
+                  }
+                }
+              });
+
+              if (allNotMarked) {
+                this.parentOverview.todayAttendance = 'Not Marked';
+              } else if (anyAbsent) {
+                this.parentOverview.todayAttendance = 'Action Required';
+              } else if (allPresent) {
+                this.parentOverview.todayAttendance = 'Present';
+              } else {
+                this.parentOverview.todayAttendance = 'Mixed';
+              }
+
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              console.error('Failed to fetch parent attendance for dashboard', err);
             }
           });
 
