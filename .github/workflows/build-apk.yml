@@ -19,33 +19,37 @@ jobs:
         node-version: '20'
         cache: 'npm'
 
-    - name: Install npm dependencies
-      run: npm install
-
-    - name: Build Angular App
-      run: npm run build
-
-    - name: Sync Capacitor
-      run: npx cap sync
-
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '21'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-
-    - name: Grant Execute Permission for Gradle
-      run: chmod +x ./android/gradlew
-
-    - name: Build APK with Gradle
-      run: ./android/gradlew assembleDebug
-      working-directory: ./android
-
+    - name: Run Build and Capture Logs
+      run: |
+        echo "Starting build..." > build-log.txt
+        echo "Node Version:" >> build-log.txt
+        node -v >> build-log.txt 2>&1
+        echo "NPM Install:" >> build-log.txt
+        npm install >> build-log.txt 2>&1 || echo "NPM Install Failed" >> build-log.txt
+        echo "Angular Build:" >> build-log.txt
+        npm run build >> build-log.txt 2>&1 || echo "Angular Build Failed" >> build-log.txt
+        echo "Capacitor Sync:" >> build-log.txt
+        npx cap sync >> build-log.txt 2>&1 || echo "Cap Sync Failed" >> build-log.txt
+        echo "Gradle Build:" >> build-log.txt
+        chmod +x ./android/gradlew >> build-log.txt 2>&1
+        cd android && ./gradlew assembleDebug >> ../build-log.txt 2>&1 || echo "Gradle Build Failed" >> ../build-log.txt
+        
+    - name: Upload Debug Log
+      uses: actions/upload-artifact@v4
+      with:
+        name: Build-Debug-Log
+        path: build-log.txt
+        retention-days: 1
+        
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
+      if: success()
       with:
         name: SchoolERP-Android-APK
         path: android/app/build/outputs/apk/debug/app-debug.apk
