@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { AssignmentService } from '../services/assignment.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -51,7 +52,12 @@ export class AdminDashboardComponent implements OnInit {
     { text: 'Library book "Physics 101" returned late.', time: '5 hours ago' }
   ];
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient, 
+    private cdr: ChangeDetectorRef, 
+    private authService: AuthService,
+    private assignmentService: AssignmentService
+  ) {}
 
   ngOnInit() {
     this.userRole = this.authService.getUserRole() || 'Staff';
@@ -61,29 +67,47 @@ export class AdminDashboardComponent implements OnInit {
       this.userName = this.authService.getUserName() || 'Parent';
       
       this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
-        next: (data) => {
-          // Map real data to include mock stats for demonstration
-          this.myChildren = data.map((child, index) => {
-            if (index === 0) {
-              return {
-                ...child,
-                activeAssignments: 2,
-                todayAttendance: 'Present',
-                weeklyAttendance: 100,
-                monthlyAttendance: 94,
-                lastNotification: 'Science Project Due Tomorrow'
-              };
-            } else {
-              return {
-                ...child,
-                activeAssignments: 1,
-                todayAttendance: 'Present',
-                weeklyAttendance: 90,
-                monthlyAttendance: 91,
-                lastNotification: 'Parent-Teacher Meeting on Friday'
-              };
+        next: (childrenData) => {
+          // Initialize children with mock attendance/notifications (assignments will be real)
+          this.myChildren = childrenData.map(child => ({
+            ...child,
+            activeAssignments: 0, // Will be updated by assignment fetch
+            todayAttendance: 'Present',
+            weeklyAttendance: 95,
+            monthlyAttendance: 92,
+            lastNotification: 'No recent notifications'
+          }));
+
+          // Now fetch real assignments
+          this.assignmentService.getParentAssignments().subscribe({
+            next: (assignments) => {
+              // Calculate total active across all children
+              const activeStatuses = ['Pending', 'Overdue'];
+              const activeAssns = assignments.filter((a: any) => activeStatuses.includes(a.status));
+              
+              this.parentOverview.activeAssignments = activeAssns.length;
+              
+              // We could also calculate due this week if needed, but for now we'll leave it as a mock number or calculate it:
+              const now = new Date();
+              const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+              this.parentOverview.assignmentsDueThisWeek = activeAssns.filter((a: any) => {
+                const due = new Date(a.dueDate);
+                return due >= now && due <= nextWeek;
+              }).length;
+
+              // Assign counts to individual children
+              this.myChildren.forEach(child => {
+                const childFullName = `${child.firstName} ${child.lastName}`.trim();
+                child.activeAssignments = activeAssns.filter((a: any) => a.childName === childFullName).length;
+              });
+
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              console.error('Failed to fetch parent assignments for dashboard', err);
             }
           });
+
           this.cdr.detectChanges();
         },
         error: (err) => {
