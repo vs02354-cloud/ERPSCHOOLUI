@@ -1,4 +1,4 @@
-package com.schoolerp.app;
+package free.erpschool.com;
 
 import com.getcapacitor.BridgeActivity;
 
