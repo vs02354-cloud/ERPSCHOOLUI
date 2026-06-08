@@ -5,8 +5,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-20 items-center">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">E</div>
-          <span class="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-purple-700">EduSchool</span>
+          <img src="assets/logo.png" alt="SchoolERP Logo" class="h-12 object-contain">
         </div>
         <div class="hidden md:flex space-x-8 items-center">
           <a routerLink="/about" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">About Us</a>
@@ -15,8 +14,9 @@
           <a routerLink="/contact" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Contact</a>
           <a routerLink="/login" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">ERP Login</a>
         </div>
-        <!-- Mobile menu button -->
-        <div class="md:hidden flex items-center">
+        <!-- Mobile menu button & Login -->
+        <div class="md:hidden flex items-center gap-4">
+          <a routerLink="/login" class="px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-md text-sm">Login</a>
           <button (click)="isMobileMenuOpen = !isMobileMenuOpen" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
