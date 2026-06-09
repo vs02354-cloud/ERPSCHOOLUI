@@ -24,6 +24,10 @@ import { AssignmentDetailsComponent } from './assignments/assignment-details.com
 import { AboutUs } from './about-us/about-us';
 import { Contact } from './contact/contact';
 
+import { Leave } from './leave/leave';
+import { ParentProfile } from './parent-profile/parent-profile';
+import { Notifications } from './notifications/notifications';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
@@ -48,7 +52,10 @@ export const routes: Routes = [
         { path: 'inquiries', component: InquiryDashboard },
         { path: 'assignments', component: AssignmentsComponent },
         { path: 'assignments/create', component: CreateAssignmentComponent },
-        { path: 'assignments/:id', component: AssignmentDetailsComponent }
+        { path: 'assignments/:id', component: AssignmentDetailsComponent },
+        { path: 'leave', component: Leave },
+        { path: 'profile', component: ParentProfile },
+        { path: 'notifications', component: Notifications }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }
