@@ -18,6 +18,7 @@ export class Leave implements OnInit {
   myStudents: any[] = [];
   userRole: string | null = '';
   isSubmitting = false;
+  isLoadingHistory = true;
   successMessage = '';
   errorMessage = '';
 
@@ -57,12 +58,15 @@ export class Leave implements OnInit {
   }
 
   fetchLeaves() {
+    this.isLoadingHistory = true;
     this.leaveService.getMyLeaves().subscribe({
       next: (data) => {
         this.myLeaves = data;
+        this.isLoadingHistory = false;
       },
       error: (err) => {
         console.error('Failed to load leaves', err);
+        this.isLoadingHistory = false;
       }
     });
   }
@@ -91,8 +95,19 @@ export class Leave implements OnInit {
         this.successMessage = 'Leave request submitted successfully!';
         this.leaveForm.reset();
         
-        // Refetch leaves to update the list
-        this.fetchLeaves();
+        // Attach student details for instant UI display
+        if (leaveRequest.studentId) {
+          const selectedStudent = this.myStudents.find(s => s.id === leaveRequest.studentId);
+          if (selectedStudent) {
+            res.student = selectedStudent;
+          }
+        }
+        
+        // Prepend to array for instant display
+        this.myLeaves.unshift(res);
+        
+        // Optionally fetch in background to ensure sync
+        this.leaveService.getMyLeaves().subscribe(data => this.myLeaves = data);
         
         setTimeout(() => this.successMessage = '', 3000);
       },
