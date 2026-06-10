@@ -17,6 +17,7 @@ export class DashboardLayoutComponent implements OnInit {
   showProfileModal: boolean = false;
   userProfile: any = null;
   isMobileMenuOpen: boolean = false;
+  showLogoutModal: boolean = false;
   
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -68,7 +69,16 @@ export class DashboardLayoutComponent implements OnInit {
     this.showProfileModal = false;
   }
 
+  confirmLogout() {
+    this.showLogoutModal = true;
+  }
+
+  cancelLogout() {
+    this.showLogoutModal = false;
+  }
+
   logout() {
+    this.showLogoutModal = false;
     localStorage.removeItem('jwt_token');
     this.router.navigate(['/login']);
   }
