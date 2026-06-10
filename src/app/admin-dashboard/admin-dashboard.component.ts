@@ -75,7 +75,21 @@ export class AdminDashboardComponent implements OnInit {
             todayAttendance: 'Not Marked', // Will be updated by attendance fetch
             weeklyAttendance: 95,
             monthlyAttendance: 92,
-            lastNotification: 'No recent notifications'
+            lastNotification: 'No recent notifications',
+            showDetails: false,
+            weeklyDetails: [
+              { date: 'Mon', status: 'Present' },
+              { date: 'Tue', status: 'Present' },
+              { date: 'Wed', status: 'Absent' },
+              { date: 'Thu', status: 'Present' },
+              { date: 'Fri', status: 'Present' }
+            ],
+            monthlyDetails: [
+              { week: 'Week 1', present: 5, total: 5 },
+              { week: 'Week 2', present: 4, total: 5 },
+              { week: 'Week 3', present: 5, total: 5 },
+              { week: 'Week 4', present: 3, total: 4 }
+            ]
           }));
 
           // Now fetch real assignments

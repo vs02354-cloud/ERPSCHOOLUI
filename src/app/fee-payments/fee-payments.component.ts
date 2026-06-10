@@ -33,7 +33,7 @@ interface FeePayment {
   styleUrls: []
 })
 export class FeePaymentsComponent implements OnInit {
-  activeTab: 'dashboard' | 'collect' | 'history' = 'dashboard';
+  activeTab: 'dashboard' | 'collect' | 'history' | 'pay-online' = 'dashboard';
   
   // Dashboard & Reports
   dashboardStats: any = null;
@@ -44,7 +44,7 @@ export class FeePaymentsComponent implements OnInit {
   filteredPayments: FeePayment[] = [];
   searchHistoryTerm = '';
 
-  // Collect Fee
+  // Collect Fee & Pay Online
   collectForm: FormGroup;
   students: Student[] = [];
   selectedStudent: Student | null = null;
@@ -64,6 +64,9 @@ export class FeePaymentsComponent implements OnInit {
 
   userRole: string = '';
 
+  // Parent Specific
+  parentChildren: any[] = [];
+
   constructor(private fb: FormBuilder, private http: HttpClient, private cdr: ChangeDetectorRef, private authService: AuthService) {
     this.collectForm = this.fb.group({
       studentId: ['', Validators.required],
@@ -75,14 +78,18 @@ export class FeePaymentsComponent implements OnInit {
 
   ngOnInit() {
     this.userRole = this.authService.getUserRole() || '';
-    this.loadDashboardStats();
-    this.loadPendingReport();
-    if (this.userRole !== 'Parent') {
+    
+    if (this.userRole === 'Parent') {
+      this.activeTab = 'pay-online';
+      this.loadParentChildren();
+    } else {
+      this.loadDashboardStats();
+      this.loadPendingReport();
       this.loadStudents();
     }
   }
 
-  switchTab(tab: 'dashboard' | 'collect' | 'history') {
+  switchTab(tab: 'dashboard' | 'collect' | 'history' | 'pay-online') {
     this.activeTab = tab;
     this.errorMessage = '';
     this.successMessage = '';
@@ -93,6 +100,84 @@ export class FeePaymentsComponent implements OnInit {
     } else if (tab === 'history') {
       this.loadPaymentHistory();
     }
+  }
+
+  // --- Parent Pay Online Logic ---
+  loadParentChildren() {
+    this.isLoading = true;
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
+      next: (data) => {
+        this.parentChildren = data;
+        if (data.length > 0) {
+          this.onParentStudentSelect(data[0].id);
+        }
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error(err);
+      }
+    });
+  }
+
+  onParentStudentSelect(id: number) {
+    this.selectedStudent = this.parentChildren.find(s => s.id === id) || null;
+    this.pendingFeeDetails = null;
+    this.collectForm.patchValue({ studentId: id, amountPaid: 0, paymentMode: 'UPI', remarks: 'Online Payment' });
+    this.errorMessage = '';
+
+    if (this.selectedStudent) {
+      this.http.get<any>(`https://erpschoolapi.onrender.com/api/Fees/Pending/Student/${id}`).subscribe({
+        next: (data) => {
+          this.pendingFeeDetails = data;
+          if (data.pendingFee === 0) {
+            this.errorMessage = 'No pending fees for this student.';
+          } else {
+            this.collectForm.patchValue({ amountPaid: data.pendingFee });
+          }
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage = 'Failed to load pending fee details.';
+          this.cdr.detectChanges();
+        }
+      });
+    }
+  }
+
+  onPayOnlineSubmit() {
+    if (this.collectForm.invalid || !this.selectedStudent) {
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.cdr.detectChanges();
+
+    // Simulated payment gateway delay
+    setTimeout(() => {
+      const payload = this.collectForm.value;
+      payload.receiptNumber = 'TBD';
+      
+      this.http.post<FeePayment>('https://erpschoolapi.onrender.com/api/Fees/Payment', payload).subscribe({
+        next: (response) => {
+          this.successMessage = 'Payment successful! Receipt generated.';
+          this.isSubmitting = false;
+          response.student = this.selectedStudent!;
+          this.currentReceipt = response;
+          this.showReceiptModal = true; 
+          this.onParentStudentSelect(this.selectedStudent!.id); // reload balance
+        },
+        error: (err) => {
+          this.errorMessage = err.error?.Message || 'Payment failed.';
+          this.isSubmitting = false;
+          this.cdr.detectChanges();
+        }
+      });
+    }, 1500);
   }
 
   // --- Dashboard Data ---
