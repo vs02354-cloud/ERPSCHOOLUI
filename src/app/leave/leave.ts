@@ -1,10 +1,106 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { LeaveService, LeaveRequest } from '../services/leave.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-leave',
-  imports: [RouterModule],
+  standalone: true,
+  imports: [RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './leave.html',
   styleUrl: './leave.css',
 })
-export class Leave {}
+export class Leave implements OnInit {
+  leaveForm!: FormGroup;
+  myLeaves: LeaveRequest[] = [];
+  myStudents: any[] = [];
+  userRole: string | null = '';
+  isSubmitting = false;
+  successMessage = '';
+  errorMessage = '';
+
+  constructor(
+    private fb: FormBuilder,
+    private leaveService: LeaveService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.userRole = this.authService.getUserRole();
+    
+    this.leaveForm = this.fb.group({
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      reason: ['', Validators.required],
+      studentId: [null]
+    });
+
+    if (this.userRole === 'Parent') {
+      this.leaveForm.get('studentId')?.setValidators([Validators.required]);
+      this.fetchStudents();
+    }
+
+    this.fetchLeaves();
+  }
+
+  fetchStudents() {
+    this.leaveService.getMyStudents().subscribe({
+      next: (data) => {
+        this.myStudents = data;
+      },
+      error: (err) => {
+        console.error('Failed to load students', err);
+      }
+    });
+  }
+
+  fetchLeaves() {
+    this.leaveService.getMyLeaves().subscribe({
+      next: (data) => {
+        this.myLeaves = data;
+      },
+      error: (err) => {
+        console.error('Failed to load leaves', err);
+      }
+    });
+  }
+
+  onSubmit() {
+    if (this.leaveForm.invalid) {
+      this.leaveForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    const formValue = this.leaveForm.value;
+    const leaveRequest: LeaveRequest = {
+      startDate: formValue.startDate,
+      endDate: formValue.endDate,
+      reason: formValue.reason,
+      studentId: formValue.studentId
+    };
+
+    this.leaveService.applyLeave(leaveRequest).subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        this.successMessage = 'Leave request submitted successfully!';
+        this.leaveForm.reset();
+        
+        // Refetch leaves to update the list
+        this.fetchLeaves();
+        
+        setTimeout(() => this.successMessage = '', 3000);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.errorMessage = 'Failed to submit leave request. Please try again.';
+        console.error(err);
+      }
+    });
+  }
+}
