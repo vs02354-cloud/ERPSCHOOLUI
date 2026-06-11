@@ -50,6 +50,12 @@ export class Leave implements OnInit {
     this.leaveService.getMyStudents().subscribe({
       next: (data) => {
         this.myStudents = data;
+        // Auto-select if there is only one child
+        if (this.myStudents.length === 1) {
+          this.leaveForm.get('studentId')?.setValue(this.myStudents[0].id);
+        } else {
+          this.leaveForm.get('studentId')?.setValue(null);
+        }
       },
       error: (err) => {
         console.error('Failed to load students', err);
