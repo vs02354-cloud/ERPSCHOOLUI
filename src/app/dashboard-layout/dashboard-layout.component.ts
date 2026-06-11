@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 
 import { HttpClient } from '@angular/common/http';
+import { NotificationService, Notification } from '../services/notification.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -18,8 +19,15 @@ export class DashboardLayoutComponent implements OnInit {
   userProfile: any = null;
   isMobileMenuOpen: boolean = false;
   showLogoutModal: boolean = false;
+  showNotificationDropdown: boolean = false;
+  notifications: Notification[] = [];
+  unreadCount: number = 0;
   
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient, private notificationService: NotificationService) {
+    this.router.events.subscribe(() => {
+      this.showNotificationDropdown = false;
+    });
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -52,7 +60,38 @@ export class DashboardLayoutComponent implements OnInit {
       } catch (e) {
         console.error('Error decoding token', e);
       }
+      
+      this.fetchNotifications();
     }
+  }
+
+  fetchNotifications() {
+    this.notificationService.getMyNotifications().subscribe({
+      next: (data) => {
+        this.notifications = data;
+        this.unreadCount = this.notifications.filter(n => !n.isRead).length;
+      },
+      error: (err) => console.error('Failed to fetch notifications', err)
+    });
+  }
+
+  toggleNotifications() {
+    this.showNotificationDropdown = !this.showNotificationDropdown;
+  }
+
+  markNotificationAsRead(notif: Notification) {
+    if (notif.isRead) return;
+    this.notificationService.markAsRead(notif.id).subscribe(() => {
+      notif.isRead = true;
+      this.unreadCount = Math.max(0, this.unreadCount - 1);
+    });
+  }
+
+  markAllNotificationsAsRead() {
+    this.notificationService.markAllAsRead().subscribe(() => {
+      this.notifications.forEach(n => n.isRead = true);
+      this.unreadCount = 0;
+    });
   }
 
   openProfile() {

@@ -27,6 +27,7 @@ import { Contact } from './contact/contact';
 import { Leave } from './leave/leave';
 import { ParentProfile } from './parent-profile/parent-profile';
 import { Notifications } from './notifications/notifications';
+import { SendNotificationComponent } from './send-notification/send-notification.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -55,7 +56,8 @@ export const routes: Routes = [
         { path: 'assignments/:id', component: AssignmentDetailsComponent },
         { path: 'leave', component: Leave },
         { path: 'profile', component: ParentProfile },
-        { path: 'notifications', component: Notifications }
+        { path: 'notifications', component: Notifications },
+        { path: 'send-notification', component: SendNotificationComponent }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }
