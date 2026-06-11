@@ -144,7 +144,8 @@
                       'bg-green-100 text-green-800 border-green-200': rec.status === 'Present',
                       'bg-red-100 text-red-800 border-red-200': rec.status === 'Absent',
                       'bg-yellow-100 text-yellow-800 border-yellow-200': rec.status === 'Late',
-                      'bg-slate-100 text-slate-600 border-slate-200': rec.status === 'Not Marked'
+                      'bg-slate-100 text-slate-600 border-slate-200': rec.status === 'Not Marked',
+                      'bg-purple-100 text-purple-800 border-purple-200': rec.status === 'On Leave'
                     }">
                 {{rec.status}}
               </span>
@@ -205,5 +206,6 @@
     .bg-red-100 { background-color: #fee2e2 !important; color: #991b1b !important; }
     .bg-yellow-100 { background-color: #fef9c3 !important; color: #854d0e !important; }
     .bg-slate-100 { background-color: #f1f5f9 !important; color: #475569 !important; }
+    .bg-purple-100 { background-color: #f3e8ff !important; color: #6b21a8 !important; }
   }
 </style>
