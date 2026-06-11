@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NotificationService, Notification } from '../services/notification.service';
@@ -13,7 +13,10 @@ export class Notifications implements OnInit {
   notifications: Notification[] = [];
   isLoading: boolean = true;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.fetchNotifications();
@@ -25,10 +28,12 @@ export class Notifications implements OnInit {
       next: (data) => {
         this.notifications = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load notifications', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -37,12 +42,14 @@ export class Notifications implements OnInit {
     if (notif.isRead) return;
     this.notificationService.markAsRead(notif.id).subscribe(() => {
       notif.isRead = true;
+      this.cdr.detectChanges();
     });
   }
 
   markAllAsRead() {
     this.notificationService.markAllAsRead().subscribe(() => {
       this.notifications.forEach(n => n.isRead = true);
+      this.cdr.detectChanges();
     });
   }
 }
