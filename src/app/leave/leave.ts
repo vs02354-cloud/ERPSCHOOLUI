@@ -124,4 +124,29 @@ export class Leave implements OnInit {
       }
     });
   }
+
+  isUpcoming(startDate: string): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const start = new Date(startDate);
+    return start >= today;
+  }
+
+  cancelLeave(leave: LeaveRequest) {
+    if (!leave.id) return;
+    
+    if (confirm('Are you sure you want to cancel this leave request?')) {
+      this.leaveService.cancelLeave(leave.id).subscribe({
+        next: () => {
+          leave.status = 'cancelled';
+          this.successMessage = 'Leave request cancelled successfully.';
+          setTimeout(() => this.successMessage = '', 3000);
+        },
+        error: (err) => {
+          this.errorMessage = err.error || 'Failed to cancel leave request.';
+          setTimeout(() => this.errorMessage = '', 3000);
+        }
+      });
+    }
+  }
 }

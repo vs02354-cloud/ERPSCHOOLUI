@@ -34,4 +34,8 @@ export class LeaveService {
   getMyStudents(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/my-students`);
   }
+
+  cancelLeave(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/cancel`, {});
+  }
 }
