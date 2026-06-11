@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotificationService } from '../services/notification.service';
@@ -19,7 +19,10 @@ export class SendNotificationComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.fetchUsers();
@@ -31,6 +34,7 @@ export class SendNotificationComponent implements OnInit {
     this.notificationService.getUsersByRole(this.targetRole).subscribe({
       next: (data) => {
         this.users = data;
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Failed to fetch users', err)
     });
@@ -83,12 +87,20 @@ export class SendNotificationComponent implements OnInit {
         this.title = '';
         this.message = '';
         this.selectedUsers.clear();
-        setTimeout(() => this.successMessage = '', 3000);
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.successMessage = '';
+          this.cdr.detectChanges();
+        }, 3000);
       },
       error: (err) => {
         this.isSubmitting = false;
         this.errorMessage = 'Failed to send notification.';
-        setTimeout(() => this.errorMessage = '', 3000);
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.errorMessage = '';
+          this.cdr.detectChanges();
+        }, 3000);
       }
     });
   }
