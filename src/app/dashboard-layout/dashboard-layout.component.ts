@@ -22,6 +22,7 @@ export class DashboardLayoutComponent implements OnInit {
   showNotificationDropdown: boolean = false;
   notifications: Notification[] = [];
   unreadCount: number = 0;
+  expandedMenu: string = '';
   
   constructor(private router: Router, private http: HttpClient, private notificationService: NotificationService) {
     this.router.events.subscribe(() => {
@@ -37,6 +38,9 @@ export class DashboardLayoutComponent implements OnInit {
     this.isMobileMenuOpen = false;
   }
 
+  toggleMenu(menu: string) {
+    this.expandedMenu = this.expandedMenu === menu ? '' : menu;
+  }
 
   ngOnInit() {
     const token = localStorage.getItem('jwt_token');

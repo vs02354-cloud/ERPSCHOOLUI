@@ -90,94 +90,172 @@
         </button>
       </div>
 
-      <nav class="flex-1 px-3 py-2 lg:py-4 space-y-2 overflow-y-auto">
+      <nav class="flex-1 px-3 py-2 lg:py-4 space-y-1 overflow-y-auto">
         <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-2 mt-2 lg:mt-4">Menu</div>
         
-        <a routerLink="/dashboard" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" [routerLinkActiveOptions]="{exact: true}" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
+        <!-- Dashboard -->
+        <a routerLink="/dashboard" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" [routerLinkActiveOptions]="{exact: true}" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all mb-1">
           <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-          Dashboard
+          Dashboard Overview
         </a>
 
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" 
-           routerLink="/dashboard/employees" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-          Employees
-        </a>
+        <!-- 1. Student -->
+        <div *ngIf="userRole !== 'Parent'" class="mb-1">
+          <button (click)="toggleMenu('student')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              1. Student
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'student'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'student'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a routerLink="/dashboard/admission" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Student Admission</a>
+            <a routerLink="/dashboard/students" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Student List</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Student'" routerLink="/dashboard/assignments" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Assignments</a>
+          </div>
+        </div>
 
-        <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/students" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-          Students
-        </a>
+        <!-- 2. Fees -->
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Accountant' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Parent'" class="mb-1">
+          <button (click)="toggleMenu('fees')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              2. Fees
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'fees'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'fees'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/fee-structure" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Fees Master</a>
+            <a routerLink="/dashboard/fee-payments" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Fees Collection</a>
+            <a routerLink="/dashboard/fee-payments" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Fee Reports</a>
+          </div>
+        </div>
 
-        <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/admission" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-          Admissions
-        </a>
+        <!-- 3. Attendance -->
+        <div *ngIf="userRole !== 'Parent'" class="mb-1">
+          <button (click)="toggleMenu('attendance')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+              3. Attendance
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'attendance'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'attendance'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a routerLink="/dashboard/attendance" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Mark Attendance</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/attendance-report" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Attendance Reports</a>
+          </div>
+        </div>
 
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Operator'" routerLink="/dashboard/inquiries" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          Inquiries
-        </a>
+        <!-- 4. Transfer Certificate -->
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" class="mb-1">
+          <button (click)="toggleMenu('tc')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+              4. Transfer Certificate
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'tc'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'tc'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a routerLink="/dashboard/tc" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Transfer Certificate</a>
+            <a routerLink="/dashboard/tc" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Transfer Reports</a>
+          </div>
+        </div>
 
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Student'" routerLink="/dashboard/assignments" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-          Assignments
-        </a>
+        <!-- 5. Leave Management -->
+        <div class="mb-1">
+          <button (click)="toggleMenu('leave')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+              5. Leave Management
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'leave'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'leave'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a routerLink="/dashboard/leave" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Leave Application</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/leave" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Leave Reports</a>
+          </div>
+        </div>
 
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/tc" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-          Transfer Certificate
-        </a>
+        <!-- 6. Inquiries -->
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Operator'" class="mb-1">
+          <button (click)="toggleMenu('inquiries')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              6. Inquiries
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'inquiries'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'inquiries'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a routerLink="/dashboard/inquiries" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Inquiry Management</a>
+            <a routerLink="/dashboard/inquiries" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Inquiry Reports</a>
+          </div>
+        </div>
 
-        <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/attendance" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" [routerLinkActiveOptions]="{exact: true}" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-          Mark Attendance
-        </a>
+        <!-- 7. Employees -->
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" class="mb-1">
+          <button (click)="toggleMenu('employees')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+              7. Employees
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'employees'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'employees'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a routerLink="/dashboard/employees" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Employee List</a>
+            <a routerLink="/dashboard/employees" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Employee Management</a>
+          </div>
+        </div>
 
-        <!-- Leave Application: Parent, Student, Employee -->
-        <a routerLink="/dashboard/leave" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-          Leave Application
-        </a>
+        <!-- 8. Commission Management -->
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin'" class="mb-1">
+          <button (click)="toggleMenu('commissions')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2"></path></svg>
+              8. Commissions
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'commissions'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'commissions'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a routerLink="/dashboard/commissions" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Commission Setup</a>
+            <a routerLink="/dashboard/commissions" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Commission Reports</a>
+          </div>
+        </div>
 
-        <!-- Attendance Report: Show for Admin, Principal, Teacher -->
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher'" 
-           routerLink="/dashboard/attendance-report" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-          Attendance Report
-        </a>
-        
-        <!-- Fees: Show for Admin, Accountant, Principal, Teacher -->
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Accountant' || userRole === 'Principal' || userRole === 'Teacher'" 
-           routerLink="/dashboard/fee-structure" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          Fee Master
-        </a>
+        <!-- 9. Notifications -->
+        <div class="mb-1">
+          <button (click)="toggleMenu('notifications')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+              9. Notifications
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'notifications'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'notifications'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/broadcast" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Broadcast Messages</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/send-notification" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Send Notifications</a>
+            <a routerLink="/dashboard/notifications" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Notification History</a>
+          </div>
+        </div>
 
-        <!-- Fee Payments: Admin, Accountant, Principal, Parent -->
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Accountant' || userRole === 'Principal' || userRole === 'Parent'" 
-           routerLink="/dashboard/fee-payments" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-          Fee Collection & Reports
-        </a>
+        <!-- 10. Reports -->
+        <div class="mb-1">
+          <button (click)="toggleMenu('reports')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              10. Reports
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'reports'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'reports'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/students" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Student Reports</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Accountant' || userRole === 'Principal' || userRole === 'Parent'" routerLink="/dashboard/fee-payments" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Fee Reports</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/attendance-report" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Attendance Reports</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/tc" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Transfer Reports</a>
+            <a routerLink="/dashboard/leave" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Leave Reports</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin'" routerLink="/dashboard/commissions" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Commission Reports</a>
+          </div>
+        </div>
 
-        <!-- Commission Management: Admin Only -->
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin'" 
-           routerLink="/dashboard/commissions" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2"></path></svg>
-          Commission Mgt
-        </a>
-
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/broadcast" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
-          Broadcast Message
-        </a>
-
-        <!-- Targeted Notifications: Admin Only -->
-        <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/send-notification" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all">
-          <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-          Send Notification
-        </a>
       </nav>
     </aside>
 
