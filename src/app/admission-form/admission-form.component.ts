@@ -21,6 +21,8 @@ export class AdmissionFormComponent implements OnInit {
   pageTitle = 'New Student Admission';
   pageDescription = 'Fill out the information below for the admission process.';
   submitButtonText = 'Submit Admission';
+  
+  teachersList: any[] = [];
 
   constructor(
     private fb: FormBuilder, 
@@ -46,6 +48,7 @@ export class AdmissionFormComponent implements OnInit {
       section: ['A'],
       previousSchool: [''],
       transportRequired: [false],
+      referredByEmployeeId: [null],
       admissionNumber: ['PENDING'],
       admissionDate: [new Date().toISOString()] // needed for updates to not nullify it
     });
@@ -62,6 +65,17 @@ export class AdmissionFormComponent implements OnInit {
         this.submitButtonText = 'Update Student';
         this.loadStudentDetails(this.studentId);
       }
+    });
+    this.loadTeachers();
+  }
+
+  loadTeachers() {
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/HR/Teachers').subscribe({
+      next: (data) => {
+        this.teachersList = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Failed to load teachers', err)
     });
   }
 

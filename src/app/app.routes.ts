@@ -28,6 +28,7 @@ import { Leave } from './leave/leave';
 import { ParentProfile } from './parent-profile/parent-profile';
 import { Notifications } from './notifications/notifications';
 import { SendNotificationComponent } from './send-notification/send-notification.component';
+import { CommissionManagementComponent } from './commission-management/commission-management';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -57,7 +58,8 @@ export const routes: Routes = [
         { path: 'leave', component: Leave },
         { path: 'profile', component: ParentProfile },
         { path: 'notifications', component: Notifications },
-        { path: 'send-notification', component: SendNotificationComponent }
+        { path: 'send-notification', component: SendNotificationComponent },
+        { path: 'commissions', component: CommissionManagementComponent }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }

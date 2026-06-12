@@ -73,7 +73,21 @@ export class FeePaymentsComponent implements OnInit {
       studentId: ['', Validators.required],
       amountPaid: [0, [Validators.required, Validators.min(1)]],
       paymentMode: ['Cash', Validators.required],
-      remarks: ['']
+      remarks: [''],
+      includesTransportFee: [false]
+    });
+
+    this.collectForm.get('includesTransportFee')?.valueChanges.subscribe(includes => {
+      if (this.pendingFeeDetails) {
+        const baseAmount = this.pendingFeeDetails.pendingFee;
+        const transportAmount = this.pendingFeeDetails.transportFee || 0;
+        
+        if (includes) {
+          this.collectForm.patchValue({ amountPaid: baseAmount + transportAmount }, { emitEvent: false });
+        } else {
+          this.collectForm.patchValue({ amountPaid: baseAmount }, { emitEvent: false });
+        }
+      }
     });
   }
 
@@ -146,7 +160,7 @@ export class FeePaymentsComponent implements OnInit {
             if (report.pendingFee === 0) {
               this.errorMessage = 'No pending fees for this student.';
             } else {
-              this.collectForm.patchValue({ amountPaid: report.pendingFee });
+              this.collectForm.patchValue({ amountPaid: report.pendingFee, includesTransportFee: false });
             }
           } else {
             // Default to mock data if report not found (assuming no fee assigned)
@@ -321,7 +335,7 @@ export class FeePaymentsComponent implements OnInit {
     const id = parseInt(event.target.value, 10);
     this.selectedStudent = this.students.find(s => s.id === id) || null;
     this.pendingFeeDetails = null;
-    this.collectForm.patchValue({ studentId: id, amountPaid: 0, remarks: '' });
+    this.collectForm.patchValue({ studentId: id, amountPaid: 0, remarks: '', includesTransportFee: false });
     this.errorMessage = '';
 
     if (this.selectedStudent) {
@@ -332,7 +346,7 @@ export class FeePaymentsComponent implements OnInit {
             this.errorMessage = 'This student has no pending fees for the current structure.';
           } else {
             // Auto fill remaining amount
-            this.collectForm.patchValue({ amountPaid: data.pendingFee });
+            this.collectForm.patchValue({ amountPaid: data.pendingFee, includesTransportFee: false });
           }
           this.cdr.detectChanges();
         },
@@ -351,8 +365,20 @@ export class FeePaymentsComponent implements OnInit {
       return;
     }
 
-    if (this.pendingFeeDetails && this.collectForm.value.amountPaid > this.pendingFeeDetails.pendingFee) {
-       this.errorMessage = `Amount cannot exceed the pending fee of ₹${this.pendingFeeDetails.pendingFee}`;
+    const formValues = this.collectForm.value;
+    const isTransportIncluded = formValues.includesTransportFee;
+    const transportAmount = isTransportIncluded && this.pendingFeeDetails?.transportFee ? this.pendingFeeDetails.transportFee : 0;
+    
+    // Total pending could be just academic, or academic + transport if transport is ticked.
+    const expectedMaxPaid = this.pendingFeeDetails.pendingFee + transportAmount;
+
+    if (this.pendingFeeDetails && formValues.amountPaid > expectedMaxPaid) {
+       this.errorMessage = `Amount cannot exceed the pending fee + transport (₹${expectedMaxPaid})`;
+       return;
+    }
+    
+    if (isTransportIncluded && formValues.amountPaid < transportAmount) {
+       this.errorMessage = `Amount must be at least ₹${transportAmount} to cover the transport fee.`;
        return;
     }
 
@@ -375,7 +401,7 @@ export class FeePaymentsComponent implements OnInit {
         this.showReceiptModal = false; // Disabled auto-popup as requested
         
         // Reset form
-        this.collectForm.reset({ paymentMode: 'Cash', amountPaid: 0 });
+        this.collectForm.reset({ paymentMode: 'Cash', amountPaid: 0, includesTransportFee: false });
         this.selectedStudent = null;
         this.pendingFeeDetails = null;
         
