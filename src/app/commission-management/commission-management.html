@@ -89,11 +89,11 @@
       </div>
       <div>
         <label class="block text-xs font-semibold text-slate-500 mb-1">From Date</label>
-        <input type="date" [(ngModel)]="filterStartDate" class="glass-input p-2 rounded-lg text-sm">
+        <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" [(ngModel)]="filterStartDate" class="glass-input p-2 rounded-lg text-sm">
       </div>
       <div>
         <label class="block text-xs font-semibold text-slate-500 mb-1">To Date</label>
-        <input type="date" [(ngModel)]="filterEndDate" class="glass-input p-2 rounded-lg text-sm">
+        <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" [(ngModel)]="filterEndDate" class="glass-input p-2 rounded-lg text-sm">
       </div>
       <div class="flex space-x-2">
         <button (click)="applyFilters()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">Filter</button>
@@ -144,3 +144,4 @@
   </div>
 
 </div>
+

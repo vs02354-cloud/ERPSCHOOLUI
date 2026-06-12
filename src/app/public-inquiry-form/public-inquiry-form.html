@@ -61,7 +61,7 @@
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-              <input type="date" formControlName="dateOfBirth" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 focus:bg-white transition-colors">
+              <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" formControlName="dateOfBirth" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 focus:bg-white transition-colors">
             </div>
 
             <div>
@@ -157,3 +157,4 @@
     </div>
   </div>
 </div>
+

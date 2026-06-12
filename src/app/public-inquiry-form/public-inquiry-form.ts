@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { FlatpickrModule } from 'angularx-flatpickr';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -7,7 +8,7 @@ import { InquiryService } from '../services/inquiry';
 @Component({
   selector: 'app-public-inquiry-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, FlatpickrModule],
   templateUrl: './public-inquiry-form.html',
   styleUrl: './public-inquiry-form.css'
 })
@@ -80,3 +81,4 @@ export class PublicInquiryForm {
     });
   }
 }
+

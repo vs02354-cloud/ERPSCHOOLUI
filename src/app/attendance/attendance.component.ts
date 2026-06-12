@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FlatpickrModule } from 'angularx-flatpickr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -23,7 +24,7 @@ interface AttendanceRecord {
 @Component({
   selector: 'app-attendance',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FlatpickrModule],
   templateUrl: './attendance.component.html',
   styleUrls: []
 })
@@ -142,3 +143,4 @@ export class AttendanceComponent implements OnInit {
     record.status = status;
   }
 }
+

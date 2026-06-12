@@ -16,7 +16,7 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <div>
         <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Select Date</label>
-        <input type="date" [(ngModel)]="selectedDate" [max]="maxDate" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+        <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" [(ngModel)]="selectedDate" [max]="maxDate" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
       </div>
       <div>
         <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Class</label>
@@ -209,3 +209,5 @@
     .bg-purple-100 { background-color: #f3e8ff !important; color: #6b21a8 !important; }
   }
 </style>
+
+

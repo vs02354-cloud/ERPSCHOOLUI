@@ -1,4 +1,5 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { FlatpickrModule } from 'angularx-flatpickr';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-admission-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FlatpickrModule],
   templateUrl: './admission-form.component.html',
   styleUrls: []
 })
@@ -147,3 +148,4 @@ export class AdmissionFormComponent implements OnInit {
     this.cdr.detectChanges();
   }
 }
+

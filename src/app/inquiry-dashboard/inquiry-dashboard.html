@@ -184,7 +184,7 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Next Follow-up Date (Optional)</label>
-            <input type="date" [(ngModel)]="followUpDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" [(ngModel)]="followUpDate" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
           </div>
 
           <div>
@@ -204,3 +204,4 @@
     </div>
   </div>
 </div>
+

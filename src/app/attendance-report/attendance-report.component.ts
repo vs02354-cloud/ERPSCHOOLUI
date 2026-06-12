@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { FlatpickrModule } from 'angularx-flatpickr';
 
 interface AttendanceReport {
   totalStudents: number;
@@ -16,7 +17,7 @@ interface AttendanceReport {
 @Component({
   selector: 'app-attendance-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FlatpickrModule],
   templateUrl: './attendance-report.html',
   styleUrls: []
 })

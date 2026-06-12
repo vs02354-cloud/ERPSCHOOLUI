@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { FlatpickrModule } from 'angularx-flatpickr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InquiryService, AdmissionInquiry, InquirySummary } from '../services/inquiry';
@@ -7,7 +8,7 @@ import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-inquiry-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FlatpickrModule],
   templateUrl: './inquiry-dashboard.html',
   styleUrl: './inquiry-dashboard.css'
 })
@@ -129,3 +130,4 @@ export class InquiryDashboard implements OnInit {
     }
   }
 }
+

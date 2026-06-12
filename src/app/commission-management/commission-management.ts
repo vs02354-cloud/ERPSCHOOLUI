@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FlatpickrModule } from 'angularx-flatpickr';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +8,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-commission-management',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, FlatpickrModule],
   templateUrl: './commission-management.html'
 })
 export class CommissionManagementComponent implements OnInit {
@@ -146,3 +147,4 @@ export class CommissionManagementComponent implements OnInit {
     this.loadReports();
   }
 }
+

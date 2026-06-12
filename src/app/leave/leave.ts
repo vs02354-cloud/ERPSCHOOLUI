@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FlatpickrModule } from 'angularx-flatpickr';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -8,7 +9,7 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-leave',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FlatpickrModule],
   templateUrl: './leave.html',
   styleUrl: './leave.css',
 })
@@ -150,3 +151,4 @@ export class Leave implements OnInit {
     }
   }
 }
+
