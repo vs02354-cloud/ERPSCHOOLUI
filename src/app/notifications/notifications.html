@@ -4,15 +4,15 @@
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
     </button>
     <div>
-      <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-600 tracking-tight">Notifications</h2>
-      <p class="text-slate-500 text-sm font-medium mt-1">Announcements and alerts from the school.</p>
+      <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-600 tracking-tight">{{ 'NOTIF_INBOX_TITLE' | translate }}</h2>
+      <p class="text-slate-500 text-sm font-medium mt-1">{{ 'NOTIF_INBOX_DESC' | translate }}</p>
     </div>
   </div>
 
   <div class="glass-card p-0 flex flex-col overflow-hidden rounded-3xl shadow-xl border border-white/50 bg-white/60">
     <div class="p-5 border-b border-slate-100 bg-white/50 flex justify-between items-center">
-      <span class="text-sm font-bold text-slate-800">Your Alerts</span>
-      <button (click)="markAllAsRead()" class="text-xs text-indigo-600 font-bold hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors">Mark all as read</button>
+      <span class="text-sm font-bold text-slate-800">{{ 'NOTIF_YOUR_ALERTS' | translate }}</span>
+      <button (click)="markAllAsRead()" class="text-xs text-indigo-600 font-bold hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors">{{ 'NOTIF_MARK_ALL_READ' | translate }}</button>
     </div>
     
     <div class="flex-1 p-4 md:p-6 min-h-[400px]">
@@ -23,7 +23,7 @@
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <h4 class="text-lg font-bold text-slate-700">Loading notifications...</h4>
+        <h4 class="text-lg font-bold text-slate-700">{{ 'NOTIF_LOADING' | translate }}</h4>
       </div>
 
       <!-- Empty State -->
@@ -31,8 +31,8 @@
         <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4 text-slate-400">
           <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
         </div>
-        <h4 class="text-lg font-bold text-slate-700">No notifications yet</h4>
-        <p class="text-slate-500 mt-1 max-w-sm text-sm font-medium">When the school sends you an alert or message, it will appear here.</p>
+        <h4 class="text-lg font-bold text-slate-700">{{ 'NOTIF_NO_NOTIFS' | translate }}</h4>
+        <p class="text-slate-500 mt-1 max-w-sm text-sm font-medium">{{ 'NOTIF_NO_NOTIFS_DESC' | translate }}</p>
       </div>
 
       <!-- Notification List -->
@@ -44,7 +44,7 @@
           
           <div class="flex justify-between items-start">
             <h4 class="text-base font-bold" [ngClass]="notif.isRead ? 'text-slate-700' : 'text-slate-900'">{{ notif.title }}</h4>
-            <span *ngIf="!notif.isRead" class="text-[10px] font-bold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full flex-shrink-0">New</span>
+            <span *ngIf="!notif.isRead" class="text-[10px] font-bold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full flex-shrink-0">{{ 'NOTIF_NEW_BADGE' | translate }}</span>
           </div>
           
           <p class="text-sm mt-2 font-medium" [ngClass]="notif.isRead ? 'text-slate-500' : 'text-slate-700'">{{ notif.message }}</p>

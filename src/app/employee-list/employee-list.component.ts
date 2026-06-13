@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, FlatpickrModule],
+  imports: [CommonModule, FormsModule, FlatpickrModule, TranslatePipe],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })

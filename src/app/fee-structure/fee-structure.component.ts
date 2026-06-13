@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { TranslatePipe } from '../services/language.service';
 
 interface FeeStructure {
   id?: number;
@@ -17,7 +18,7 @@ interface FeeStructure {
 @Component({
   selector: 'app-fee-structure',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './fee-structure.component.html',
   styleUrls: []
 })

@@ -4,9 +4,9 @@
     <div>
       <h2 class="text-3xl font-bold text-slate-800 tracking-tight flex items-center">
         <svg class="w-8 h-8 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        Fee Structure Management
+        {{ 'FEE_STRUCTURE_TITLE' | translate }}
       </h2>
-      <p class="text-sm text-slate-500 mt-2">Manage class-wise fee breakdowns and academic year configurations.</p>
+      <p class="text-sm text-slate-500 mt-2">{{ 'FEE_STRUCTURE_DESC' | translate }}</p>
     </div>
   </div>
 
@@ -24,20 +24,20 @@
     <!-- Form Side -->
     <div class="lg:col-span-1">
       <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl p-6 border border-white/40 sticky top-24">
-        <h3 class="text-lg font-bold text-slate-800 mb-6">{{ editMode ? 'Update' : 'Create New' }} Structure</h3>
+        <h3 class="text-lg font-bold text-slate-800 mb-6">{{ editMode ? ('FEE_UPDATE_STRUCT' | translate) : ('FEE_CREATE_STRUCT' | translate) }}</h3>
         
         <form [formGroup]="feeForm" (ngSubmit)="onSubmit()" class="space-y-4">
           
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Class</label>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">{{ 'FEE_CLASS' | translate }}</label>
               <select formControlName="className" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
                 <option value="">Select</option>
                 <option *ngFor="let cls of classes" [value]="cls">Class {{ cls }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Academic Year</label>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">{{ 'FEE_ACADEMIC_YEAR' | translate }}</label>
               <select formControlName="academicYear" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
                 <option *ngFor="let year of academicYears" [value]="year">{{ year }}</option>
               </select>
@@ -46,37 +46,37 @@
 
           <div class="border-t border-slate-200 pt-4 mt-4 space-y-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Tuition Fee (₹)</label>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">{{ 'FEE_TUITION' | translate }}</label>
               <input type="number" formControlName="tuitionFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Transport Fee (₹)</label>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">{{ 'FEE_TRANSPORT' | translate }}</label>
               <input type="number" formControlName="transportFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Library Fee (₹)</label>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">{{ 'FEE_LIBRARY' | translate }}</label>
               <input type="number" formControlName="libraryFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Miscellaneous Fee (₹)</label>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">{{ 'FEE_MISC' | translate }}</label>
               <input type="number" formControlName="miscellaneousFee" min="0" class="glass-input w-full p-2.5 rounded-lg text-sm font-mono text-right focus:ring-2 focus:ring-indigo-500">
             </div>
           </div>
 
           <!-- Total Auto Calculation -->
           <div class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100 flex justify-between items-center">
-            <span class="text-sm font-bold text-indigo-900 uppercase tracking-wider">Total Fee</span>
+            <span class="text-sm font-bold text-indigo-900 uppercase tracking-wider">{{ 'FEE_TOTAL' | translate }}</span>
             <span class="text-xl font-bold text-indigo-700 font-mono">₹{{ totalCalculatedFee | number:'1.2-2' }}</span>
           </div>
 
           <div class="pt-6 flex gap-3">
             <button *ngIf="editMode" type="button" (click)="resetForm()" class="flex-1 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-sm">
-              Cancel
+              {{ 'FEE_CANCEL' | translate }}
             </button>
             <button type="submit" [disabled]="isSubmitting" class="flex-1 glass-button py-2.5 text-sm flex justify-center items-center group relative overflow-hidden disabled:opacity-70">
               <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-600 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <span class="relative flex items-center">
-                {{ isSubmitting ? 'Saving...' : (editMode ? 'Update Details' : 'Save Structure') }}
+                {{ isSubmitting ? ('FEE_UPDATING' | translate) : (editMode ? ('FEE_UPDATE_STRUCT' | translate) : ('FEE_SAVE' | translate)) }}
               </span>
             </button>
           </div>
@@ -92,11 +92,11 @@
         <div class="p-4 border-b border-slate-200/50 bg-slate-50/50 flex flex-col sm:flex-row gap-4 justify-between items-center">
           <div class="flex gap-4 w-full sm:w-auto">
             <select (change)="onSearchClassChange($event)" class="glass-input flex-1 sm:w-40 p-2 text-sm rounded-lg border-slate-200">
-              <option value="">All Classes</option>
+              <option value="">{{ 'FEE_ALL_CLASSES' | translate }}</option>
               <option *ngFor="let cls of classes" [value]="cls">Class {{ cls }}</option>
             </select>
             <select (change)="onSearchYearChange($event)" class="glass-input flex-1 sm:w-40 p-2 text-sm rounded-lg border-slate-200">
-              <option value="">All Years</option>
+              <option value="">{{ 'FEE_ALL_YEARS' | translate }}</option>
               <option *ngFor="let year of academicYears" [value]="year">{{ year }}</option>
             </select>
           </div>
@@ -121,12 +121,12 @@
           <table class="min-w-full divide-y divide-slate-200/60">
             <thead class="bg-white/50">
               <tr>
-                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Class & Year</th>
-                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Tuition</th>
-                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Transport</th>
-                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Misc/Lib</th>
-                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-indigo-600 uppercase tracking-wider">Total</th>
-                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'FEE_CLASS_YEAR' | translate }}</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'FEE_TUITION_HEAD' | translate }}</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'FEE_TRANSPORT_HEAD' | translate }}</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'FEE_MISC_LIB_HEAD' | translate }}</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-indigo-600 uppercase tracking-wider">{{ 'FEE_TOTAL_HEAD' | translate }}</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'ACTIONS' | translate }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 bg-transparent">
@@ -156,7 +156,7 @@
               </tr>
               <tr *ngIf="filteredStructures.length === 0 && !isLoading">
                 <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">
-                  No fee structures match your search criteria.
+                  {{ 'FEE_NO_RECORDS' | translate }}
                 </td>
               </tr>
             </tbody>

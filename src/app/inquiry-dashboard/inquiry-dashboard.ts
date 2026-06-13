@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InquiryService, AdmissionInquiry, InquirySummary } from '../services/inquiry';
 import { finalize } from 'rxjs/operators';
+import { TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-inquiry-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, FlatpickrModule],
+  imports: [CommonModule, FormsModule, FlatpickrModule, TranslatePipe],
   templateUrl: './inquiry-dashboard.html',
   styleUrl: './inquiry-dashboard.css'
 })

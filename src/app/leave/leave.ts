@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LeaveService, LeaveRequest } from '../services/leave.service';
 import { AuthService } from '../services/auth.service';
+import { TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-leave',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, FlatpickrModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FlatpickrModule, TranslatePipe],
   templateUrl: './leave.html',
   styleUrl: './leave.css',
 })

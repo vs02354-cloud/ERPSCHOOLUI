@@ -2,12 +2,12 @@
   <!-- Header -->
   <div class="flex justify-between items-center mb-6 no-print">
     <div>
-      <h1 class="text-2xl font-bold text-slate-800">Attendance Report</h1>
-      <p class="text-sm text-slate-500 mt-1">View date and class-wise attendance statistics and records.</p>
+      <h1 class="text-2xl font-bold text-slate-800">{{ 'ATTENDANCE_REPORT_TITLE' | translate }}</h1>
+      <p class="text-sm text-slate-500 mt-1">{{ 'ATTENDANCE_REPORT_DESC' | translate }}</p>
     </div>
     <button *ngIf="report" (click)="printReport()" class="flex items-center px-4 py-2 bg-slate-800 text-white rounded-xl hover:bg-slate-700 transition shadow-sm text-sm font-medium">
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-      Print Report
+      {{ 'ATTENDANCE_PRINT' | translate }}
     </button>
   </div>
 
@@ -15,18 +15,18 @@
   <div class="glass-card p-6 mb-8 border border-slate-200/50 shadow-sm no-print">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <div>
-        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Select Date</label>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">{{ 'ATTENDANCE_DATE' | translate }}</label>
         <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" [(ngModel)]="selectedDate" [max]="maxDate" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
       </div>
       <div>
-        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Class</label>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">{{ 'FEE_CLASS' | translate }}</label>
         <select [(ngModel)]="selectedClass" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
-          <option value="">-- Select Class --</option>
+          <option value="">-- Select --</option>
           <option *ngFor="let cls of classes" [value]="cls">Class {{cls}}</option>
         </select>
       </div>
       <div>
-        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Section</label>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">{{ 'CLASS_SECTION' | translate }}</label>
         <select [(ngModel)]="selectedSection" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
           <option value="">-- Select Section --</option>
           <option *ngFor="let sec of sections" [value]="sec">Section {{sec}}</option>
@@ -35,7 +35,7 @@
       <div class="flex items-end">
         <button (click)="generateReport()" [disabled]="isLoading" class="w-full bg-indigo-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 transition shadow-sm disabled:opacity-50 flex justify-center items-center">
           <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-          {{ isLoading ? 'Generating...' : 'Generate Report' }}
+          {{ isLoading ? 'Generating...' : ('ATTENDANCE_GENERATE' | translate) }}
         </button>
       </div>
     </div>
@@ -63,7 +63,7 @@
       <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
       <div class="flex justify-between items-start relative z-10">
         <div>
-          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Total Students</p>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">{{ 'ATTENDANCE_TOTAL_STUDENTS' | translate }}</p>
           <h3 class="text-3xl font-black text-slate-800">{{report.totalStudents}}</h3>
         </div>
         <div class="p-3 bg-indigo-50 rounded-xl">
@@ -76,7 +76,7 @@
       <div class="absolute -right-4 -top-4 w-24 h-24 bg-green-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
       <div class="flex justify-between items-start relative z-10">
         <div>
-          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Present</p>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">{{ 'ATTENDANCE_PRESENT' | translate }}</p>
           <h3 class="text-3xl font-black text-slate-800">{{report.present}}</h3>
         </div>
         <div class="p-3 bg-green-50 rounded-xl">
@@ -89,7 +89,7 @@
       <div class="absolute -right-4 -top-4 w-24 h-24 bg-red-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
       <div class="flex justify-between items-start relative z-10">
         <div>
-          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Absent</p>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">{{ 'ATTENDANCE_ABSENT' | translate }}</p>
           <h3 class="text-3xl font-black text-slate-800">{{report.absent}}</h3>
         </div>
         <div class="p-3 bg-red-50 rounded-xl">
@@ -102,7 +102,7 @@
       <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500 rounded-full opacity-10 group-hover:scale-150 transition-transform duration-500"></div>
       <div class="flex justify-between items-start relative z-10">
         <div>
-          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Attendance %</p>
+          <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">{{ 'ATTENDANCE_PERCENTAGE' | translate }}</p>
           <h3 class="text-3xl font-black text-slate-800">{{report.attendancePercentage}}%</h3>
         </div>
         <div class="p-3 bg-blue-50 rounded-xl">
@@ -119,10 +119,10 @@
         <thead class="bg-slate-50">
           <tr>
             <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider w-16">#</th>
-            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Student Name</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'STUDENT_DETAILS' | translate }}</th>
             <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Admission No.</th>
-            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Remarks</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'STATUS' | translate }}</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'FEE_REMARKS' | translate }}</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-slate-200">

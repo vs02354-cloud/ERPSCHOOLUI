@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-commission-management',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, FlatpickrModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, FlatpickrModule, TranslatePipe],
   templateUrl: './commission-management.html'
 })
 export class CommissionManagementComponent implements OnInit {

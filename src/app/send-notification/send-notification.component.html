@@ -1,7 +1,7 @@
 <div class="space-y-6 max-w-4xl mx-auto py-8 px-4 animate-fade-in">
   <div>
-    <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-600 tracking-tight">Send Notification</h2>
-    <p class="text-slate-500 text-sm font-medium mt-1">Directly message targeted groups of teachers or parents.</p>
+    <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-600 tracking-tight">{{ 'SEND_NOTIF_TITLE' | translate }}</h2>
+    <p class="text-slate-500 text-sm font-medium mt-1">{{ 'SEND_NOTIF_DESC' | translate }}</p>
   </div>
 
   <div class="glass-card p-6 md:p-8 rounded-3xl shadow-xl border border-white/50 bg-white/60">
@@ -19,29 +19,29 @@
       
       <!-- Left Column: Compose Message -->
       <div class="space-y-5">
-        <h3 class="font-bold text-slate-800 text-lg border-b border-slate-200 pb-2">1. Compose Message</h3>
+        <h3 class="font-bold text-slate-800 text-lg border-b border-slate-200 pb-2">{{ 'SEND_NOTIF_COMPOSE' | translate }}</h3>
         
         <div>
-          <label class="block text-sm font-bold text-slate-700 mb-1.5">Notification Title <span class="text-red-500">*</span></label>
-          <input type="text" [(ngModel)]="title" placeholder="e.g., Important Parent Meeting" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm font-medium text-sm">
+          <label class="block text-sm font-bold text-slate-700 mb-1.5">{{ 'SEND_NOTIF_NOTIF_TITLE' | translate }}</label>
+          <input type="text" [(ngModel)]="title" [placeholder]="'SEND_NOTIF_TITLE_PLACEHOLDER' | translate" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm font-medium text-sm">
         </div>
 
         <div>
-          <label class="block text-sm font-bold text-slate-700 mb-1.5">Message Content <span class="text-red-500">*</span></label>
-          <textarea [(ngModel)]="message" rows="6" placeholder="Write your message here..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm font-medium text-sm resize-none"></textarea>
+          <label class="block text-sm font-bold text-slate-700 mb-1.5">{{ 'SEND_NOTIF_MSG_CONTENT' | translate }}</label>
+          <textarea [(ngModel)]="message" rows="6" [placeholder]="'SEND_NOTIF_MSG_PLACEHOLDER' | translate" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm font-medium text-sm resize-none"></textarea>
         </div>
       </div>
 
       <!-- Right Column: Select Recipients -->
       <div class="space-y-5 flex flex-col h-full">
-        <h3 class="font-bold text-slate-800 text-lg border-b border-slate-200 pb-2">2. Select Recipients</h3>
+        <h3 class="font-bold text-slate-800 text-lg border-b border-slate-200 pb-2">{{ 'SEND_NOTIF_RECIPIENTS' | translate }}</h3>
         
         <div>
-          <label class="block text-sm font-bold text-slate-700 mb-1.5">Target Audience</label>
+          <label class="block text-sm font-bold text-slate-700 mb-1.5">{{ 'SEND_NOTIF_TARGET' | translate }}</label>
           <div class="relative">
             <select [(ngModel)]="targetRole" (change)="onRoleChange()" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all appearance-none shadow-sm font-medium text-sm">
-              <option value="Teacher">Teachers</option>
-              <option value="Parent">Parents</option>
+              <option value="Teacher">{{ 'SEND_NOTIF_TEACHERS' | translate }}</option>
+              <option value="Parent">{{ 'SEND_NOTIF_PARENTS' | translate }}</option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -51,17 +51,17 @@
 
         <div class="flex-1 min-h-[250px] flex flex-col">
           <div class="flex justify-between items-center mb-2">
-            <label class="block text-sm font-bold text-slate-700">Select Users <span class="text-indigo-600">({{ selectedUsers.size }} selected)</span></label>
+            <label class="block text-sm font-bold text-slate-700">{{ 'SEND_NOTIF_SELECT_USERS' | translate }} <span class="text-indigo-600">({{ selectedUsers.size }} {{ 'SEND_NOTIF_SELECTED' | translate }})</span></label>
             <div class="space-x-3 text-xs font-bold">
-              <button (click)="selectAll()" class="text-indigo-600 hover:text-indigo-800">Select All</button>
-              <button (click)="deselectAll()" class="text-slate-500 hover:text-slate-700">Clear</button>
+              <button (click)="selectAll()" class="text-indigo-600 hover:text-indigo-800">{{ 'SEND_NOTIF_SELECT_ALL' | translate }}</button>
+              <button (click)="deselectAll()" class="text-slate-500 hover:text-slate-700">{{ 'SEND_NOTIF_CLEAR' | translate }}</button>
             </div>
           </div>
 
           <!-- User List Box -->
           <div class="border border-slate-200 rounded-xl bg-white overflow-y-auto flex-1 p-2 shadow-inner custom-scrollbar max-h-64">
             <div *ngIf="users.length === 0" class="text-center py-8 text-slate-500 text-sm font-medium">
-              No users found for this role.
+              {{ 'SEND_NOTIF_NO_USERS' | translate }}
             </div>
             <div *ngFor="let user of users" 
                  (click)="toggleUserSelection(user.id)"
@@ -86,7 +86,7 @@
       <button (click)="sendNotification()" [disabled]="isSubmitting" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center">
         <svg *ngIf="isSubmitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
         <svg *ngIf="!isSubmitting" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-        <span *ngIf="!isSubmitting">Send Notification</span>
+        <span *ngIf="!isSubmitting">{{ 'SEND_NOTIF_SEND_BTN' | translate }}</span>
         <span *ngIf="isSubmitting">Sending...</span>
       </button>
     </div>

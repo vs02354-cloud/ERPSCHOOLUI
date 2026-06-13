@@ -2,11 +2,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotificationService } from '../services/notification.service';
+import { TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-send-notification',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './send-notification.component.html',
 })
 export class SendNotificationComponent implements OnInit {

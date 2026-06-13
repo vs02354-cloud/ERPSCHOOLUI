@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { TranslatePipe } from '../services/language.service';
 
 interface Student {
   id: number;
@@ -23,13 +24,13 @@ interface FeePayment {
   amountPaid: number;
   paymentDate?: string;
   paymentMode: string;
-  remarks: string;
+  remarks?: string;
 }
 
 @Component({
   selector: 'app-fee-payments',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe],
   templateUrl: './fee-payments.component.html',
   styleUrls: []
 })

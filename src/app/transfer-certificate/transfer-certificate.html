@@ -1,8 +1,8 @@
 <div class="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
   <div class="flex justify-between items-end mb-6">
     <div>
-      <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Transfer Certificate Module</h2>
-      <p class="text-slate-500 text-sm mt-1">Generate and manage Transfer Certificates for students.</p>
+      <h2 class="text-2xl font-bold text-slate-800 tracking-tight">{{ 'TC_TITLE' | translate }}</h2>
+      <p class="text-slate-500 text-sm mt-1">{{ 'TC_DESC' | translate }}</p>
     </div>
   </div>
 
@@ -25,50 +25,51 @@
         <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
           <h3 class="text-lg font-bold text-slate-800 flex items-center">
             <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            Issue New TC
+            {{ 'TC_ISSUE_NEW' | translate }}
           </h3>
         </div>
         
         <div class="p-6 space-y-4">
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1">Select Student *</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">{{ 'TC_SELECT_STUDENT' | translate }}</label>
             <select [(ngModel)]="newTc.studentId" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-              <option value="">-- Choose Active Student --</option>
+              <option value="">{{ 'TC_CHOOSE_ACTIVE' | translate }}</option>
               <option *ngFor="let student of activeStudents" [value]="student.id">
                 {{ student.admissionNumber }} - {{ student.firstName }} {{ student.lastName }} (Class: {{student.currentClass}})
               </option>
             </select>
-            <p class="text-xs text-slate-500 mt-1" *ngIf="activeStudents.length === 0">No active students available.</p>
+            <p class="text-xs text-slate-500 mt-1" *ngIf="activeStudents.length === 0">{{ 'TC_NO_ACTIVE_STUDENT' | translate }}</p>
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1">Reason for Leaving *</label>
-            <textarea [(ngModel)]="newTc.reasonForLeaving" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g., Parent transferred to another city"></textarea>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">{{ 'TC_REASON' | translate }}</label>
+            <textarea [(ngModel)]="newTc.reasonForLeaving" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" [placeholder]="'TC_REASON_PLACEHOLDER' | translate"></textarea>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-1">Progress</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">{{ 'TC_PROGRESS' | translate }}</label>
               <select [(ngModel)]="newTc.academicProgress" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-                <option value="Excellent">Excellent</option>
-                <option value="Good">Good</option>
-                <option value="Satisfactory">Satisfactory</option>
-                <option value="Needs Improvement">Needs Improvement</option>
+                <option value="Excellent">{{ 'TC_EXCELLENT' | translate }}</option>
+                <option value="Good">{{ 'TC_GOOD' | translate }}</option>
+                <option value="Satisfactory">{{ 'TC_SATISFACTORY' | translate }}</option>
+                <option value="Needs Improvement">{{ 'TC_NEEDS_IMPROVEMENT' | translate }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-1">Conduct</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">{{ 'TC_CONDUCT' | translate }}</label>
               <select [(ngModel)]="newTc.conduct" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-                <option value="Excellent">Excellent</option>
-                <option value="Good">Good</option>
-                <option value="Satisfactory">Satisfactory</option>
+                <option value="Excellent">{{ 'TC_EXCELLENT' | translate }}</option>
+                <option value="Good">{{ 'TC_GOOD' | translate }}</option>
+                <option value="Satisfactory">{{ 'TC_SATISFACTORY' | translate }}</option>
               </select>
             </div>
           </div>
           
           <button (click)="generateTC()" [disabled]="isGenerating || !newTc.studentId || !newTc.reasonForLeaving" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center disabled:opacity-50 shadow-sm">
             <svg *ngIf="isGenerating" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            {{ isGenerating ? 'Processing...' : 'Generate Transfer Certificate' }}
+            <span *ngIf="!isGenerating">{{ 'TC_GENERATE_BTN' | translate }}</span>
+            <span *ngIf="isGenerating">{{ 'TC_PROCESSING' | translate }}</span>
           </button>
         </div>
       </div>
@@ -80,7 +81,7 @@
         <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
           <h3 class="text-lg font-bold text-slate-800 flex items-center">
             <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-            Issued Certificates Directory
+            {{ 'TC_DIRECTORY' | translate }}
           </h3>
         </div>
         
@@ -88,10 +89,10 @@
           <table class="min-w-full divide-y divide-slate-200">
             <thead class="bg-slate-50">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">TC Number</th>
-                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Student Details</th>
-                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Issue Date</th>
-                <th class="px-6 py-3 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'TC_NUMBER' | translate }}</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'STUDENT_DETAILS' | translate }}</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'TC_ISSUE_DATE' | translate }}</th>
+                <th class="px-6 py-3 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'ACTIONS' | translate }}</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-slate-200">
@@ -111,15 +112,15 @@
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button (click)="printTC(tc)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors inline-flex items-center">
                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    Print TC
+                    {{ 'TC_PRINT' | translate }}
                   </button>
                 </td>
               </tr>
               <tr *ngIf="issuedTCs.length === 0">
                 <td colspan="4" class="px-6 py-12 text-center">
                   <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                  <h3 class="mt-2 text-sm font-medium text-slate-900">No records found</h3>
-                  <p class="mt-1 text-sm text-slate-500">No transfer certificates have been issued yet.</p>
+                  <h3 class="mt-2 text-sm font-medium text-slate-900">{{ 'TC_NO_RECORDS' | translate }}</h3>
+                  <p class="mt-1 text-sm text-slate-500">{{ 'TC_NO_ISSUED' | translate }}</p>
                 </td>
               </tr>
             </tbody>

@@ -4,8 +4,8 @@
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
     </button>
     <div>
-      <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-600 tracking-tight">Leave Application</h2>
-      <p class="text-slate-500 text-sm font-medium mt-1">Apply for leave and manage your leave requests</p>
+      <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-600 tracking-tight">{{ 'LEAVE_APP_TITLE' | translate }}</h2>
+      <p class="text-slate-500 text-sm font-medium mt-1">{{ 'LEAVE_APP_DESC' | translate }}</p>
     </div>
   </div>
 
@@ -19,7 +19,7 @@
 
         <h3 class="text-xl font-bold text-slate-800 mb-6 relative z-10 flex items-center">
           <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-          New Leave Request
+          {{ 'LEAVE_NEW_REQ' | translate }}
         </h3>
 
         <!-- Success Message -->
@@ -38,7 +38,7 @@
           
           <!-- Student Selection (For Parents) -->
           <div *ngIf="userRole === 'Parent'">
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Select Child <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{{ 'LEAVE_SELECT_CHILD' | translate }} <span class="text-red-500">*</span></label>
             <div class="relative">
               <select formControlName="studentId" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/50 focus:bg-white text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all appearance-none shadow-sm font-medium">
                 <option [ngValue]="null" disabled selected>Select a child</option>
@@ -57,14 +57,14 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Start Date <span class="text-red-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">{{ 'LEAVE_START_DATE' | translate }} <span class="text-red-500">*</span></label>
               <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" formControlName="startDate" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/50 focus:bg-white text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm font-medium text-sm">
               <div *ngIf="leaveForm.get('startDate')?.invalid && leaveForm.get('startDate')?.touched" class="text-red-500 text-xs mt-1 font-medium">
                 Start Date is required.
               </div>
             </div>
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-1.5">End Date <span class="text-red-500">*</span></label>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">{{ 'LEAVE_END_DATE' | translate }} <span class="text-red-500">*</span></label>
               <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" formControlName="endDate" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/50 focus:bg-white text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm font-medium text-sm">
               <div *ngIf="leaveForm.get('endDate')?.invalid && leaveForm.get('endDate')?.touched" class="text-red-500 text-xs mt-1 font-medium">
                 End Date is required.
@@ -73,7 +73,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Reason for Leave <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{{ 'LEAVE_REASON' | translate }} <span class="text-red-500">*</span></label>
             <textarea formControlName="reason" rows="4" placeholder="Briefly describe the reason for your leave..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/50 focus:bg-white text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm resize-none font-medium text-sm"></textarea>
             <div *ngIf="leaveForm.get('reason')?.invalid && leaveForm.get('reason')?.touched" class="text-red-500 text-xs mt-1 font-medium">
               Reason is required.
@@ -82,7 +82,7 @@
 
           <button type="submit" [disabled]="isSubmitting" class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center">
             <svg *ngIf="isSubmitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            <span *ngIf="!isSubmitting">Submit Request</span>
+            <span *ngIf="!isSubmitting">{{ 'LEAVE_SUBMIT' | translate }}</span>
             <span *ngIf="isSubmitting">Submitting...</span>
           </button>
         </form>
@@ -94,7 +94,7 @@
       <div class="glass-card p-6 md:p-8 rounded-3xl shadow-xl border border-white/50 backdrop-blur-xl bg-white/60 h-full">
         <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
           <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-          Leave History
+          {{ 'LEAVE_HISTORY' | translate }}
         </h3>
 
         <!-- Loading State -->
@@ -111,8 +111,8 @@
           <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4 text-slate-400">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
           </div>
-          <h4 class="text-lg font-bold text-slate-700">No leave requests found</h4>
-          <p class="text-slate-500 mt-1 max-w-sm text-sm font-medium">You haven't submitted any leave applications yet. When you do, they will appear here.</p>
+          <h4 class="text-lg font-bold text-slate-700">{{ 'LEAVE_NO_REQ' | translate }}</h4>
+          <p class="text-slate-500 mt-1 max-w-sm text-sm font-medium">{{ 'LEAVE_NO_REQ_DESC' | translate }}</p>
         </div>
 
         <!-- List Data -->

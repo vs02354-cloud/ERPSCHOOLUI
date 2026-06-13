@@ -1,8 +1,8 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
   <div class="flex justify-between items-center mb-6">
     <div>
-      <h1 class="text-2xl font-bold text-slate-800">Employee Management</h1>
-      <p class="text-sm text-slate-500 mt-1">Manage staff, assign roles, and handle access control.</p>
+      <h1 class="text-2xl font-bold text-slate-800">{{ 'EMP_MANAGEMENT_TITLE' | translate }}</h1>
+      <p class="text-sm text-slate-500 mt-1">{{ 'EMP_MANAGEMENT_DESC' | translate }}</p>
     </div>
   </div>
 
@@ -23,10 +23,10 @@
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
       </div>
-      <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Search by name, code, or designation...">
+      <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" [placeholder]="'EMP_SEARCH_PLACEHOLDER' | translate">
     </div>
     <button (click)="onSearch()" class="ml-4 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
-      Search
+      {{ 'EMP_SEARCH_BTN' | translate }}
     </button>
   </div>
 
@@ -36,12 +36,12 @@
       <table class="min-w-full divide-y divide-slate-200">
         <thead class="bg-slate-50">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Employee</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Code</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Designation</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Contact</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-3 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'EMP_COL_EMPLOYEE' | translate }}</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'EMP_COL_CODE' | translate }}</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'EMP_COL_DESIGNATION' | translate }}</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'EMP_COL_CONTACT' | translate }}</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'STATUS' | translate }}</th>
+            <th class="px-6 py-3 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'ACTIONS' | translate }}</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-slate-200">
