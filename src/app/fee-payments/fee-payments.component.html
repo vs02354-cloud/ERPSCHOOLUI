@@ -425,6 +425,15 @@
           </div>
         </div>
       </div>
+      <!-- Modal Footer (Hidden in Print) -->
+      <div class="p-4 border-t border-slate-200 flex justify-end items-center bg-slate-50 shrink-0 print:hidden space-x-3">
+        <button (click)="printReceipt()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm">
+          Print / Save PDF
+        </button>
+        <button (click)="closeReceipt()" class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-600 text-sm font-bold rounded-lg border border-slate-300 transition-colors">
+          Close
+        </button>
+      </div>
     </div>
   </div>
 
