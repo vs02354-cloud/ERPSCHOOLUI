@@ -27,6 +27,31 @@
   .dark .bg-slate-100, .dark .bg-gray-100 { background-color: theme('colors.slate.800'); }
   .dark .bg-slate-200, .dark .bg-gray-200 { background-color: theme('colors.slate.700'); }
 
+  /* Automatic translucent background dark mode mapping */
+  .dark .bg-white\/30 { background-color: rgba(30, 41, 59, 0.3); }
+  .dark .bg-white\/40, .dark .bg-white\/50, .dark .bg-white\/60, .dark .bg-white\/70, .dark .bg-white\/80, .dark .bg-white\/90 { 
+    background-color: theme('colors.slate.800'); 
+  }
+  .dark .bg-slate-50\/50, .dark .bg-gray-50\/50 { 
+    background-color: theme('colors.slate.800'); 
+  }
+
+  /* Force generic form controls (without explicit dark styling) to maintain black text inside their white backgrounds */
+  .dark input:not(.glass-input):not([type="checkbox"]):not([type="radio"]), 
+  .dark select:not(.glass-input), 
+  .dark textarea:not(.glass-input) {
+    color: #0f172a !important; 
+  }
+
+  /* Table Dividers */
+  .dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+  .dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
+  .dark .divide-slate-200\/50 > :not([hidden]) ~ :not([hidden]),
+  .dark .divide-slate-200\/60 > :not([hidden]) ~ :not([hidden]),
+  .dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: theme('colors.slate.700') !important;
+  }
+
   .dark .border-slate-100, .dark .border-gray-100 { border-color: theme('colors.slate.800'); }
   .dark .border-slate-200, .dark .border-gray-200 { border-color: theme('colors.slate.700'); }
   .dark .border-slate-300, .dark .border-gray-300 { border-color: theme('colors.slate.600'); }
