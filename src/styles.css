@@ -12,6 +12,24 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight text-slate-900 dark:text-white;
   }
+
+  /* Automatic Dark Mode Adjustments for entire application */
+  /* These are in @layer base so explicit dark: utilities will override them */
+  .dark .text-slate-900, .dark .text-gray-900, .dark .text-neutral-900 { color: theme('colors.slate.50'); }
+  .dark .text-slate-800, .dark .text-gray-800, .dark .text-neutral-800 { color: theme('colors.slate.200'); }
+  .dark .text-slate-700, .dark .text-gray-700, .dark .text-neutral-700 { color: theme('colors.slate.300'); }
+  .dark .text-slate-600, .dark .text-gray-600, .dark .text-neutral-600 { color: theme('colors.slate.400'); }
+  .dark .text-slate-500, .dark .text-gray-500, .dark .text-neutral-500 { color: theme('colors.slate.400'); }
+  .dark .text-slate-400, .dark .text-gray-400, .dark .text-neutral-400 { color: theme('colors.slate.500'); }
+
+  .dark .bg-white { background-color: theme('colors.slate.800'); }
+  .dark .bg-slate-50, .dark .bg-gray-50 { background-color: theme('colors.slate.900'); }
+  .dark .bg-slate-100, .dark .bg-gray-100 { background-color: theme('colors.slate.800'); }
+  .dark .bg-slate-200, .dark .bg-gray-200 { background-color: theme('colors.slate.700'); }
+
+  .dark .border-slate-100, .dark .border-gray-100 { border-color: theme('colors.slate.800'); }
+  .dark .border-slate-200, .dark .border-gray-200 { border-color: theme('colors.slate.700'); }
+  .dark .border-slate-300, .dark .border-gray-300 { border-color: theme('colors.slate.600'); }
 }
 
 @layer components {
