@@ -140,37 +140,22 @@ export class FeePaymentsComponent implements OnInit {
     const studentId = typeof id === 'string' ? parseInt(id, 10) : id;
     this.selectedStudent = this.parentChildren.find(s => s.id === studentId) || null;
     this.pendingFeeDetails = null;
-    this.collectForm.patchValue({ studentId: studentId, amountPaid: 0, paymentMode: 'UPI', remarks: 'Online Payment' });
+    this.collectForm.patchValue({ studentId: studentId, amountPaid: 0, includesTransportFee: false, paymentMode: 'UPI', remarks: 'Online Payment' });
     this.errorMessage = '';
 
     if (this.selectedStudent) {
-      // Fetch the parent's pending report to extract the specific child's fee status
-      this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Fees/Parent/PendingReport').subscribe({
-        next: (reports) => {
-          // Match by child name or admission number
-          const childName = `${this.selectedStudent!.firstName} ${this.selectedStudent!.lastName}`.trim().toLowerCase();
-          const report = reports.find(r => r.studentName.toLowerCase() === childName || r.admissionNumber === this.selectedStudent!.admissionNumber);
-          
-          if (report) {
-            this.pendingFeeDetails = {
-              totalFee: report.totalFee,
-              paidFee: report.paidFee,
-              pendingFee: report.pendingFee
-            };
-            if (report.pendingFee === 0) {
-              this.errorMessage = 'No pending fees for this student.';
-            } else {
-              this.collectForm.patchValue({ amountPaid: report.pendingFee, includesTransportFee: false });
-            }
+      this.http.get<any>(`https://erpschoolapi.onrender.com/api/Fees/Parent/Pending/Student/${studentId}`).subscribe({
+        next: (data) => {
+          this.pendingFeeDetails = data;
+          if (data.pendingFee === 0) {
+            this.errorMessage = 'No pending fees for this student.';
           } else {
-            // Default to mock data if report not found (assuming no fee assigned)
-            this.errorMessage = 'No fee structure assigned to this student.';
-            this.pendingFeeDetails = { totalFee: 0, paidFee: 0, pendingFee: 0 };
+            this.collectForm.patchValue({ amountPaid: data.pendingFee, includesTransportFee: false });
           }
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('Failed to load pending fee details via report', err);
+          console.error('Failed to load pending fee details via API', err);
           this.errorMessage = 'Failed to load pending fee details.';
           this.cdr.detectChanges();
         }
@@ -181,6 +166,23 @@ export class FeePaymentsComponent implements OnInit {
   onPayOnlineSubmit() {
     if (this.collectForm.invalid || !this.selectedStudent) {
       return;
+    }
+
+    const formValues = this.collectForm.value;
+    const isTransportIncluded = formValues.includesTransportFee;
+    const transportAmount = isTransportIncluded && this.pendingFeeDetails?.transportFee ? this.pendingFeeDetails.transportFee : 0;
+    
+    // Total pending could be just academic, or academic + transport if transport is ticked.
+    const expectedMaxPaid = this.pendingFeeDetails.pendingFee + transportAmount;
+
+    if (this.pendingFeeDetails && formValues.amountPaid > expectedMaxPaid) {
+       this.errorMessage = `Amount cannot exceed the pending fee + transport (₹${expectedMaxPaid})`;
+       return;
+    }
+    
+    if (isTransportIncluded && formValues.amountPaid < transportAmount) {
+       this.errorMessage = `Amount must be at least ₹${transportAmount} to cover the transport fee.`;
+       return;
     }
 
     this.isSubmitting = true;
