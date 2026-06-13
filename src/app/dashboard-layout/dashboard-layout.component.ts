@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 
 import { HttpClient } from '@angular/common/http';
 import { NotificationService, Notification } from '../services/notification.service';
+import { ThemeService } from '../services/theme.service';
+import { LanguageService, TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-dashboard-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './dashboard-layout.component.html',
   styleUrls: []
 })
-export class DashboardLayoutComponent implements OnInit {
+export class DashboardLayoutComponent implements OnInit, OnDestroy {
   userName: string = 'Admin User';
   userRole: string = 'Super Admin';
   showProfileModal: boolean = false;
@@ -23,8 +25,16 @@ export class DashboardLayoutComponent implements OnInit {
   notifications: Notification[] = [];
   unreadCount: number = 0;
   expandedMenu: string = '';
+  currentDate: Date = new Date();
+  private dateInterval: any;
   
-  constructor(private router: Router, private http: HttpClient, private notificationService: NotificationService) {
+  constructor(
+    private router: Router, 
+    private http: HttpClient, 
+    private notificationService: NotificationService,
+    public themeService: ThemeService,
+    public languageService: LanguageService
+  ) {
     this.router.events.subscribe(() => {
       this.showNotificationDropdown = false;
     });
@@ -43,6 +53,10 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dateInterval = setInterval(() => {
+      this.currentDate = new Date();
+    }, 60000); // Update every minute
+
     const token = localStorage.getItem('jwt_token');
     if (token) {
       try {
@@ -66,6 +80,12 @@ export class DashboardLayoutComponent implements OnInit {
       }
       
       this.fetchNotifications();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.dateInterval) {
+      clearInterval(this.dateInterval);
     }
   }
 
