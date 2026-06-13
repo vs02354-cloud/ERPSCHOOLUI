@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-admission-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FlatpickrModule],
+  imports: [CommonModule, ReactiveFormsModule, FlatpickrModule, TranslatePipe],
   templateUrl: './admission-form.component.html',
   styleUrls: []
 })
