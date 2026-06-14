@@ -23,6 +23,7 @@ import { AssignmentDetailsComponent } from './assignments/assignment-details.com
 
 import { AboutUs } from './about-us/about-us';
 import { Contact } from './contact/contact';
+import { TransportDrivers } from './transport-drivers/transport-drivers';
 
 import { Leave } from './leave/leave';
 import { ParentProfile } from './parent-profile/parent-profile';
@@ -69,7 +70,8 @@ export const routes: Routes = [
         { path: 'transport/dashboard', component: TransportDashboard },
         { path: 'transport/routes', component: TransportRoutes },
         { path: 'transport/vehicles', component: TransportVehicles },
-        { path: 'transport/gatepass', component: TransportGatepass }
+        { path: 'transport/gatepass', component: TransportGatepass },
+        { path: 'transport/drivers', component: TransportDrivers }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }
