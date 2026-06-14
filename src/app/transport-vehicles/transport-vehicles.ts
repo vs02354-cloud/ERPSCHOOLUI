@@ -14,6 +14,17 @@ import { TranslatePipe } from '../services/language.service';
 export class TransportVehicles implements OnInit {
   vehicles: Vehicle[] = [];
   isLoading = true;
+  isSubmitting = false;
+  showModal = false;
+
+  newVehicle: Vehicle = {
+    vehicleNumber: '',
+    vehicleModel: '',
+    vehicleType: 'Bus',
+    capacity: 40,
+    registrationNumber: '',
+    isActive: true
+  };
 
   constructor(private transportService: TransportService) { }
 
@@ -31,6 +42,43 @@ export class TransportVehicles implements OnInit {
       error: (err) => {
         console.error(err);
         this.isLoading = false;
+      }
+    });
+  }
+
+  openAddModal() {
+    this.newVehicle = {
+      vehicleNumber: '',
+      vehicleModel: '',
+      vehicleType: 'Bus',
+      capacity: 40,
+      registrationNumber: '',
+      isActive: true
+    };
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
+
+  saveVehicle() {
+    if (!this.newVehicle.vehicleNumber || !this.newVehicle.vehicleModel || !this.newVehicle.registrationNumber) {
+      alert('Please fill all required fields');
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.transportService.addVehicle(this.newVehicle).subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        this.showModal = false;
+        this.loadVehicles();
+      },
+      error: (err) => {
+        console.error(err);
+        this.isSubmitting = false;
+        alert('Failed to save vehicle');
       }
     });
   }

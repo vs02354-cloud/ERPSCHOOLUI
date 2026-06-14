@@ -5,7 +5,7 @@
       <h2 class="text-2xl font-bold text-slate-800 tracking-tight">{{ 'NAV_VEHICLES' | translate }}</h2>
       <p class="text-sm text-slate-500 mt-1">Manage school fleet, driver assignments, and compliance.</p>
     </div>
-    <button class="btn-primary flex items-center space-x-2">
+    <button (click)="openAddModal()" class="btn-primary flex items-center space-x-2">
       <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
       <span>Add New Vehicle</span>
     </button>
@@ -76,7 +76,76 @@
       </div>
       <h3 class="text-lg font-bold text-slate-800">No Vehicles Found</h3>
       <p class="text-slate-500 mt-1 max-w-md">Your fleet is empty. Start by adding school buses, vans, or mini-buses to your transport module.</p>
-      <button class="btn-primary mt-6">Add First Vehicle</button>
+      <button (click)="openAddModal()" class="btn-primary mt-6">Add First Vehicle</button>
+    </div>
+  </div>
+
+  <!-- Add Vehicle Modal -->
+  <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+        <h3 class="text-lg font-bold text-slate-800">Add New Vehicle</h3>
+        <button (click)="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg hover:bg-slate-100">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      
+      <div class="p-6 overflow-y-auto flex-1">
+        <form class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Vehicle Number *</label>
+              <input type="text" [(ngModel)]="newVehicle.vehicleNumber" name="vehicleNumber" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-800" placeholder="e.g. Bus 101">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Registration No. *</label>
+              <input type="text" [(ngModel)]="newVehicle.registrationNumber" name="registrationNumber" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-800" placeholder="e.g. MH-12-AB-1234">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Vehicle Type *</label>
+              <select [(ngModel)]="newVehicle.vehicleType" name="vehicleType" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-800">
+                <option value="Bus">Bus</option>
+                <option value="Mini-Bus">Mini-Bus</option>
+                <option value="Van">Van</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Capacity (Seats) *</label>
+              <input type="number" [(ngModel)]="newVehicle.capacity" name="capacity" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-800">
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-1">Vehicle Model / Make *</label>
+              <input type="text" [(ngModel)]="newVehicle.vehicleModel" name="vehicleModel" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-800" placeholder="e.g. Tata Marcopolo 2022">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Insurance Expiry</label>
+              <input type="date" [(ngModel)]="newVehicle.insuranceExpiry" name="insuranceExpiry" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-800">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Fitness Expiry</label>
+              <input type="date" [(ngModel)]="newVehicle.fitnessExpiry" name="fitnessExpiry" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-800">
+            </div>
+            
+            <div class="flex items-center pt-6">
+              <input type="checkbox" [(ngModel)]="newVehicle.isActive" name="isActive" id="isVehicleActive" class="w-5 h-5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+              <label for="isVehicleActive" class="ml-2 text-sm font-medium text-slate-700">Vehicle is Active</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end space-x-3">
+        <button type="button" (click)="closeModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-lg transition-colors">
+          Cancel
+        </button>
+        <button type="button" (click)="saveVehicle()" [disabled]="isSubmitting" class="btn-primary flex items-center disabled:opacity-50">
+          <svg *ngIf="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          Save Vehicle
+        </button>
+      </div>
     </div>
   </div>
 </div>
