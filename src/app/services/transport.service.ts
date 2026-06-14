@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 
 export interface TransportRouteStop {
     id?: number;
@@ -66,7 +65,7 @@ export interface TransportGatePass {
   providedIn: 'root'
 })
 export class TransportService {
-  private apiUrl = `${environment.apiUrl}/api`;
+  private apiUrl = 'https://erpschoolapi.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
