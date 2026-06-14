@@ -30,6 +30,11 @@ import { Notifications } from './notifications/notifications';
 import { SendNotificationComponent } from './send-notification/send-notification.component';
 import { CommissionManagementComponent } from './commission-management/commission-management';
 
+import { TransportDashboard } from './transport-dashboard/transport-dashboard';
+import { TransportRoutes } from './transport-routes/transport-routes';
+import { TransportVehicles } from './transport-vehicles/transport-vehicles';
+import { TransportGatepass } from './transport-gatepass/transport-gatepass';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
@@ -59,7 +64,12 @@ export const routes: Routes = [
         { path: 'profile', component: ParentProfile },
         { path: 'notifications', component: Notifications },
         { path: 'send-notification', component: SendNotificationComponent },
-        { path: 'commissions', component: CommissionManagementComponent }
+        { path: 'commissions', component: CommissionManagementComponent },
+        
+        { path: 'transport/dashboard', component: TransportDashboard },
+        { path: 'transport/routes', component: TransportRoutes },
+        { path: 'transport/vehicles', component: TransportVehicles },
+        { path: 'transport/gatepass', component: TransportGatepass }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '../services/language.service';
+import { TransportService, TransportRoute } from '../services/transport.service';
 
 @Component({
   selector: 'app-admission-form',
@@ -25,13 +26,15 @@ export class AdmissionFormComponent implements OnInit {
   submitButtonText = 'Submit Admission';
   
   teachersList: any[] = [];
+  transportRoutes: TransportRoute[] = [];
 
   constructor(
     private fb: FormBuilder, 
     private http: HttpClient, 
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private transportService: TransportService
   ) {
     this.admissionForm = this.fb.group({
       id: [0], // added for edit mode
@@ -50,6 +53,7 @@ export class AdmissionFormComponent implements OnInit {
       section: ['A'],
       previousSchool: [''],
       transportRequired: [false],
+      transportRouteStopId: [null],
       referredByEmployeeId: [null],
       admissionNumber: ['PENDING'],
       admissionDate: [new Date().toISOString()] // needed for updates to not nullify it
@@ -69,6 +73,27 @@ export class AdmissionFormComponent implements OnInit {
       }
     });
     this.loadTeachers();
+    this.loadTransportRoutes();
+
+    this.admissionForm.get('transportRequired')?.valueChanges.subscribe(required => {
+      if (!required) {
+        this.admissionForm.get('transportRouteStopId')?.setValue(null);
+        this.admissionForm.get('transportRouteStopId')?.clearValidators();
+      } else {
+        this.admissionForm.get('transportRouteStopId')?.setValidators(Validators.required);
+      }
+      this.admissionForm.get('transportRouteStopId')?.updateValueAndValidity();
+    });
+  }
+
+  loadTransportRoutes() {
+    this.transportService.getRoutes().subscribe({
+      next: (data) => {
+        this.transportRoutes = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Failed to load transport routes', err)
+    });
   }
 
   loadTeachers() {

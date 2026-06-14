@@ -246,7 +246,24 @@
           </div>
         </div>
 
-        <!-- 9. Notifications -->
+        <!-- 9. Transport Management -->
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Transport Manager' || userRole === 'Parent'" class="mb-1">
+          <button (click)="toggleMenu('transport')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+              {{ 'NAV_TRANSPORT' | translate }}
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'transport'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'transport'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/dashboard" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_TRANSPORT_DASHBOARD' | translate }}</a>
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/routes" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_ROUTES_STOPS' | translate }}</a>
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/vehicles" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_VEHICLES' | translate }}</a>
+            <a routerLink="/dashboard/transport/gatepass" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_GATEPASS' | translate }}</a>
+          </div>
+        </div>
+
+        <!-- 10. Notifications -->
         <div class="mb-1">
           <button (click)="toggleMenu('notifications')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">

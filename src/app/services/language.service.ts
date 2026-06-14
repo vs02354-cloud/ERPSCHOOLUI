@@ -41,6 +41,13 @@ export class LanguageService {
       'NAV_REPORTS': 'Reports',
       'NAV_MENU': 'Menu',
 
+      // Transport Navigation
+      'NAV_TRANSPORT': 'Transport',
+      'NAV_TRANSPORT_DASHBOARD': 'Live Dashboard',
+      'NAV_ROUTES_STOPS': 'Routes & Stops',
+      'NAV_VEHICLES': 'Vehicles & Fleet',
+      'NAV_GATEPASS': 'Digital Gate Pass',
+
       // Employee Module
       'EMP_MANAGEMENT_TITLE': 'Employee Management',
       'EMP_MANAGEMENT_DESC': 'Manage staff, assign roles, and handle access control.',
@@ -314,7 +321,14 @@ export class LanguageService {
       'NAV_SEND_NOTIF': 'सूचना भेजें',
       'NAV_ALL_NOTIF': 'सभी सूचनाएं',
       'NAV_REPORTS': 'रिपोर्ट',
-      'NAV_MENU': 'मेन्यू',
+      'NAV_MENU': 'मेनू',
+
+      // Transport Navigation
+      'NAV_TRANSPORT': 'परिवहन',
+      'NAV_TRANSPORT_DASHBOARD': 'लाइव डैशबोर्ड',
+      'NAV_ROUTES_STOPS': 'मार्ग और स्टॉप',
+      'NAV_VEHICLES': 'वाहन और बेड़ा',
+      'NAV_GATEPASS': 'डिजिटल गेट पास',
 
       // Employee Module
       'EMP_MANAGEMENT_TITLE': 'कर्मचारी प्रबंधन',
