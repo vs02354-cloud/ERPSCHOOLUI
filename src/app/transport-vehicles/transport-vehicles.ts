@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransportService, Vehicle, TransportRoute } from '../services/transport.service';
@@ -29,7 +29,7 @@ export class TransportVehicles implements OnInit {
     isActive: true
   };
 
-  constructor(private transportService: TransportService, private http: HttpClient) { }
+  constructor(private transportService: TransportService, private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadVehicles();
@@ -49,10 +49,12 @@ export class TransportVehicles implements OnInit {
       next: (data) => {
         this.vehicles = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

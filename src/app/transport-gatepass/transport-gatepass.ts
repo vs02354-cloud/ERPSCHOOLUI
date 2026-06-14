@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransportService, TransportGatePass } from '../services/transport.service';
@@ -15,7 +15,7 @@ export class TransportGatepass implements OnInit {
   gatePasses: TransportGatePass[] = [];
   isLoading = true;
 
-  constructor(private transportService: TransportService) { }
+  constructor(private transportService: TransportService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadGatePasses();
@@ -27,10 +27,12 @@ export class TransportGatepass implements OnInit {
       next: (data) => {
         this.gatePasses = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

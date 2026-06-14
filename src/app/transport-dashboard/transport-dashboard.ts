@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransportService, Vehicle, TransportRoute } from '../services/transport.service';
 import { LanguageService, TranslatePipe } from '../services/language.service';
@@ -21,7 +21,8 @@ export class TransportDashboard implements OnInit {
 
   constructor(
     private transportService: TransportService,
-    public languageService: LanguageService
+    public languageService: LanguageService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -41,16 +42,19 @@ export class TransportDashboard implements OnInit {
             this.vehicles = vData;
             this.calculateMetrics();
             this.isLoading = false;
+            this.cdr.detectChanges();
           },
           error: (err) => {
             console.error('Error fetching vehicles', err);
             this.isLoading = false;
+            this.cdr.detectChanges();
           }
         });
       },
       error: (err) => {
         console.error('Error fetching routes', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

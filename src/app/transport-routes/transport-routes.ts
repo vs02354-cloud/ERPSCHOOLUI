@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransportService, TransportRoute } from '../services/transport.service';
@@ -28,7 +28,7 @@ export class TransportRoutes implements OnInit {
     routeFare: 0
   };
 
-  constructor(private transportService: TransportService) { }
+  constructor(private transportService: TransportService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadRoutes();
@@ -40,10 +40,12 @@ export class TransportRoutes implements OnInit {
       next: (data) => {
         this.routes = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
