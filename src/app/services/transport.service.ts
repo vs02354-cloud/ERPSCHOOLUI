@@ -128,8 +128,8 @@ export class TransportService {
     return this.http.get<TransportGatePass>(`${this.apiUrl}/TransportGatePass/my-gatepass`);
   }
 
-  generateGatePass(studentId: number): Observable<TransportGatePass> {
-    return this.http.post<TransportGatePass>(`${this.apiUrl}/TransportGatePass/generate/${studentId}`, {});
+  generateGatePass(studentIdentifier: string | number): Observable<TransportGatePass> {
+    return this.http.post<TransportGatePass>(`${this.apiUrl}/TransportGatePass/generate/${studentIdentifier}`, {});
   }
 
   verifyGatePass(qrCode: string): Observable<any> {

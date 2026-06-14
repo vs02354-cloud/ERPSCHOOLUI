@@ -38,11 +38,10 @@ export class TransportGatepass implements OnInit {
   }
 
   generatePass() {
-    const studentIdStr = prompt('Enter Student ID to generate a Gate Pass:');
-    if (!studentIdStr) return;
-    const studentId = parseInt(studentIdStr, 10);
+    const studentIdentifier = prompt('Enter Student ID or Admission Number to generate a Gate Pass:');
+    if (!studentIdentifier) return;
     
-    this.transportService.generateGatePass(studentId).subscribe({
+    this.transportService.generateGatePass(studentIdentifier).subscribe({
       next: (pass) => {
         alert('Gate Pass generated successfully!');
         this.loadGatePasses();
