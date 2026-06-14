@@ -14,6 +14,19 @@ import { TranslatePipe } from '../services/language.service';
 export class TransportRoutes implements OnInit {
   routes: TransportRoute[] = [];
   isLoading = true;
+  isSubmitting = false;
+  showModal = false;
+
+  newRoute: TransportRoute = {
+    routeName: '',
+    routeCode: '',
+    startPoint: '',
+    endPoint: '',
+    startTime: '',
+    endTime: '',
+    isActive: true,
+    routeFare: 0
+  };
 
   constructor(private transportService: TransportService) { }
 
@@ -31,6 +44,45 @@ export class TransportRoutes implements OnInit {
       error: (err) => {
         console.error(err);
         this.isLoading = false;
+      }
+    });
+  }
+
+  openAddModal() {
+    this.newRoute = {
+      routeName: '',
+      routeCode: '',
+      startPoint: '',
+      endPoint: '',
+      startTime: '',
+      endTime: '',
+      isActive: true,
+      routeFare: 0
+    };
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
+
+  saveRoute() {
+    if (!this.newRoute.routeName || !this.newRoute.routeCode || !this.newRoute.startPoint || !this.newRoute.endPoint || !this.newRoute.startTime || !this.newRoute.endTime) {
+      alert('Please fill all required fields');
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.transportService.addRoute(this.newRoute).subscribe({
+      next: (res) => {
+        this.isSubmitting = false;
+        this.showModal = false;
+        this.loadRoutes();
+      },
+      error: (err) => {
+        console.error(err);
+        this.isSubmitting = false;
+        alert('Failed to save route');
       }
     });
   }
