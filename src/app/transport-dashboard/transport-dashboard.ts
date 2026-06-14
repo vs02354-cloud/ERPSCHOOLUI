@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransportService, Vehicle, TransportRoute } from '../services/transport.service';
-import { LanguageService } from '../services/language.service';
-import { LanguagePipe } from '../services/language.pipe';
+import { LanguageService, TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-transport-dashboard',
   standalone: true,
-  imports: [CommonModule, LanguagePipe],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './transport-dashboard.html',
   styleUrls: ['./transport-dashboard.css']
 })

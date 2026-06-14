@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransportService, Vehicle } from '../services/transport.service';
-import { LanguagePipe } from '../services/language.pipe';
+import { TranslatePipe } from '../services/language.service';
 
 @Component({
   selector: 'app-transport-vehicles',
   standalone: true,
-  imports: [CommonModule, FormsModule, LanguagePipe],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './transport-vehicles.html',
   styleUrls: ['./transport-vehicles.css']
 })
