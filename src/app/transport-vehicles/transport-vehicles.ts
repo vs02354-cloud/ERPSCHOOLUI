@@ -38,8 +38,10 @@ export class TransportVehicles implements OnInit {
 
   loadRoutesAndDrivers() {
     this.transportService.getRoutes().subscribe(res => this.availableRoutes = res);
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/HR/Employees').subscribe(res => {
-      this.availableDrivers = res.filter(e => e.department === 'Transport' || e.designation === 'Driver');
+    this.http.get<any>('https://erpschoolapi.onrender.com/api/HR/Employees?searchTerm=Driver&pageSize=100').subscribe(res => {
+      if (res && res.items) {
+        this.availableDrivers = res.items.map((item: any) => item.employee);
+      }
     });
   }
 
