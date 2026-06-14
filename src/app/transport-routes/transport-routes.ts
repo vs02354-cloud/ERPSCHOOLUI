@@ -62,6 +62,26 @@ export class TransportRoutes implements OnInit {
     this.showModal = true;
   }
 
+  editRoute(route: TransportRoute) {
+    this.newRoute = { ...route };
+    this.showModal = true;
+  }
+
+  deleteRoute(id: number | undefined) {
+    if (!id) return;
+    if (confirm('Are you sure you want to delete this route?')) {
+      this.transportService.deleteRoute(id).subscribe({
+        next: () => {
+          this.loadRoutes();
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Failed to delete route');
+        }
+      });
+    }
+  }
+
   closeModal() {
     this.showModal = false;
   }
@@ -73,17 +93,32 @@ export class TransportRoutes implements OnInit {
     }
 
     this.isSubmitting = true;
-    this.transportService.addRoute(this.newRoute).subscribe({
-      next: (res) => {
-        this.isSubmitting = false;
-        this.showModal = false;
-        this.loadRoutes();
-      },
-      error: (err) => {
-        console.error(err);
-        this.isSubmitting = false;
-        alert('Failed to save route');
-      }
-    });
+    if (this.newRoute.id) {
+      this.transportService.updateRoute(this.newRoute.id, this.newRoute).subscribe({
+        next: (res) => {
+          this.isSubmitting = false;
+          this.showModal = false;
+          this.loadRoutes();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSubmitting = false;
+          alert('Failed to update route');
+        }
+      });
+    } else {
+      this.transportService.addRoute(this.newRoute).subscribe({
+        next: (res) => {
+          this.isSubmitting = false;
+          this.showModal = false;
+          this.loadRoutes();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSubmitting = false;
+          alert('Failed to save route');
+        }
+      });
+    }
   }
 }

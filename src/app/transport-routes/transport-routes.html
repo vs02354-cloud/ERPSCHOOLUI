@@ -55,12 +55,12 @@
               </span>
             </td>
             <td class="py-3 px-4 text-sm text-right space-x-2 flex justify-end">
-              <button class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
-                ✏️
-              </button>
-              <button class="p-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Delete">
-                🗑️
-              </button>
+                <button (click)="editRoute(route)" class="text-slate-400 hover:text-indigo-600 transition-colors p-1" title="Edit">
+                  <span class="text-lg">✏️</span>
+                </button>
+                <button (click)="deleteRoute(route.id)" class="text-slate-400 hover:text-rose-600 transition-colors p-1" title="Delete">
+                  <span class="text-lg">🗑️</span>
+                </button>
             </td>
           </tr>
           <tr *ngIf="routes.length === 0">
@@ -78,7 +78,7 @@
   <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-        <h3 class="text-lg font-bold text-slate-800">Add New Transport Route</h3>
+        <h3 class="text-lg font-bold text-slate-800">{{ newRoute.id ? 'Edit Transport Route' : 'Add New Transport Route' }}</h3>
         <button (click)="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg hover:bg-slate-100">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>

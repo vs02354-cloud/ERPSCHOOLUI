@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TransportService, Vehicle } from '../services/transport.service';
+import { TransportService, Vehicle, TransportRoute } from '../services/transport.service';
 import { TranslatePipe } from '../services/language.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-transport-vehicles',
@@ -13,6 +14,8 @@ import { TranslatePipe } from '../services/language.service';
 })
 export class TransportVehicles implements OnInit {
   vehicles: Vehicle[] = [];
+  availableRoutes: TransportRoute[] = [];
+  availableDrivers: any[] = [];
   isLoading = true;
   isSubmitting = false;
   showModal = false;
@@ -26,10 +29,18 @@ export class TransportVehicles implements OnInit {
     isActive: true
   };
 
-  constructor(private transportService: TransportService) { }
+  constructor(private transportService: TransportService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.loadVehicles();
+    this.loadRoutesAndDrivers();
+  }
+
+  loadRoutesAndDrivers() {
+    this.transportService.getRoutes().subscribe(res => this.availableRoutes = res);
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/HR/Employees').subscribe(res => {
+      this.availableDrivers = res.filter(e => e.department === 'Transport' || e.designation === 'Driver');
+    });
   }
 
   loadVehicles() {
@@ -53,9 +64,31 @@ export class TransportVehicles implements OnInit {
       vehicleType: 'Bus',
       capacity: 40,
       registrationNumber: '',
-      isActive: true
-    };
+      isActive: true,
+      assignedRouteId: null,
+      driverEmployeeId: null
+    } as any;
     this.showModal = true;
+  }
+
+  editVehicle(vehicle: Vehicle) {
+    this.newVehicle = { ...vehicle };
+    this.showModal = true;
+  }
+
+  deleteVehicle(id: number | undefined) {
+    if (!id) return;
+    if (confirm('Are you sure you want to delete this vehicle?')) {
+      this.transportService.deleteVehicle(id).subscribe({
+        next: () => {
+          this.loadVehicles();
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Failed to delete vehicle');
+        }
+      });
+    }
   }
 
   closeModal() {
@@ -69,17 +102,32 @@ export class TransportVehicles implements OnInit {
     }
 
     this.isSubmitting = true;
-    this.transportService.addVehicle(this.newVehicle).subscribe({
-      next: (res) => {
-        this.isSubmitting = false;
-        this.showModal = false;
-        this.loadVehicles();
-      },
-      error: (err) => {
-        console.error(err);
-        this.isSubmitting = false;
-        alert('Failed to save vehicle');
-      }
-    });
+    if (this.newVehicle.id) {
+      this.transportService.updateVehicle(this.newVehicle.id, this.newVehicle).subscribe({
+        next: (res) => {
+          this.isSubmitting = false;
+          this.showModal = false;
+          this.loadVehicles();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSubmitting = false;
+          alert('Failed to update vehicle');
+        }
+      });
+    } else {
+      this.transportService.addVehicle(this.newVehicle).subscribe({
+        next: (res) => {
+          this.isSubmitting = false;
+          this.showModal = false;
+          this.loadVehicles();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSubmitting = false;
+          alert('Failed to save vehicle');
+        }
+      });
+    }
   }
 }
