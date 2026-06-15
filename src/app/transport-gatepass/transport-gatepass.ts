@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransportService, TransportGatePass } from '../services/transport.service';
 import { TranslatePipe } from '../services/language.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-transport-gatepass',
@@ -14,27 +15,51 @@ import { TranslatePipe } from '../services/language.service';
 export class TransportGatepass implements OnInit {
   gatePasses: TransportGatePass[] = [];
   isLoading = true;
+  isAdminOrManager = false;
 
-  constructor(private transportService: TransportService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private transportService: TransportService, 
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
+    const role = this.authService.getUserRole();
+    this.isAdminOrManager = role === 'Admin' || role === 'Super Admin' || role === 'School Admin' || role === 'Transport Manager';
     this.loadGatePasses();
   }
 
   loadGatePasses() {
     this.isLoading = true;
-    this.transportService.getGatePasses().subscribe({
-      next: (data) => {
-        this.gatePasses = data;
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      }
-    });
+    
+    if (this.isAdminOrManager) {
+      this.transportService.getGatePasses().subscribe({
+        next: (data) => {
+          this.gatePasses = data;
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      this.transportService.getMyGatePass().subscribe({
+        next: (data) => {
+          this.gatePasses = data ? [data] : [];
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error(err);
+          this.gatePasses = [];
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    }
   }
 
   generatePass() {

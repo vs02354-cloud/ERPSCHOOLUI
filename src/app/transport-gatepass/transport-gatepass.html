@@ -5,7 +5,7 @@
       <h2 class="text-2xl font-bold text-slate-800 tracking-tight">{{ 'NAV_GATEPASS' | translate }}</h2>
       <p class="text-sm text-slate-500 mt-1">Manage and generate digital QR gate passes for transport students.</p>
     </div>
-    <div class="flex items-center space-x-3">
+    <div class="flex items-center space-x-3" *ngIf="isAdminOrManager">
       <button (click)="scanPass()" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium text-sm flex items-center">
         <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
         Scan Pass
@@ -84,8 +84,10 @@
         <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
       </div>
       <h3 class="text-lg font-bold text-slate-800">No Gate Passes Found</h3>
-      <p class="text-slate-500 mt-1 max-w-md">There are no active gate passes. Generate passes for enrolled students to allow them to board.</p>
-      <button (click)="generatePass()" class="btn-primary mt-6 flex items-center space-x-2">
+      <p class="text-slate-500 mt-1 max-w-md" *ngIf="isAdminOrManager">There are no active gate passes. Generate passes for enrolled students to allow them to board.</p>
+      <p class="text-slate-500 mt-1 max-w-md" *ngIf="!isAdminOrManager">Your student does not have an active gate pass assigned.</p>
+      
+      <button *ngIf="isAdminOrManager" (click)="generatePass()" class="btn-primary mt-6 flex items-center space-x-2">
         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
         <span>Generate First Pass</span>
       </button>
