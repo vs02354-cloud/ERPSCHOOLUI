@@ -135,4 +135,8 @@ export class TransportService {
   verifyGatePass(qrCode: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/TransportGatePass/verify/${qrCode}`);
   }
+
+  revokeGatePass(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/TransportGatePass/revoke/${id}`, {});
+  }
 }

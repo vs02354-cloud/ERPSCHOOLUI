@@ -68,4 +68,63 @@ export class TransportGatepass implements OnInit {
       }
     });
   }
+
+  revokePass(pass: TransportGatePass) {
+    if (!pass.id) return;
+    if (confirm(`Are you sure you want to revoke the gate pass for ${pass.student?.firstName}?`)) {
+      this.transportService.revokeGatePass(pass.id).subscribe({
+        next: () => {
+          alert('Gate pass revoked successfully.');
+          this.loadGatePasses();
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Failed to revoke gate pass.');
+        }
+      });
+    }
+  }
+
+  printPass(pass: TransportGatePass) {
+    const printContent = `
+      <html>
+        <head>
+          <title>Print Gate Pass</title>
+          <style>
+            body { font-family: sans-serif; text-align: center; padding: 20px; }
+            .card { border: 2px solid #333; padding: 20px; width: 300px; margin: 0 auto; border-radius: 10px; }
+            h2 { margin-bottom: 5px; }
+            .details { margin: 20px 0; text-align: left; font-size: 14px; line-height: 1.6; }
+            .qr { margin-top: 20px; border: 1px solid #ccc; padding: 10px; display: inline-block; }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h2>School Transport Gate Pass</h2>
+            <h3>${pass.student?.firstName} ${pass.student?.lastName}</h3>
+            <p style="color: #666; margin-top: -10px;">${pass.student?.admissionNumber}</p>
+            <div class="details">
+              <strong>Route:</strong> ${pass.route?.routeName || 'N/A'}<br>
+              <strong>Vehicle:</strong> ${pass.vehicle?.vehicleNumber || 'N/A'}<br>
+              <strong>Valid Until:</strong> ${pass.validUntil ? new Date(pass.validUntil).toLocaleDateString() : 'N/A'}
+            </div>
+            <div class="qr">
+              <p style="margin: 0; font-size: 10px; color: #999;">QR Data</p>
+              <strong>${pass.qrCodeData.substring(0, 8)}...</strong>
+            </div>
+          </div>
+          <script>
+            window.onload = function() { window.print(); window.close(); }
+          </script>
+        </body>
+      </html>
+    `;
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+    } else {
+      alert('Please allow popups to print passes.');
+    }
+  }
 }

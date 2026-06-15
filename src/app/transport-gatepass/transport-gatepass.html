@@ -68,10 +68,10 @@
 
         <!-- Hover Actions -->
         <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center space-y-3 rounded-2xl">
-          <button class="bg-white text-slate-800 hover:text-indigo-600 px-4 py-2 rounded-lg font-medium text-sm shadow-lg w-32 flex justify-center items-center">
+          <button (click)="printPass(pass)" class="bg-white text-slate-800 hover:text-indigo-600 px-4 py-2 rounded-lg font-medium text-sm shadow-lg w-32 flex justify-center items-center">
             Print Pass
           </button>
-          <button *ngIf="pass.isActive" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg font-medium text-sm shadow-lg w-32 flex justify-center items-center">
+          <button *ngIf="pass.isActive" (click)="revokePass(pass)" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg font-medium text-sm shadow-lg w-32 flex justify-center items-center">
             Revoke
           </button>
         </div>
