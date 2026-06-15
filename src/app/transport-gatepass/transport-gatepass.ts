@@ -48,7 +48,8 @@ export class TransportGatepass implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        alert('Failed to generate gate pass. Make sure the student exists and is assigned a transport route.');
+        const errorMsg = err.error && typeof err.error === 'string' ? err.error : 'Unknown error occurred.';
+        alert(`Failed to generate gate pass: ${errorMsg}`);
       }
     });
   }
