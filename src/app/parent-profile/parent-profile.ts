@@ -21,12 +21,13 @@ export class ParentProfile implements OnInit {
   }
 
   loadTransportDetails() {
-    this.transportService.getMyGatePass().subscribe({
-      next: (pass) => {
-        this.gatePass = pass;
+    this.transportService.getMyGatePasses().subscribe({
+      next: (passes: TransportGatePass[]) => {
+        // Get the active pass or the first one
+        this.gatePass = passes && passes.length > 0 ? (passes.find(p => p.isActive) || passes[0]) : null;
         this.isLoadingTransport = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.gatePass = null;
         this.isLoadingTransport = false;
         // 404 is expected if they don't have transport
