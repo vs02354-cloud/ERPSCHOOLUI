@@ -26,6 +26,7 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   unreadCount: number = 0;
   expandedMenu: string = '';
   currentDate: Date = new Date();
+  hasTransportFacility: boolean = true;
   private dateInterval: any;
   
   constructor(
@@ -75,6 +76,16 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
         // Exception for Super/School Admin if it was passed weirdly
         if (rawRole.toLowerCase() === 'super admin') this.userRole = 'Super Admin';
         if (rawRole.toLowerCase() === 'school admin') this.userRole = 'School Admin';
+
+        if (this.userRole === 'Parent') {
+          this.hasTransportFacility = false; // default to false until we verify
+          this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
+            next: (children) => {
+              this.hasTransportFacility = children.some(c => c.transportRequired);
+            },
+            error: (err) => console.error('Failed to fetch children', err)
+          });
+        }
       } catch (e) {
         console.error('Error decoding token', e);
       }

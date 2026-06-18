@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TransportService, TransportGatePass } from '../services/transport.service';
 import { TranslatePipe } from '../services/language.service';
 import { AuthService } from '../services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-transport-gatepass',
@@ -18,17 +19,40 @@ export class TransportGatepass implements OnInit {
   isLoading = true;
   isAdminOrManager = false;
   activeTab: 'All' | 'Pending' | 'Approved' | 'Rejected' = 'All';
+  hasTransportFacility: boolean = true;
 
   constructor(
     private transportService: TransportService, 
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private http: HttpClient
   ) { }
 
   ngOnInit(): void {
     const role = this.authService.getUserRole();
     this.isAdminOrManager = role === 'Admin' || role === 'Super Admin' || role === 'School Admin' || role === 'Transport Manager';
-    this.loadGatePasses();
+    
+    if (role === 'Parent') {
+      this.hasTransportFacility = false;
+      this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
+        next: (children) => {
+          this.hasTransportFacility = children.some(c => c.transportRequired);
+          if (this.hasTransportFacility) {
+            this.loadGatePasses();
+          } else {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          }
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      this.loadGatePasses();
+    }
   }
 
   loadGatePasses() {
