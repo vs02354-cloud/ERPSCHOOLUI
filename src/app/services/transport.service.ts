@@ -56,6 +56,13 @@ export interface TransportGatePass {
     validUntil: string;
     isActive: boolean;
     issueDate: string;
+    status?: number; // 0: Pending, 1: Approved, 2: Rejected, 3: Used, 4: Expired
+    createdBy?: string;
+    createdDate?: string;
+    approvedBy?: string;
+    approvalDate?: string;
+    remarks?: string;
+    validityPeriodDays?: number;
     student?: any;
     route?: TransportRoute;
     vehicle?: Vehicle;
@@ -124,8 +131,12 @@ export class TransportService {
     return this.http.get<TransportGatePass[]>(`${this.apiUrl}/TransportGatePass`);
   }
 
-  getMyGatePass(): Observable<TransportGatePass> {
-    return this.http.get<TransportGatePass>(`${this.apiUrl}/TransportGatePass/my-gatepass`);
+  getMyGatePasses(): Observable<TransportGatePass[]> {
+    return this.http.get<TransportGatePass[]>(`${this.apiUrl}/TransportGatePass/my-gatepass`);
+  }
+
+  requestGatePass(): Observable<TransportGatePass> {
+    return this.http.post<TransportGatePass>(`${this.apiUrl}/TransportGatePass/request`, {});
   }
 
   generateGatePass(studentIdentifier: string | number): Observable<TransportGatePass> {
@@ -138,5 +149,13 @@ export class TransportService {
 
   revokeGatePass(id: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/TransportGatePass/revoke/${id}`, {});
+  }
+
+  approveGatePass(id: number, remarks: string = ''): Observable<any> {
+    return this.http.put(`${this.apiUrl}/TransportGatePass/${id}/approve`, { remarks });
+  }
+
+  rejectGatePass(id: number, remarks: string = ''): Observable<any> {
+    return this.http.put(`${this.apiUrl}/TransportGatePass/${id}/reject`, { remarks });
   }
 }
