@@ -101,8 +101,14 @@ export class EmployeeListComponent implements OnInit {
       next: () => {
         this.saving = false;
         this.successMessage = 'Employee record updated successfully.';
+        
+        // Immediately update local array to reflect changes instantly
+        const index = this.employees.findIndex(e => e.employee.id === this.editingEmployee.employee.id);
+        if (index !== -1) {
+          this.employees[index] = { ...this.editingEmployee };
+        }
+
         this.closeEditModal();
-        this.loadEmployees();
         
         // Clear success message after 3 seconds
         setTimeout(() => {
@@ -113,7 +119,7 @@ export class EmployeeListComponent implements OnInit {
       error: (err) => {
         console.error('Failed to update employee', err);
         this.saving = false;
-        this.errorMessage = 'Failed to update employee record.';
+        this.errorMessage = err.error?.message || 'Failed to update employee record.';
         this.cdr.detectChanges();
       }
     });
