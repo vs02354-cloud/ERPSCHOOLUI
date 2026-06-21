@@ -18,7 +18,6 @@ export class TransportGatepass implements OnInit {
   gatePasses: TransportGatePass[] = [];
   isLoading = true;
   isAdminOrManager = false;
-  activeTab: 'All' | 'Pending' | 'Approved' | 'Rejected' = 'All';
   hasTransportFacility: boolean = true;
 
   constructor(
@@ -91,21 +90,8 @@ export class TransportGatepass implements OnInit {
     }
   }
 
-  setTab(tab: 'All' | 'Pending' | 'Approved' | 'Rejected') {
-    this.activeTab = tab;
-    this.filterPasses();
-  }
-
   filterPasses() {
-    if (this.activeTab === 'All') {
-      this.gatePasses = this.allGatePasses;
-    } else if (this.activeTab === 'Pending') {
-      this.gatePasses = this.allGatePasses.filter(p => p.status === 0);
-    } else if (this.activeTab === 'Approved') {
-      this.gatePasses = this.allGatePasses.filter(p => p.status === 1);
-    } else if (this.activeTab === 'Rejected') {
-      this.gatePasses = this.allGatePasses.filter(p => p.status === 2);
-    }
+    this.gatePasses = this.allGatePasses.filter(p => p.status === 1 && p.isActive);
   }
 
   generatePass() {
@@ -125,34 +111,6 @@ export class TransportGatepass implements OnInit {
     });
   }
 
-  requestPass() {
-    this.transportService.requestGatePass().subscribe({
-      next: (pass) => {
-        alert('Gate Pass requested successfully! It is pending approval from Admin.');
-        this.loadGatePasses();
-      },
-      error: (err) => {
-        console.error(err);
-        const errorMsg = err.error && typeof err.error === 'string' ? err.error : 'Unknown error occurred.';
-        alert(`Failed to request gate pass: ${errorMsg}`);
-      }
-    });
-  }
-
-  approvePass(pass: TransportGatePass) {
-    if (!pass.id) return;
-    const remarks = prompt('Enter remarks (optional):') || '';
-    this.transportService.approveGatePass(pass.id, remarks).subscribe({
-      next: () => {
-        alert('Gate pass approved successfully.');
-        this.loadGatePasses();
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Failed to approve gate pass.');
-      }
-    });
-  }
 
   rejectPass(pass: TransportGatePass) {
     if (!pass.id) return;
