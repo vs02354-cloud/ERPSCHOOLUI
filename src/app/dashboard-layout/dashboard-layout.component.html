@@ -222,7 +222,7 @@
         </div>
 
         <!-- 4. Transfer Certificate -->
-        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Parent' || userRole === 'Student'" class="mb-1">
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Parent' || userRole === 'Student'" class="mb-1">
           <button (click)="toggleMenu('tc')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
@@ -280,7 +280,7 @@
         </div>
 
         <!-- 8. Commission Management -->
-        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin'" class="mb-1">
+        <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Teacher'" class="mb-1">
           <button (click)="toggleMenu('commissions')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2"></path></svg>
