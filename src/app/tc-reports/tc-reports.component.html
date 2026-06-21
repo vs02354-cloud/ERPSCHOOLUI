@@ -1,0 +1,197 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in print-container">
+  
+  <div class="flex justify-between items-center mb-6 no-print">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Transfer Certificate Reports</h1>
+      <p class="text-sm text-slate-500 mt-1">View, filter, and manage student transfer certificate applications.</p>
+    </div>
+    <div class="space-x-3 flex">
+      <button (click)="exportToExcel()" class="flex items-center px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition shadow-sm text-sm font-medium">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Export Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="glass-card p-6 mb-8 border border-slate-200/50 shadow-sm no-print">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Class</label>
+        <select [(ngModel)]="filterClass" (change)="applyFilters()" class="form-control glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+          <option value="">All Classes</option>
+          <option *ngFor="let cls of uniqueClasses" [value]="cls">Class {{cls}}</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Student Name</label>
+        <input type="text" [(ngModel)]="filterName" (keyup)="applyFilters()" placeholder="Search name..." class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Admission No.</label>
+        <input type="text" [(ngModel)]="filterAdmissionNo" (keyup)="applyFilters()" placeholder="Search adm no..." class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Date</label>
+        <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Status</label>
+        <select [(ngModel)]="filterStatus" (change)="applyFilters()" class="form-control glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="successMessage" class="mb-6 p-4 bg-green-50 text-green-700 border border-green-200 rounded-xl flex items-center shadow-sm">
+    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-xl flex items-center shadow-sm">
+    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Data Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative min-h-[300px]">
+    <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white/50 z-10 backdrop-blur-sm">
+      <div class="text-indigo-600 font-semibold text-sm">Loading Reports...</div>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200" id="tcTable">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="px-4 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider w-12">S.No.</th>
+            <th class="px-4 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Admission No.</th>
+            <th class="px-4 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Student Name</th>
+            <th class="px-4 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Class</th>
+            <th class="px-4 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Section</th>
+            <th class="px-4 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Applied Date</th>
+            <th class="px-4 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Reason</th>
+            <th class="px-4 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+            <th class="px-4 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider no-print">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-slate-200">
+          <tr *ngFor="let tc of filteredReports; let i = index" class="hover:bg-slate-50 transition-colors">
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-slate-500 font-medium">{{ i + 1 }}</td>
+            <td class="px-4 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 bg-slate-100 rounded text-xs font-bold text-slate-700">{{ tc.student?.admissionNumber }}</span>
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm font-bold text-slate-900">{{ tc.student?.firstName }} {{ tc.student?.lastName }}</td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-slate-600">{{ tc.student?.currentClass }}</td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-slate-600">{{ tc.student?.section || '-' }}</td>
+            <td class="px-4 py-4 whitespace-nowrap text-sm text-slate-600">{{ tc.appliedDate | date:'dd-MMM-yyyy' }}</td>
+            <td class="px-4 py-4 text-sm text-slate-600 max-w-[200px] truncate" [title]="tc.reasonForLeaving">{{ tc.reasonForLeaving }}</td>
+            <td class="px-4 py-4 whitespace-nowrap text-center">
+              <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full border" 
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-800 border-yellow-200': tc.status === 'Pending',
+                      'bg-green-100 text-green-800 border-green-200': tc.status === 'Approved',
+                      'bg-red-100 text-red-800 border-red-200': tc.status === 'Rejected'
+                    }">
+                {{ tc.status }}
+              </span>
+            </td>
+            <td class="px-4 py-4 whitespace-nowrap text-center text-sm font-medium no-print">
+              <div class="flex justify-center space-x-2">
+                <button (click)="openViewModal(tc)" class="text-blue-600 hover:text-blue-900" title="View Details">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                </button>
+                <button *ngIf="tc.status === 'Pending'" (click)="openApproveModal(tc)" class="text-green-600 hover:text-green-900" title="Approve">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </button>
+                <button *ngIf="tc.status === 'Pending'" (click)="rejectTC(tc)" class="text-red-600 hover:text-red-900" title="Reject">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <button *ngIf="tc.status === 'Approved'" (click)="printTC(tc)" class="text-indigo-600 hover:text-indigo-900" title="Print TC">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredReports.length === 0 && !isLoading">
+            <td colspan="9" class="px-6 py-12 text-center text-slate-500">
+              No transfer certificate applications found matching your criteria.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Approve Modal -->
+<div *ngIf="showApproveModal && currentTC" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col">
+    <div class="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+      <h3 class="font-bold text-slate-700 text-lg">Approve Transfer Certificate</h3>
+      <button (click)="closeApproveModal()" class="text-slate-400 hover:text-slate-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <div class="p-6 space-y-4">
+      <p class="text-sm text-slate-600 mb-4">You are approving the TC for <strong>{{currentTC.student?.firstName}} {{currentTC.student?.lastName}}</strong>. Once approved, the student will be marked as inactive and a TC number will be generated.</p>
+      
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Academic Progress</label>
+        <input type="text" [(ngModel)]="approveData.academicProgress" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Conduct</label>
+        <input type="text" [(ngModel)]="approveData.conduct" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+      </div>
+    </div>
+    
+    <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end space-x-3">
+      <button (click)="closeApproveModal()" class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">Cancel</button>
+      <button (click)="submitApprove()" [disabled]="isProcessing" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 flex items-center disabled:opacity-70">
+        <svg *ngIf="isProcessing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+        Approve TC
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- View Modal -->
+<div *ngIf="showViewModal && currentTC" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col">
+    <div class="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+      <h3 class="font-bold text-slate-700 text-lg">Transfer Certificate Details</h3>
+      <button (click)="closeViewModal()" class="text-slate-400 hover:text-slate-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    
+    <div class="p-6">
+      <div class="grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
+        <div><span class="block text-xs text-slate-500 font-bold mb-1">Student Name</span><span class="font-semibold">{{currentTC.student?.firstName}} {{currentTC.student?.lastName}}</span></div>
+        <div><span class="block text-xs text-slate-500 font-bold mb-1">Admission No.</span><span class="font-semibold">{{currentTC.student?.admissionNumber}}</span></div>
+        <div><span class="block text-xs text-slate-500 font-bold mb-1">Class & Section</span><span class="font-semibold">Class {{currentTC.student?.currentClass}} - {{currentTC.student?.section || 'N/A'}}</span></div>
+        <div><span class="block text-xs text-slate-500 font-bold mb-1">Status</span>
+          <span class="px-2 py-1 inline-flex text-[10px] uppercase font-bold rounded-full" 
+            [ngClass]="{'bg-yellow-100 text-yellow-800': currentTC.status === 'Pending', 'bg-green-100 text-green-800': currentTC.status === 'Approved', 'bg-red-100 text-red-800': currentTC.status === 'Rejected'}">
+            {{currentTC.status}}
+          </span>
+        </div>
+        <div><span class="block text-xs text-slate-500 font-bold mb-1">Applied Date</span><span class="font-semibold">{{currentTC.appliedDate | date:'mediumDate'}}</span></div>
+        <div *ngIf="currentTC.tcNumber"><span class="block text-xs text-slate-500 font-bold mb-1">TC Number</span><span class="font-semibold">{{currentTC.tcNumber}}</span></div>
+        <div *ngIf="currentTC.issueDate"><span class="block text-xs text-slate-500 font-bold mb-1">Issue Date</span><span class="font-semibold">{{currentTC.issueDate | date:'mediumDate'}}</span></div>
+        
+        <div class="col-span-2 mt-2 pt-2 border-t border-slate-100"><span class="block text-xs text-slate-500 font-bold mb-1">Reason For Leaving</span><span class="font-medium text-slate-800 italic">"{{currentTC.reasonForLeaving}}"</span></div>
+        
+        <ng-container *ngIf="currentTC.status === 'Approved'">
+          <div class="col-span-1 mt-2"><span class="block text-xs text-slate-500 font-bold mb-1">Academic Progress</span><span class="font-medium">{{currentTC.academicProgress || 'N/A'}}</span></div>
+          <div class="col-span-1 mt-2"><span class="block text-xs text-slate-500 font-bold mb-1">Conduct</span><span class="font-medium">{{currentTC.conduct || 'N/A'}}</span></div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,7 +12,8 @@ import { FeePaymentsComponent } from './fee-payments/fee-payments.component';
 
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { AttendanceReportComponent } from './attendance-report/attendance-report.component';
-import { TransferCertificateComponent } from './transfer-certificate/transfer-certificate';
+import { TcApplyComponent } from './tc-apply/tc-apply.component';
+import { TcReportsComponent } from './tc-reports/tc-reports.component';
 import { Home } from './home/home';
 import { PublicInquiryForm } from './public-inquiry-form/public-inquiry-form';
 import { InquiryDashboard } from './inquiry-dashboard/inquiry-dashboard';
@@ -56,7 +57,8 @@ export const routes: Routes = [
         { path: 'attendance-report', component: AttendanceReportComponent },
         { path: 'fee-structure', component: FeeStructureComponent },
         { path: 'fee-payments', component: FeePaymentsComponent },
-        { path: 'tc', component: TransferCertificateComponent },
+        { path: 'tc/apply', component: TcApplyComponent },
+        { path: 'tc/reports', component: TcReportsComponent },
         { path: 'inquiries', component: InquiryDashboard },
         { path: 'assignments', component: AssignmentsComponent },
         { path: 'assignments/create', component: CreateAssignmentComponent },
