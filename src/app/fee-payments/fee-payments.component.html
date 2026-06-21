@@ -64,8 +64,9 @@
 
     <!-- Pending Report Table -->
     <div class="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-white/40 overflow-hidden">
-      <div class="p-5 border-b border-slate-200 bg-slate-50/50">
+      <div class="p-5 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
         <h3 class="text-lg font-bold text-slate-800">Pending Fees Report</h3>
+        <input type="text" placeholder="Search name, class or section..." (keyup)="onSearchPending($event)" class="glass-input p-2.5 rounded-lg text-sm w-64 focus:ring-2 focus:ring-indigo-500">
       </div>
       <div class="overflow-x-auto relative min-h-[300px]">
         <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white/50 z-10 backdrop-blur-sm">
@@ -88,7 +89,7 @@
                 <div class="text-sm font-bold text-slate-900">{{ r.studentName }}</div>
                 <div class="text-xs text-slate-500">Adm: {{ r.admissionNumber }}</div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Class {{ r.class }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Class {{ r.class }}<span *ngIf="r.section"> - {{ r.section }}</span></td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-600 font-mono">₹{{ r.totalFee | number:'1.0-0' }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-green-600 font-bold font-mono">₹{{ r.paidFee | number:'1.0-0' }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-red-600 font-bold font-mono">₹{{ r.pendingFee | number:'1.0-0' }}</td>

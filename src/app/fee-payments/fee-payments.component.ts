@@ -39,7 +39,9 @@ export class FeePaymentsComponent implements OnInit {
   
   // Dashboard & Reports
   dashboardStats: any = null;
+  allPendingReport: any[] = [];
   pendingReport: any[] = [];
+  searchPendingTerm = '';
   
   // History
   allPayments: FeePayment[] = [];
@@ -238,7 +240,8 @@ export class FeePaymentsComponent implements OnInit {
       
     this.http.get<any[]>(endpoint).subscribe({
       next: (data) => {
-        this.pendingReport = data;
+        this.allPendingReport = data;
+        this.applyPendingFilter();
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -248,6 +251,24 @@ export class FeePaymentsComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  onSearchPending(event: any) {
+    this.searchPendingTerm = event.target.value.toLowerCase();
+    this.applyPendingFilter();
+  }
+
+  applyPendingFilter() {
+    if (!this.searchPendingTerm) {
+      this.pendingReport = [...this.allPendingReport];
+    } else {
+      this.pendingReport = this.allPendingReport.filter(r => 
+        (r.studentName && r.studentName.toLowerCase().includes(this.searchPendingTerm)) ||
+        (r.class && r.class.toLowerCase().includes(this.searchPendingTerm)) ||
+        (r.section && r.section.toLowerCase().includes(this.searchPendingTerm))
+      );
+    }
+    this.cdr.detectChanges();
   }
 
   // --- Payment History ---
