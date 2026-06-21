@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -13,7 +13,7 @@ import { TranslatePipe } from '../services/language.service';
   templateUrl: './admin-dashboard.component.html',
   styleUrls: []
 })
-export class AdminDashboardComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit, OnDestroy {
   trends: any[] = [];
   maxRevenue: number = 1000;
   userRole: string = 'Staff';
@@ -46,12 +46,8 @@ export class AdminDashboardComponent implements OnInit {
     { title: 'Pending Fees', value: '₹0', change: 'Real-time', icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' }
   ];
 
-  recentActivities = [
-    { text: 'New student John Doe admitted to Grade 5.', time: '2 mins ago' },
-    { text: 'Fee payment of ₹500 received from Jane Smith.', time: '1 hour ago' },
-    { text: 'Teacher Sarah published Math assignment.', time: '3 hours ago' },
-    { text: 'Library book "Physics 101" returned late.', time: '5 hours ago' }
-  ];
+  recentActivities: any[] = [];
+  private activityInterval: any;
 
   constructor(
     private http: HttpClient, 
@@ -238,5 +234,46 @@ export class AdminDashboardComponent implements OnInit {
         console.error('Failed to fetch trends', err);
       }
     });
+    // Start activity polling
+    this.fetchRecentActivities();
+    this.activityInterval = setInterval(() => {
+      this.fetchRecentActivities();
+    }, 15000);
+  }
+
+  ngOnDestroy() {
+    if (this.activityInterval) {
+      clearInterval(this.activityInterval);
+    }
+  }
+
+  fetchRecentActivities() {
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/SystemActivity/recent').subscribe({
+      next: (activities) => {
+        this.recentActivities = activities.map(a => ({
+          text: a.text,
+          time: this.timeAgo(new Date(a.timestamp))
+        }));
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to fetch recent activities', err);
+      }
+    });
+  }
+
+  timeAgo(date: Date): string {
+    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " days ago";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours ago";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " mins ago";
+    return "Just now";
   }
 }
