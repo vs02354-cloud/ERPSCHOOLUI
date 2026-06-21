@@ -10,6 +10,8 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { FeeStructureComponent } from './fee-structure/fee-structure.component';
 import { FeePaymentsComponent } from './fee-payments/fee-payments.component';
 
+import { Leave } from './leave/leave';
+import { LeaveReportsComponent } from './leave-reports/leave-reports.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { AttendanceReportComponent } from './attendance-report/attendance-report.component';
 import { TcApplyComponent } from './tc-apply/tc-apply.component';
@@ -26,7 +28,6 @@ import { AboutUs } from './about-us/about-us';
 import { Contact } from './contact/contact';
 import { TransportDrivers } from './transport-drivers/transport-drivers';
 
-import { Leave } from './leave/leave';
 import { ParentProfile } from './parent-profile/parent-profile';
 import { Notifications } from './notifications/notifications';
 import { SendNotificationComponent } from './send-notification/send-notification.component';
@@ -64,6 +65,7 @@ export const routes: Routes = [
         { path: 'assignments/create', component: CreateAssignmentComponent },
         { path: 'assignments/:id', component: AssignmentDetailsComponent },
         { path: 'leave', component: Leave },
+        { path: 'leave/reports', component: LeaveReportsComponent },
         { path: 'profile', component: ParentProfile },
         { path: 'notifications', component: Notifications },
         { path: 'send-notification', component: SendNotificationComponent },

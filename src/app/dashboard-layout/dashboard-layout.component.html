@@ -214,8 +214,8 @@
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'leave'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div *ngIf="expandedMenu === 'leave'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a routerLink="/dashboard/leave" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_LEAVE_MGMT' | translate }}</a>
-            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/leave" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_REPORTS' | translate }}</a>
+            <a routerLink="/dashboard/leave" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Apply Leave</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/leave/reports" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Leave Reports</a>
           </div>
         </div>
 
