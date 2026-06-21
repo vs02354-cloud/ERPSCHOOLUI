@@ -17,7 +17,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   trends: any[] = [];
   maxRevenue: number = 1000;
   activityTrends: any[] = [];
-  maxActivity: number = 10;
+  maxAdmissions: number = 10;
+  maxInquiries: number = 10;
+  maxAttendance: number = 100;
   userRole: string = 'Staff';
   myChildren: any[] = [];
   userName: string = 'Parent';
@@ -241,8 +243,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Dashboard/ActivityTrends').subscribe({
       next: (data) => {
         this.activityTrends = data;
-        const maxVal = Math.max(...data.map(d => Math.max(d.admissions, d.inquiries, d.leaves)));
-        this.maxActivity = maxVal > 0 ? maxVal : 10;
+        const maxAdm = Math.max(...data.map(d => d.admissions));
+        const maxInq = Math.max(...data.map(d => d.inquiries));
+        this.maxAdmissions = maxAdm > 0 ? maxAdm : 10;
+        this.maxInquiries = maxInq > 0 ? maxInq : 10;
         this.cdr.detectChanges();
       },
       error: (err) => {
