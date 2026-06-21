@@ -103,14 +103,14 @@
 
     <!-- Sidebar -->
     <aside [ngClass]="{'translate-x-0': isMobileMenuOpen, '-translate-x-full': !isMobileMenuOpen}" 
-           class="fixed inset-y-0 left-0 z-[80] w-64 bg-white dark:bg-slate-900 shadow-soft dark:shadow-none border border-slate-200/60 dark:border-slate-800 rounded-2xl flex flex-col transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:flex h-screen lg:h-auto overflow-y-auto print:hidden">
+           class="fixed inset-y-0 left-0 z-[80] w-64 bg-slate-900 shadow-none border border-slate-800 rounded-2xl flex flex-col transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:flex h-screen lg:h-auto overflow-y-auto print:hidden">
       
       <!-- Mobile Close Header -->
-      <div class="flex items-center justify-between px-4 py-4 lg:hidden border-b border-slate-200/50 dark:border-slate-800 mb-2">
+      <div class="flex items-center justify-between px-4 py-4 lg:hidden border-b border-slate-800 mb-2">
         <div class="flex items-center space-x-2">
-          <span class="font-bold text-xl tracking-tight text-slate-800 dark:text-white">School<span class="text-brand-600 dark:text-brand-400">ERP</span></span>
+          <span class="font-bold text-xl tracking-tight text-white">School<span class="text-brand-600 dark:text-brand-400">ERP</span></span>
         </div>
-        <button (click)="closeMobileMenu()" class="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100">
+        <button (click)="closeMobileMenu()" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
@@ -119,14 +119,14 @@
         <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-2 mt-2 lg:mt-4">{{ 'NAV_MENU' | translate }}</div>
         
         <!-- Dashboard -->
-        <a routerLink="/dashboard" (click)="closeMobileMenu()" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" [routerLinkActiveOptions]="{exact: true}" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all mb-1">
+        <a routerLink="/dashboard" (click)="closeMobileMenu()" routerLinkActive="bg-slate-800 text-brand-400 shadow-sm" [routerLinkActiveOptions]="{exact: true}" class="text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all mb-1">
           <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
           {{ 'NAV_DASHBOARD' | translate }}
         </a>
 
         <!-- 1. Student -->
         <div *ngIf="userRole !== 'Parent'" class="mb-1">
-          <button (click)="toggleMenu('student')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('student')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
               {{ 'NAV_STUDENT' | translate }}
@@ -134,26 +134,26 @@
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'student'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
           
-          <div *ngIf="expandedMenu === 'student'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
+          <div *ngIf="expandedMenu === 'student'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
             
             <!-- Admission Submenu -->
-            <button (click)="toggleSubMenu('admission')" class="w-full text-slate-500 hover:text-slate-900 group flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-all focus:outline-none">
+            <button (click)="toggleSubMenu('admission')" class="w-full text-slate-400 hover:text-white group flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-all focus:outline-none">
               Admission
               <svg class="h-3 w-3 transition-transform duration-200" [ngClass]="{'rotate-180': expandedSubMenu === 'admission'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div *ngIf="expandedSubMenu === 'admission'" class="pl-4 space-y-1 mt-1 border-l-2 border-indigo-50 ml-2">
-              <a routerLink="/dashboard/admission" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Admission</a>
-              <a routerLink="/dashboard/students" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Student List</a>
+            <div *ngIf="expandedSubMenu === 'admission'" class="pl-4 space-y-1 mt-1 border-l-2 border-slate-800 ml-2">
+              <a routerLink="/dashboard/admission" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Admission</a>
+              <a routerLink="/dashboard/students" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Student List</a>
             </div>
 
             <!-- Assignments Submenu -->
-            <button *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Student'" (click)="toggleSubMenu('assignments')" class="w-full text-slate-500 hover:text-slate-900 group flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-all focus:outline-none mt-1">
+            <button *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Student'" (click)="toggleSubMenu('assignments')" class="w-full text-slate-400 hover:text-white group flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-all focus:outline-none mt-1">
               Assignments
               <svg class="h-3 w-3 transition-transform duration-200" [ngClass]="{'rotate-180': expandedSubMenu === 'assignments'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div *ngIf="expandedSubMenu === 'assignments'" class="pl-4 space-y-1 mt-1 border-l-2 border-indigo-50 ml-2">
-              <a routerLink="/dashboard/assignments/create" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Create Assignments</a>
-              <a routerLink="/dashboard/assignments" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">View Assignments</a>
+            <div *ngIf="expandedSubMenu === 'assignments'" class="pl-4 space-y-1 mt-1 border-l-2 border-slate-800 ml-2">
+              <a routerLink="/dashboard/assignments/create" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Create Assignments</a>
+              <a routerLink="/dashboard/assignments" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">View Assignments</a>
             </div>
 
           </div>
@@ -161,138 +161,138 @@
 
         <!-- 2. Fees -->
         <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Accountant' || userRole === 'Principal' || userRole === 'Teacher' || userRole === 'Parent'" class="mb-1">
-          <button (click)="toggleMenu('fees')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('fees')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               {{ 'NAV_FEES' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'fees'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'fees'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/fee-structure" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_FEE_STRUCTURE' | translate }}</a>
-            <a routerLink="/dashboard/fee-payments" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_FEE_COLLECTION' | translate }}</a>
+          <div *ngIf="expandedMenu === 'fees'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/fee-structure" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_FEE_STRUCTURE' | translate }}</a>
+            <a routerLink="/dashboard/fee-payments" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_FEE_COLLECTION' | translate }}</a>
           </div>
         </div>
 
         <!-- 3. Attendance -->
         <div *ngIf="userRole !== 'Parent'" class="mb-1">
-          <button (click)="toggleMenu('attendance')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('attendance')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
               {{ 'NAV_ATTENDANCE' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'attendance'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'attendance'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a routerLink="/dashboard/attendance" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_MARK_ATTENDANCE' | translate }}</a>
-            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/attendance-report" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_VIEW_REPORTS' | translate }}</a>
+          <div *ngIf="expandedMenu === 'attendance'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a routerLink="/dashboard/attendance" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_MARK_ATTENDANCE' | translate }}</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/attendance-report" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_VIEW_REPORTS' | translate }}</a>
           </div>
         </div>
 
         <!-- 4. Transfer Certificate -->
         <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Parent' || userRole === 'Student'" class="mb-1">
-          <button (click)="toggleMenu('tc')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('tc')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
               {{ 'NAV_TC' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'tc'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'tc'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a routerLink="/dashboard/tc/apply" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Apply TC</a>
-            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/tc/reports" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">TC Reports</a>
+          <div *ngIf="expandedMenu === 'tc'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a routerLink="/dashboard/tc/apply" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Apply TC</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/tc/reports" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">TC Reports</a>
           </div>
         </div>
 
         <!-- 5. Leave Management -->
         <div class="mb-1">
-          <button (click)="toggleMenu('leave')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('leave')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
               {{ 'NAV_LEAVE_MGMT' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'leave'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'leave'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a routerLink="/dashboard/leave" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Apply Leave</a>
-            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/leave/reports" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Leave Reports</a>
+          <div *ngIf="expandedMenu === 'leave'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a routerLink="/dashboard/leave" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Apply Leave</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/leave/reports" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Leave Reports</a>
           </div>
         </div>
 
         <!-- 6. Inquiries -->
         <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Operator'" class="mb-1">
-          <button (click)="toggleMenu('inquiries')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('inquiries')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
               {{ 'NAV_INQUIRIES' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'inquiries'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'inquiries'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a routerLink="/dashboard/inquiries" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_INQUIRIES' | translate }}</a>
+          <div *ngIf="expandedMenu === 'inquiries'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a routerLink="/dashboard/inquiries" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_INQUIRIES' | translate }}</a>
           </div>
         </div>
 
         <!-- 7. Employees -->
         <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" class="mb-1">
-          <button (click)="toggleMenu('employees')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('employees')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
               {{ 'NAV_EMPLOYEES' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'employees'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'employees'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a routerLink="/dashboard/employees" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_EMPLOYEE_LIST' | translate }}</a>
+          <div *ngIf="expandedMenu === 'employees'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a routerLink="/dashboard/employees" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_EMPLOYEE_LIST' | translate }}</a>
           </div>
         </div>
 
         <!-- 8. Commission Management -->
         <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin'" class="mb-1">
-          <button (click)="toggleMenu('commissions')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('commissions')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2"></path></svg>
               {{ 'NAV_COMMISSIONS' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'commissions'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'commissions'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a routerLink="/dashboard/commissions" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_COMMISSIONS' | translate }}</a>
-            <a routerLink="/dashboard/commissions" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_REPORTS' | translate }}</a>
+          <div *ngIf="expandedMenu === 'commissions'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a routerLink="/dashboard/commissions" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_COMMISSIONS' | translate }}</a>
+            <a routerLink="/dashboard/commissions" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_REPORTS' | translate }}</a>
           </div>
         </div>
 
         <!-- 9. Transport Management -->
         <div *ngIf="(userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Transport Manager' || userRole === 'Parent') && (userRole !== 'Parent' || hasTransportFacility)" class="mb-1">
-          <button (click)="toggleMenu('transport')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('transport')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
               {{ 'NAV_TRANSPORT' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'transport'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'transport'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/dashboard" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_TRANSPORT_DASHBOARD' | translate }}</a>
-            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/routes" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_ROUTES_STOPS' | translate }}</a>
-            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/vehicles" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_VEHICLES' | translate }}</a>
-            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/drivers" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Drivers</a>
-            <a routerLink="/dashboard/transport/gatepass" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_GATEPASS' | translate }}</a>
+          <div *ngIf="expandedMenu === 'transport'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/dashboard" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_TRANSPORT_DASHBOARD' | translate }}</a>
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/routes" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_ROUTES_STOPS' | translate }}</a>
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/vehicles" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_VEHICLES' | translate }}</a>
+            <a *ngIf="userRole !== 'Parent'" routerLink="/dashboard/transport/drivers" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Drivers</a>
+            <a routerLink="/dashboard/transport/gatepass" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_GATEPASS' | translate }}</a>
           </div>
         </div>
 
         <!-- 10. Notifications -->
         <div class="mb-1">
-          <button (click)="toggleMenu('notifications')" class="w-full text-slate-600 hover:bg-slate-50 hover:text-slate-900 group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+          <button (click)="toggleMenu('notifications')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
             <div class="flex items-center">
               <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
               {{ 'NAV_NOTIFICATIONS' | translate }}
             </div>
             <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'notifications'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div *ngIf="expandedMenu === 'notifications'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
-            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/broadcast" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Broadcast Messages</a>
-            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/send-notification" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_SEND_NOTIF' | translate }}</a>
-            <a routerLink="/dashboard/notifications" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_ALL_NOTIF' | translate }}</a>
+          <div *ngIf="expandedMenu === 'notifications'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/broadcast" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Broadcast Messages</a>
+            <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal'" routerLink="/dashboard/send-notification" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_SEND_NOTIF' | translate }}</a>
+            <a routerLink="/dashboard/notifications" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">{{ 'NAV_ALL_NOTIF' | translate }}</a>
           </div>
         </div>
 
