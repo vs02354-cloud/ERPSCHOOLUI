@@ -48,6 +48,7 @@ export class AdmissionFormComponent implements OnInit {
       fatherName: ['', Validators.required],
       motherName: ['', Validators.required],
       parentContactNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      parentEmail: ['', [Validators.email]],
       address: ['', Validators.required],
       currentClass: ['', Validators.required],
       section: ['A'],
