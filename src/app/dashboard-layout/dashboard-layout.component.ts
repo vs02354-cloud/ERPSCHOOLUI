@@ -25,6 +25,7 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   notifications: Notification[] = [];
   unreadCount: number = 0;
   expandedMenu: string = '';
+  expandedSubMenu: string = '';
   currentDate: Date = new Date();
   hasTransportFacility: boolean = true;
   private dateInterval: any;
