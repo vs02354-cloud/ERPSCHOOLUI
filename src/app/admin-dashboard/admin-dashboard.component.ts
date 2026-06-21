@@ -16,6 +16,8 @@ import { TranslatePipe } from '../services/language.service';
 export class AdminDashboardComponent implements OnInit, OnDestroy {
   trends: any[] = [];
   maxRevenue: number = 1000;
+  activityTrends: any[] = [];
+  maxActivity: number = 10;
   userRole: string = 'Staff';
   myChildren: any[] = [];
   userName: string = 'Parent';
@@ -232,6 +234,19 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error('Failed to fetch trends', err);
+      }
+    });
+
+    // Fetch Activity Trends
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Dashboard/ActivityTrends').subscribe({
+      next: (data) => {
+        this.activityTrends = data;
+        const maxVal = Math.max(...data.map(d => Math.max(d.admissions, d.inquiries, d.leaves)));
+        this.maxActivity = maxVal > 0 ? maxVal : 10;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to fetch activity trends', err);
       }
     });
     // Start activity polling
