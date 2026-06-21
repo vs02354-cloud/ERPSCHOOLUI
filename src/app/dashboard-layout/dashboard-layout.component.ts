@@ -51,6 +51,11 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
 
   toggleMenu(menu: string) {
     this.expandedMenu = this.expandedMenu === menu ? '' : menu;
+    this.expandedSubMenu = ''; // Reset submenu when changing main menu
+  }
+
+  toggleSubMenu(menu: string) {
+    this.expandedSubMenu = this.expandedSubMenu === menu ? '' : menu;
   }
 
   ngOnInit() {
