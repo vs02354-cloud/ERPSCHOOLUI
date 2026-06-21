@@ -15,6 +15,9 @@ import { TranslatePipe } from '../services/language.service';
 })
 export class AdminDashboardComponent implements OnInit, OnDestroy {
   trends: any[] = [];
+  attendanceStats: any = null;
+  studentsCount: number = 0;
+  teachersCount: number = 0;
   maxRevenue: number = 1000;
   activityTrends: any[] = [];
   maxAdmissions: number = 10;
@@ -253,46 +256,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         console.error('Failed to fetch activity trends', err);
       }
     });
-    // Start activity polling
-    this.fetchRecentActivities();
-    this.activityInterval = setInterval(() => {
-      this.fetchRecentActivities();
-    }, 15000);
   }
 
   ngOnDestroy() {
-    if (this.activityInterval) {
-      clearInterval(this.activityInterval);
-    }
   }
 
-  fetchRecentActivities() {
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/SystemActivity/recent').subscribe({
-      next: (activities) => {
-        this.recentActivities = activities.map(a => ({
-          text: a.text,
-          time: this.timeAgo(new Date(a.timestamp))
-        }));
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Failed to fetch recent activities', err);
-      }
-    });
-  }
-
-  timeAgo(date: Date): string {
-    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-    let interval = seconds / 31536000;
-    if (interval > 1) return Math.floor(interval) + " years ago";
-    interval = seconds / 2592000;
-    if (interval > 1) return Math.floor(interval) + " months ago";
-    interval = seconds / 86400;
-    if (interval > 1) return Math.floor(interval) + " days ago";
-    interval = seconds / 3600;
-    if (interval > 1) return Math.floor(interval) + " hours ago";
-    interval = seconds / 60;
-    if (interval > 1) return Math.floor(interval) + " mins ago";
-    return "Just now";
-  }
 }

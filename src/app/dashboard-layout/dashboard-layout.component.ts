@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 
@@ -22,6 +22,9 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   isMobileMenuOpen: boolean = false;
   showLogoutModal: boolean = false;
   showNotificationDropdown: boolean = false;
+  showActivityDropdown: boolean = false;
+  recentActivities: any[] = [];
+  private activityInterval: any;
   notifications: Notification[] = [];
   unreadCount: number = 0;
   expandedMenu: string = '';
@@ -34,16 +37,25 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
     private router: Router, 
     private http: HttpClient, 
     private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef,
     public themeService: ThemeService,
     public languageService: LanguageService
   ) {
     this.router.events.subscribe(() => {
       this.showNotificationDropdown = false;
+      this.showActivityDropdown = false;
     });
   }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  toggleActivity() {
+    this.showActivityDropdown = !this.showActivityDropdown;
+    if (this.showActivityDropdown) {
+      this.showNotificationDropdown = false;
+    }
   }
 
   closeMobileMenu() {
@@ -98,13 +110,54 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
       
       this.fetchNotifications();
     }
+
+    if (this.userRole !== 'Parent' && this.userRole !== 'Student') {
+      this.fetchRecentActivities();
+      this.activityInterval = setInterval(() => {
+        this.fetchRecentActivities();
+      }, 15000);
+    }
   }
 
   ngOnDestroy() {
     if (this.dateInterval) {
       clearInterval(this.dateInterval);
     }
+    if (this.activityInterval) {
+      clearInterval(this.activityInterval);
+    }
   }
+
+  fetchRecentActivities() {
+    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/SystemActivity/recent').subscribe({
+      next: (activities) => {
+        this.recentActivities = activities.map(a => ({
+          text: a.text,
+          time: this.timeAgo(new Date(a.timestamp))
+        }));
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to fetch recent activities', err);
+      }
+    });
+  }
+
+  timeAgo(date: Date): string {
+    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " days ago";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours ago";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " mins ago";
+    return "Just now";
+  }
+
 
   fetchNotifications() {
     this.notificationService.getMyNotifications().subscribe({
