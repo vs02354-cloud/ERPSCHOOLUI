@@ -300,6 +300,14 @@ export class TransportGatepass implements OnInit {
                   <div class="value">${pass.vehicle?.vehicleNumber || 'N/A'}</div>
                 </div>
                 <div>
+                  <div class="label">Driver Name</div>
+                  <div class="value">${pass.vehicle?.driver ? `${pass.vehicle.driver.firstName} ${pass.vehicle.driver.lastName || ''}` : 'N/A'}</div>
+                </div>
+                <div>
+                  <div class="label">Driver Mobile</div>
+                  <div class="value">${pass.vehicle?.driver?.mobileNumber || 'N/A'}</div>
+                </div>
+                <div>
                   <div class="label">Issue Date</div>
                   <div class="value">${pass.issueDate ? new Date(pass.issueDate).toLocaleDateString() : 'N/A'}</div>
                 </div>
