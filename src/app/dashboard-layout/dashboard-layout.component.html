@@ -244,7 +244,6 @@
           </button>
           <div *ngIf="expandedMenu === 'employees'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-indigo-100 ml-5 mt-1">
             <a routerLink="/dashboard/employees" (click)="closeMobileMenu()" routerLinkActive="text-indigo-600 font-bold bg-indigo-50" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_EMPLOYEE_LIST' | translate }}</a>
-            <a routerLink="/dashboard/employees" (click)="closeMobileMenu()" class="block px-3 py-2 text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">{{ 'NAV_REPORTS' | translate }}</a>
           </div>
         </div>
 
