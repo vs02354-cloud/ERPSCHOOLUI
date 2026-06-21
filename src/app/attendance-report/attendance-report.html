@@ -16,18 +16,18 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <div>
         <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">{{ 'ATTENDANCE_DATE' | translate }}</label>
-        <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" [(ngModel)]="selectedDate" [max]="maxDate" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+        <input type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" altFormat="d/m/Y" dateFormat="Y-m-d" [(ngModel)]="selectedDate" [max]="maxDate" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
       </div>
       <div>
         <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">{{ 'FEE_CLASS' | translate }}</label>
-        <select [(ngModel)]="selectedClass" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+        <select [(ngModel)]="selectedClass" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
           <option value="">-- Select --</option>
           <option *ngFor="let cls of classes" [value]="cls">Class {{cls}}</option>
         </select>
       </div>
       <div>
         <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">{{ 'CLASS_SECTION' | translate }}</label>
-        <select [(ngModel)]="selectedSection" class="w-full rounded-xl border-slate-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+        <select [(ngModel)]="selectedSection" class="glass-input w-full p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
           <option value="">-- Select Section --</option>
           <option *ngFor="let sec of sections" [value]="sec">Section {{sec}}</option>
         </select>
