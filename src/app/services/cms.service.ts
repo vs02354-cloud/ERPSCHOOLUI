@@ -29,6 +29,8 @@ export interface FacultyExcellence { id?: number; name: string; designation: str
 export interface StudentSpotlight { id?: number; name: string; class: string; achievement: string; photoUrl: string; displayOrder: number; isActive: boolean; }
 export interface HomeStatistic { id?: number; label: string; value: string; displayOrder: number; isActive: boolean; }
 export interface NewsTicker { id?: number; noticeText: string; noticeType: string; priority: number; startDate: string; expiryDate: string; isActive: boolean; }
+export interface PortalCard { id?: number; title: string; description: string; iconSvg: string; url: string; themeColor: string; displayOrder: number; isActive: boolean; }
+export interface SocialMediaLink { id?: number; platform: string; url: string; isActive: boolean; }
 
 @Injectable({
   providedIn: 'root'
