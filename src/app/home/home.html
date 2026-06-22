@@ -223,8 +223,8 @@
           <div class="space-y-6">
             <div *ngFor="let event of upcomingEvents" class="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
               <div class="flex-shrink-0 w-16 h-16 bg-indigo-50 text-indigo-600 rounded-lg flex flex-col items-center justify-center font-bold">
-                <span class="text-sm">{{event.date.split(' ')[0].substring(0,3)}}</span>
-                <span class="text-xl">{{event.date.split(' ')[1].replace(',','')}}</span>
+                <span class="text-sm">{{ event.eventDate | date:'MMM' }}</span>
+                <span class="text-xl">{{ event.eventDate | date:'dd' }}</span>
               </div>
               <div>
                 <h3 class="text-lg font-bold text-gray-900">{{event.title}}</h3>
