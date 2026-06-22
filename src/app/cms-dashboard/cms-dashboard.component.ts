@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CmsService, HomePageSettings } from '../services/cms.service';
 
 @Component({
@@ -15,21 +16,6 @@ import { CmsService, HomePageSettings } from '../services/cms.service';
       </div>
 
       <div class="flex gap-6">
-        <!-- Sidebar Navigation -->
-        <div class="w-64 shrink-0 bg-white shadow-sm border border-gray-200 rounded-xl overflow-hidden">
-          <nav class="flex flex-col">
-            <button *ngFor="let tab of tabs" 
-                    (click)="activeTab = tab.id"
-                    [class.bg-indigo-50]="activeTab === tab.id"
-                    [class.text-indigo-600]="activeTab === tab.id"
-                    [class.border-l-4]="activeTab === tab.id"
-                    [class.border-indigo-600]="activeTab === tab.id"
-                    class="px-4 py-3 text-left text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors border-l-4 border-transparent">
-              {{tab.name}}
-            </button>
-          </nav>
-        </div>
-
         <!-- Main Content Area -->
         <div class="flex-1 bg-white shadow-sm border border-gray-200 rounded-xl p-6">
           
@@ -108,7 +94,7 @@ export class CmsDashboardComponent implements OnInit {
   isSaving = false;
   savedSuccess = false;
 
-  constructor(private fb: FormBuilder, private cms: CmsService) {
+  constructor(private fb: FormBuilder, private cms: CmsService, private route: ActivatedRoute) {
     this.settingsForm = this.fb.group({
       id: [0],
       schoolName: [''],
@@ -129,6 +115,12 @@ export class CmsDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['tab']) {
+        this.activeTab = params['tab'];
+      }
+    });
+
     this.cms.getSettings().subscribe(res => {
       if (res) this.settingsForm.patchValue(res);
     });

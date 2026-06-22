@@ -314,10 +314,22 @@
 
         <!-- 10. Website CMS -->
         <div *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin'" class="mb-1">
-          <a routerLink="/dashboard/cms" (click)="closeMobileMenu()" routerLinkActive="bg-slate-800 text-brand-400 shadow-sm" [routerLinkActiveOptions]="{exact: false}" class="text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
-            <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-            Website CMS
-          </a>
+          <button (click)="toggleMenu('cms')" class="w-full text-slate-400 hover:bg-slate-800 hover:text-white group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all focus:outline-none">
+            <div class="flex items-center">
+              <svg class="mr-3 h-5 w-5 opacity-70 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+              Website CMS
+            </div>
+            <svg class="h-4 w-4 transition-transform duration-200" [ngClass]="{'rotate-180': expandedMenu === 'cms'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div *ngIf="expandedMenu === 'cms'" class="pl-11 pr-3 py-1 space-y-1 animate-fade-in border-l-2 border-slate-700 ml-5 mt-1">
+            <a routerLink="/dashboard/cms" [queryParams]="{tab: 'settings'}" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Branding & Hero</a>
+            <a routerLink="/dashboard/cms" [queryParams]="{tab: 'quicklinks'}" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Quick Links</a>
+            <a routerLink="/dashboard/cms" [queryParams]="{tab: 'events'}" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Upcoming Events</a>
+            <a routerLink="/dashboard/cms" [queryParams]="{tab: 'activities'}" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Recent Activities</a>
+            <a routerLink="/dashboard/cms" [queryParams]="{tab: 'faculty'}" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Faculty Excellence</a>
+            <a routerLink="/dashboard/cms" [queryParams]="{tab: 'students'}" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Student Spotlight</a>
+            <a routerLink="/dashboard/cms" [queryParams]="{tab: 'stats'}" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Home Statistics</a>
+          </div>
         </div>
 
         <!-- 11. Notifications -->
