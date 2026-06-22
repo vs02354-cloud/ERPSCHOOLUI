@@ -37,6 +37,7 @@ import { TransportDashboard } from './transport-dashboard/transport-dashboard';
 import { TransportRoutes } from './transport-routes/transport-routes';
 import { TransportVehicles } from './transport-vehicles/transport-vehicles';
 import { TransportGatepass } from './transport-gatepass/transport-gatepass';
+import { CmsDashboardComponent } from './cms-dashboard/cms-dashboard.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -75,7 +76,8 @@ export const routes: Routes = [
         { path: 'transport/routes', component: TransportRoutes },
         { path: 'transport/vehicles', component: TransportVehicles },
         { path: 'transport/gatepass', component: TransportGatepass },
-        { path: 'transport/drivers', component: TransportDrivers }
+        { path: 'transport/drivers', component: TransportDrivers },
+        { path: 'cms', component: CmsDashboardComponent }
       ]
     },
     { path: '', component: Home, pathMatch: 'full' }
