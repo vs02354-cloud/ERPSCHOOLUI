@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+
 
 export interface HomePageSettings {
   id?: number;
@@ -36,8 +36,9 @@ export interface SocialMediaLink { id?: number; platform: string; url: string; i
   providedIn: 'root'
 })
 export class CmsService {
-  private publicUrl = `${environment.apiUrl}/Public`;
-  private adminUrl = `${environment.apiUrl}/CmsAdmin`;
+  private apiUrl = 'https://erpschoolapi.onrender.com/api';
+  private publicUrl = `${this.apiUrl}/Public`;
+  private adminUrl = `${this.apiUrl}/CmsAdmin`;
 
   constructor(private http: HttpClient) { }
 

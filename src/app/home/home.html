@@ -76,8 +76,8 @@
         <!-- Simple CSS animation for marquee effect could be added, using simple flex for now -->
         <div class="flex gap-8 whitespace-nowrap overflow-x-auto no-scrollbar items-center h-full">
           <span *ngFor="let notice of announcements" class="text-indigo-100">
-            <span class="bg-indigo-800 text-xs px-2 py-0.5 rounded mr-2">{{notice.type}}</span>
-            {{notice.title}} <span class="text-indigo-300 ml-1 text-sm">({{notice.date}})</span>
+            <span class="bg-indigo-800 text-xs px-2 py-0.5 rounded mr-2">{{notice.noticeType}}</span>
+            {{notice.noticeText}} <span class="text-indigo-300 ml-1 text-sm">({{notice.startDate | date:'mediumDate'}})</span>
           </span>
         </div>
       </div>
