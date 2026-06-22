@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CmsService, HomePageSettings, QuickLink, SocialMediaLink } from '../services/cms.service';
+import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent } from '../services/cms.service';
 
 @Component({
   selector: 'app-cms-dashboard',
@@ -205,9 +205,115 @@ import { CmsService, HomePageSettings, QuickLink, SocialMediaLink } from '../ser
           
           <!-- Upcoming Events Tab -->
           <div *ngIf="activeTab === 'events'">
-            <h2 class="text-xl font-bold mb-4">Upcoming Events</h2>
-            <div class="bg-yellow-50 p-4 rounded text-yellow-800 text-sm border border-yellow-200">
-              Event management UI (Add, Edit, Upload Image, Delete) implemented via CMS Service...
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold">Manage Upcoming Events</h2>
+                <p class="text-sm text-gray-500">Add, edit, or remove events displayed on the homepage.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              
+              <!-- Form Panel -->
+              <div class="lg:col-span-1">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 sticky top-6">
+                  <h3 class="font-bold text-gray-700 mb-4">{{ isEditingEvent ? 'Edit Event' : 'Add New Event' }}</h3>
+                  <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="space-y-4">
+                    
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Event Title <span class="text-red-500">*</span></label>
+                      <input type="text" formControlName="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Date <span class="text-red-500">*</span></label>
+                        <input type="date" formControlName="eventDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Time</label>
+                        <input type="time" formControlName="time" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Description</label>
+                      <textarea formControlName="description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border"></textarea>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Image</label>
+                      <input type="file" (change)="uploadEventImage($event)" accept="image/*" class="mt-1 block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                      <div *ngIf="isUploadingEventImage" class="text-xs text-indigo-600 mt-1">Uploading...</div>
+                      <div *ngIf="eventForm.get('imageUrl')?.value" class="mt-2">
+                        <img [src]="eventForm.get('imageUrl')?.value" class="h-20 w-auto rounded border">
+                      </div>
+                    </div>
+
+                    <div class="flex items-center pt-2">
+                      <input type="checkbox" formControlName="isActive" class="h-4 w-4 text-indigo-600 rounded border-gray-300">
+                      <label class="ml-2 block text-sm text-gray-900">Publish to Homepage</label>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-4 border-t border-gray-200">
+                      <button type="submit" [disabled]="eventForm.invalid || isSavingEvent || isUploadingEventImage" class="flex-1 bg-indigo-600 text-white px-4 py-2 text-sm rounded shadow hover:bg-indigo-700 disabled:opacity-50">
+                        {{ isSavingEvent ? 'Saving...' : (isEditingEvent ? 'Update Event' : 'Add Event') }}
+                      </button>
+                      <button *ngIf="isEditingEvent" type="button" (click)="cancelEventEdit()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm rounded hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- List Panel -->
+              <div class="lg:col-span-2">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg bg-white">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Event Details</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date & Time</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr *ngFor="let item of eventsList">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3">
+                          <div class="flex items-center">
+                            <div class="h-10 w-10 shrink-0">
+                              <img class="h-10 w-10 rounded-lg object-cover bg-gray-100" [src]="item.imageUrl || 'assets/placeholder.jpg'" alt="">
+                            </div>
+                            <div class="ml-4 max-w-[200px]">
+                              <div class="font-medium text-gray-900 text-sm truncate" [title]="item.title">{{item.title}}</div>
+                              <div class="text-xs text-gray-500 truncate" [title]="item.description">{{item.description}}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <div class="font-medium">{{item.eventDate | date:'mediumDate'}}</div>
+                          <div class="text-xs">{{item.time}}</div>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5" [ngClass]="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            {{item.isActive ? 'Published' : 'Hidden'}}
+                          </span>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button (click)="editEvent(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                          <button (click)="deleteEvent(item.id!)" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="eventsList.length === 0">
+                        <td colspan="4" class="py-8 text-center text-sm text-gray-500">No upcoming events found. Add one to get started.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -242,6 +348,12 @@ export class CmsDashboardComponent implements OnInit {
   isEditingSocialLink = false;
   isSavingSocialLink = false;
 
+  eventsList: UpcomingEvent[] = [];
+  eventForm: FormGroup;
+  isEditingEvent = false;
+  isSavingEvent = false;
+  isUploadingEventImage = false;
+
   constructor(private fb: FormBuilder, private cms: CmsService, private route: ActivatedRoute) {
     this.settingsForm = this.fb.group({
       id: [0],
@@ -275,6 +387,16 @@ export class CmsDashboardComponent implements OnInit {
       url: ['', Validators.required],
       isActive: [true]
     });
+
+    this.eventForm = this.fb.group({
+      id: [0],
+      title: ['', Validators.required],
+      eventDate: ['', Validators.required],
+      time: [''],
+      description: [''],
+      imageUrl: [''],
+      isActive: [true]
+    });
   }
 
   ngOnInit() {
@@ -284,6 +406,8 @@ export class CmsDashboardComponent implements OnInit {
         if (this.activeTab === 'quicklinks') {
           this.loadQuickLinks();
           this.loadSocialLinks();
+        } else if (this.activeTab === 'events') {
+          this.loadEvents();
         }
       }
     });
@@ -380,6 +504,68 @@ export class CmsDashboardComponent implements OnInit {
   deleteSocialLink(id: number) {
     if(confirm('Are you sure you want to delete this social link?')) {
       this.cms.deleteItem('SocialMediaLinks', id).subscribe(() => this.loadSocialLinks());
+    }
+  }
+
+  // --- Upcoming Events Logic ---
+  loadEvents() {
+    this.cms.getItems('UpcomingEvents').subscribe(res => {
+      // Need to format dates for input type="date" YYYY-MM-DD
+      this.eventsList = res.map(e => ({
+        ...e,
+        eventDate: e.eventDate ? new Date(e.eventDate).toISOString().split('T')[0] : ''
+      }));
+    });
+  }
+
+  uploadEventImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.isUploadingEventImage = true;
+      this.cms.uploadImage(file).subscribe({
+        next: (res) => {
+          this.eventForm.patchValue({ imageUrl: res.url });
+          this.isUploadingEventImage = false;
+        },
+        error: () => this.isUploadingEventImage = false
+      });
+    }
+  }
+
+  editEvent(item: UpcomingEvent) {
+    this.isEditingEvent = true;
+    this.eventForm.patchValue({
+      ...item,
+      eventDate: item.eventDate ? new Date(item.eventDate).toISOString().split('T')[0] : ''
+    });
+  }
+
+  cancelEventEdit() {
+    this.isEditingEvent = false;
+    this.eventForm.reset({ id: 0, title: '', eventDate: '', time: '', description: '', imageUrl: '', isActive: true });
+  }
+
+  saveEvent() {
+    if (this.eventForm.invalid) return;
+    this.isSavingEvent = true;
+    const val = this.eventForm.value;
+    const req = this.isEditingEvent 
+      ? this.cms.updateItem('UpcomingEvents', val.id, val)
+      : this.cms.addItem('UpcomingEvents', val);
+    
+    req.subscribe({
+      next: () => {
+        this.isSavingEvent = false;
+        this.cancelEventEdit();
+        this.loadEvents();
+      },
+      error: () => this.isSavingEvent = false
+    });
+  }
+
+  deleteEvent(id: number) {
+    if(confirm('Are you sure you want to delete this event?')) {
+      this.cms.deleteItem('UpcomingEvents', id).subscribe(() => this.loadEvents());
     }
   }
 }
