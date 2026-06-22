@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent } from '../services/cms.service';
+import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent, RecentActivity, FacultyExcellence, StudentSpotlight, HomeStatistic } from '../services/cms.service';
 
 @Component({
   selector: 'app-cms-dashboard',
@@ -317,6 +317,420 @@ import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent
             </div>
           </div>
 
+          <!-- Recent Activities Tab -->
+          <div *ngIf="activeTab === 'activities'">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold">Recent Activities</h2>
+                <p class="text-sm text-gray-500">Manage photo galleries and recaps of recent school activities.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <!-- Form Panel -->
+              <div class="lg:col-span-1">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 sticky top-6">
+                  <h3 class="font-bold text-gray-700 mb-4">{{ isEditingActivity ? 'Edit Activity' : 'Add New Activity' }}</h3>
+                  <form [formGroup]="activityForm" (ngSubmit)="saveActivity()" class="space-y-4">
+                    
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Activity Title <span class="text-red-500">*</span></label>
+                      <input type="text" formControlName="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Display Order</label>
+                      <input type="number" formControlName="displayOrder" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Description</label>
+                      <textarea formControlName="description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border"></textarea>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Image</label>
+                      <input type="file" (change)="uploadActivityImage($event)" accept="image/*" class="mt-1 block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                      <div *ngIf="isUploadingActivityImage" class="text-xs text-indigo-600 mt-1">Uploading...</div>
+                      <div *ngIf="activityForm.get('imageUrl')?.value" class="mt-2">
+                        <img [src]="activityForm.get('imageUrl')?.value" class="h-20 w-auto rounded border">
+                      </div>
+                    </div>
+
+                    <div class="flex items-center pt-2">
+                      <input type="checkbox" formControlName="isActive" class="h-4 w-4 text-indigo-600 rounded border-gray-300">
+                      <label class="ml-2 block text-sm text-gray-900">Publish to Homepage</label>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-4 border-t border-gray-200">
+                      <button type="submit" [disabled]="activityForm.invalid || isSavingActivity || isUploadingActivityImage" class="flex-1 bg-indigo-600 text-white px-4 py-2 text-sm rounded shadow hover:bg-indigo-700 disabled:opacity-50">
+                        {{ isSavingActivity ? 'Saving...' : (isEditingActivity ? 'Update Activity' : 'Add Activity') }}
+                      </button>
+                      <button *ngIf="isEditingActivity" type="button" (click)="cancelActivityEdit()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm rounded hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- List Panel -->
+              <div class="lg:col-span-2">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg bg-white">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Activity Details</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr *ngFor="let item of activitiesList">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3">
+                          <div class="flex items-center">
+                            <div class="h-10 w-10 shrink-0">
+                              <img class="h-10 w-10 rounded-lg object-cover bg-gray-100" [src]="item.imageUrl || 'assets/placeholder.jpg'" alt="">
+                            </div>
+                            <div class="ml-4 max-w-[200px]">
+                              <div class="font-medium text-gray-900 text-sm truncate" [title]="item.title">{{item.title}}</div>
+                              <div class="text-xs text-gray-500 truncate" [title]="item.description">{{item.description}}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5" [ngClass]="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            {{item.isActive ? 'Published' : 'Hidden'}}
+                          </span>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button (click)="editActivity(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                          <button (click)="deleteActivity(item.id!)" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="activitiesList.length === 0">
+                        <td colspan="3" class="py-8 text-center text-sm text-gray-500">No recent activities found. Add one to get started.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Faculty Excellence Tab -->
+          <div *ngIf="activeTab === 'faculty'">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold">Faculty Excellence</h2>
+                <p class="text-sm text-gray-500">Highlight the achievements of your top faculty members.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <!-- Form Panel -->
+              <div class="lg:col-span-1">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 sticky top-6">
+                  <h3 class="font-bold text-gray-700 mb-4">{{ isEditingFaculty ? 'Edit Faculty' : 'Add New Faculty' }}</h3>
+                  <form [formGroup]="facultyForm" (ngSubmit)="saveFaculty()" class="space-y-4">
+                    
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Name <span class="text-red-500">*</span></label>
+                      <input type="text" formControlName="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Designation</label>
+                        <input type="text" formControlName="designation" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Department</label>
+                        <input type="text" formControlName="department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Achievement</label>
+                      <textarea formControlName="achievement" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Display Order</label>
+                        <input type="number" formControlName="displayOrder" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Photo</label>
+                        <input type="file" (change)="uploadFacultyImage($event)" accept="image/*" class="mt-1 block w-full text-xs text-slate-500">
+                      </div>
+                    </div>
+                    
+                    <div *ngIf="isUploadingFacultyImage" class="text-xs text-indigo-600 mt-1">Uploading...</div>
+                    <div *ngIf="facultyForm.get('photoUrl')?.value" class="mt-2">
+                      <img [src]="facultyForm.get('photoUrl')?.value" class="h-16 w-16 object-cover rounded-full border">
+                    </div>
+
+                    <div class="flex items-center pt-2">
+                      <input type="checkbox" formControlName="isActive" class="h-4 w-4 text-indigo-600 rounded border-gray-300">
+                      <label class="ml-2 block text-sm text-gray-900">Active</label>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-4 border-t border-gray-200">
+                      <button type="submit" [disabled]="facultyForm.invalid || isSavingFaculty || isUploadingFacultyImage" class="flex-1 bg-indigo-600 text-white px-4 py-2 text-sm rounded shadow hover:bg-indigo-700 disabled:opacity-50">
+                        {{ isSavingFaculty ? 'Saving...' : (isEditingFaculty ? 'Update Faculty' : 'Add Faculty') }}
+                      </button>
+                      <button *ngIf="isEditingFaculty" type="button" (click)="cancelFacultyEdit()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm rounded hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- List Panel -->
+              <div class="lg:col-span-2">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg bg-white">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Faculty Member</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr *ngFor="let item of facultyList">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3">
+                          <div class="flex items-center">
+                            <div class="h-10 w-10 shrink-0">
+                              <img class="h-10 w-10 rounded-full object-cover bg-gray-100" [src]="item.photoUrl || 'assets/placeholder-user.jpg'" alt="">
+                            </div>
+                            <div class="ml-4 max-w-[250px]">
+                              <div class="font-medium text-gray-900 text-sm truncate" [title]="item.name">{{item.name}}</div>
+                              <div class="text-xs text-indigo-600 font-medium">{{item.designation}} - {{item.department}}</div>
+                              <div class="text-xs text-gray-500 truncate mt-0.5" [title]="item.achievement">{{item.achievement}}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5" [ngClass]="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            {{item.isActive ? 'Active' : 'Inactive'}}
+                          </span>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button (click)="editFaculty(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                          <button (click)="deleteFaculty(item.id!)" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="facultyList.length === 0">
+                        <td colspan="3" class="py-8 text-center text-sm text-gray-500">No faculty members found.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Student Spotlight Tab -->
+          <div *ngIf="activeTab === 'students'">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold">Student Spotlight</h2>
+                <p class="text-sm text-gray-500">Feature exceptional students and their achievements.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <!-- Form Panel -->
+              <div class="lg:col-span-1">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 sticky top-6">
+                  <h3 class="font-bold text-gray-700 mb-4">{{ isEditingStudent ? 'Edit Student' : 'Add New Student' }}</h3>
+                  <form [formGroup]="studentForm" (ngSubmit)="saveStudent()" class="space-y-4">
+                    
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Student Name <span class="text-red-500">*</span></label>
+                      <input type="text" formControlName="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Class/Grade</label>
+                        <input type="text" formControlName="class" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Display Order</label>
+                        <input type="number" formControlName="displayOrder" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Achievement</label>
+                      <textarea formControlName="achievement" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border"></textarea>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Photo</label>
+                      <input type="file" (change)="uploadStudentImage($event)" accept="image/*" class="mt-1 block w-full text-xs text-slate-500">
+                      <div *ngIf="isUploadingStudentImage" class="text-xs text-indigo-600 mt-1">Uploading...</div>
+                      <div *ngIf="studentForm.get('photoUrl')?.value" class="mt-2">
+                        <img [src]="studentForm.get('photoUrl')?.value" class="h-16 w-16 object-cover rounded-full border">
+                      </div>
+                    </div>
+
+                    <div class="flex items-center pt-2">
+                      <input type="checkbox" formControlName="isActive" class="h-4 w-4 text-indigo-600 rounded border-gray-300">
+                      <label class="ml-2 block text-sm text-gray-900">Publish to Homepage</label>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-4 border-t border-gray-200">
+                      <button type="submit" [disabled]="studentForm.invalid || isSavingStudent || isUploadingStudentImage" class="flex-1 bg-indigo-600 text-white px-4 py-2 text-sm rounded shadow hover:bg-indigo-700 disabled:opacity-50">
+                        {{ isSavingStudent ? 'Saving...' : (isEditingStudent ? 'Update Student' : 'Add Student') }}
+                      </button>
+                      <button *ngIf="isEditingStudent" type="button" (click)="cancelStudentEdit()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm rounded hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- List Panel -->
+              <div class="lg:col-span-2">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg bg-white">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Student Details</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr *ngFor="let item of studentsList">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3">
+                          <div class="flex items-center">
+                            <div class="h-10 w-10 shrink-0">
+                              <img class="h-10 w-10 rounded-full object-cover bg-gray-100" [src]="item.photoUrl || 'assets/placeholder-user.jpg'" alt="">
+                            </div>
+                            <div class="ml-4 max-w-[250px]">
+                              <div class="font-medium text-gray-900 text-sm truncate" [title]="item.name">{{item.name}} <span class="text-xs text-gray-500 font-normal">({{item.class}})</span></div>
+                              <div class="text-xs text-gray-500 truncate mt-0.5" [title]="item.achievement">{{item.achievement}}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5" [ngClass]="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            {{item.isActive ? 'Active' : 'Inactive'}}
+                          </span>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button (click)="editStudent(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                          <button (click)="deleteStudent(item.id!)" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="studentsList.length === 0">
+                        <td colspan="3" class="py-8 text-center text-sm text-gray-500">No students found.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Home Statistics Tab -->
+          <div *ngIf="activeTab === 'stats'">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold">Home Statistics</h2>
+                <p class="text-sm text-gray-500">Manage the key numbers displayed on the homepage (e.g. 100+ Teachers).</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <!-- Form Panel -->
+              <div class="lg:col-span-1">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 sticky top-6">
+                  <h3 class="font-bold text-gray-700 mb-4">{{ isEditingStat ? 'Edit Statistic' : 'Add New Statistic' }}</h3>
+                  <form [formGroup]="statForm" (ngSubmit)="saveStat()" class="space-y-4">
+                    
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Statistic Value <span class="text-red-500">*</span></label>
+                      <input type="text" formControlName="value" placeholder="e.g. 5000+" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border font-bold text-indigo-600">
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Label <span class="text-red-500">*</span></label>
+                      <input type="text" formControlName="label" placeholder="e.g. Happy Students" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Display Order</label>
+                      <input type="number" formControlName="displayOrder" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                    </div>
+
+                    <div class="flex items-center pt-2">
+                      <input type="checkbox" formControlName="isActive" class="h-4 w-4 text-indigo-600 rounded border-gray-300">
+                      <label class="ml-2 block text-sm text-gray-900">Active</label>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-4 border-t border-gray-200">
+                      <button type="submit" [disabled]="statForm.invalid || isSavingStat" class="flex-1 bg-indigo-600 text-white px-4 py-2 text-sm rounded shadow hover:bg-indigo-700 disabled:opacity-50">
+                        {{ isSavingStat ? 'Saving...' : (isEditingStat ? 'Update Stat' : 'Add Stat') }}
+                      </button>
+                      <button *ngIf="isEditingStat" type="button" (click)="cancelStatEdit()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm rounded hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- List Panel -->
+              <div class="lg:col-span-2">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg bg-white">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Statistic</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr *ngFor="let item of statsList">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3">
+                          <div class="flex items-center gap-3">
+                            <span class="text-2xl font-black text-indigo-600">{{item.value}}</span>
+                            <span class="text-sm font-medium text-gray-900">{{item.label}}</span>
+                          </div>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5" [ngClass]="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            {{item.isActive ? 'Active' : 'Inactive'}}
+                          </span>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button (click)="editStat(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                          <button (click)="deleteStat(item.id!)" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="statsList.length === 0">
+                        <td colspan="3" class="py-8 text-center text-sm text-gray-500">No statistics found.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -353,6 +767,29 @@ export class CmsDashboardComponent implements OnInit {
   isEditingEvent = false;
   isSavingEvent = false;
   isUploadingEventImage = false;
+
+  activitiesList: RecentActivity[] = [];
+  activityForm: FormGroup;
+  isEditingActivity = false;
+  isSavingActivity = false;
+  isUploadingActivityImage = false;
+
+  facultyList: FacultyExcellence[] = [];
+  facultyForm: FormGroup;
+  isEditingFaculty = false;
+  isSavingFaculty = false;
+  isUploadingFacultyImage = false;
+
+  studentsList: StudentSpotlight[] = [];
+  studentForm: FormGroup;
+  isEditingStudent = false;
+  isSavingStudent = false;
+  isUploadingStudentImage = false;
+
+  statsList: HomeStatistic[] = [];
+  statForm: FormGroup;
+  isEditingStat = false;
+  isSavingStat = false;
 
   constructor(private fb: FormBuilder, private cms: CmsService, private route: ActivatedRoute) {
     this.settingsForm = this.fb.group({
@@ -397,6 +834,44 @@ export class CmsDashboardComponent implements OnInit {
       imageUrl: [''],
       isActive: [true]
     });
+
+    this.activityForm = this.fb.group({
+      id: [0],
+      title: ['', Validators.required],
+      description: [''],
+      displayOrder: [0],
+      imageUrl: [''],
+      isActive: [true]
+    });
+
+    this.facultyForm = this.fb.group({
+      id: [0],
+      name: ['', Validators.required],
+      designation: [''],
+      department: [''],
+      achievement: [''],
+      photoUrl: [''],
+      displayOrder: [0],
+      isActive: [true]
+    });
+
+    this.studentForm = this.fb.group({
+      id: [0],
+      name: ['', Validators.required],
+      class: [''],
+      achievement: [''],
+      photoUrl: [''],
+      displayOrder: [0],
+      isActive: [true]
+    });
+
+    this.statForm = this.fb.group({
+      id: [0],
+      label: ['', Validators.required],
+      value: ['', Validators.required],
+      displayOrder: [0],
+      isActive: [true]
+    });
   }
 
   ngOnInit() {
@@ -408,6 +883,14 @@ export class CmsDashboardComponent implements OnInit {
           this.loadSocialLinks();
         } else if (this.activeTab === 'events') {
           this.loadEvents();
+        } else if (this.activeTab === 'activities') {
+          this.loadActivities();
+        } else if (this.activeTab === 'faculty') {
+          this.loadFaculty();
+        } else if (this.activeTab === 'students') {
+          this.loadStudents();
+        } else if (this.activeTab === 'stats') {
+          this.loadStats();
         }
       }
     });
@@ -562,10 +1045,210 @@ export class CmsDashboardComponent implements OnInit {
       error: () => this.isSavingEvent = false
     });
   }
-
   deleteEvent(id: number) {
     if(confirm('Are you sure you want to delete this event?')) {
       this.cms.deleteItem('UpcomingEvents', id).subscribe(() => this.loadEvents());
+    }
+  }
+
+  // --- Recent Activities Tab ---
+  // Note: HTML template logic would be injected here in a real scenario,
+  // but as per requested code structure, we maintain the component methods.
+
+  loadActivities() {
+    this.cms.getItems('RecentActivities').subscribe(res => this.activitiesList = res);
+  }
+
+  uploadActivityImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.isUploadingActivityImage = true;
+      this.cms.uploadImage(file).subscribe({
+        next: (res) => {
+          this.activityForm.patchValue({ imageUrl: res.url });
+          this.isUploadingActivityImage = false;
+        },
+        error: () => this.isUploadingActivityImage = false
+      });
+    }
+  }
+
+  editActivity(item: RecentActivity) {
+    this.isEditingActivity = true;
+    this.activityForm.patchValue(item);
+  }
+
+  cancelActivityEdit() {
+    this.isEditingActivity = false;
+    this.activityForm.reset({ id: 0, title: '', description: '', displayOrder: 0, imageUrl: '', isActive: true });
+  }
+
+  saveActivity() {
+    if (this.activityForm.invalid) return;
+    this.isSavingActivity = true;
+    const val = this.activityForm.value;
+    const req = this.isEditingActivity 
+      ? this.cms.updateItem('RecentActivities', val.id, val)
+      : this.cms.addItem('RecentActivities', val);
+    
+    req.subscribe({
+      next: () => {
+        this.isSavingActivity = false;
+        this.cancelActivityEdit();
+        this.loadActivities();
+      },
+      error: () => this.isSavingActivity = false
+    });
+  }
+
+  deleteActivity(id: number) {
+    if(confirm('Are you sure you want to delete this activity?')) {
+      this.cms.deleteItem('RecentActivities', id).subscribe(() => this.loadActivities());
+    }
+  }
+
+  // --- Faculty Excellence Logic ---
+  loadFaculty() {
+    this.cms.getItems('FacultyExcellences').subscribe(res => this.facultyList = res);
+  }
+
+  uploadFacultyImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.isUploadingFacultyImage = true;
+      this.cms.uploadImage(file).subscribe({
+        next: (res) => {
+          this.facultyForm.patchValue({ photoUrl: res.url });
+          this.isUploadingFacultyImage = false;
+        },
+        error: () => this.isUploadingFacultyImage = false
+      });
+    }
+  }
+
+  editFaculty(item: FacultyExcellence) {
+    this.isEditingFaculty = true;
+    this.facultyForm.patchValue(item);
+  }
+
+  cancelFacultyEdit() {
+    this.isEditingFaculty = false;
+    this.facultyForm.reset({ id: 0, name: '', designation: '', department: '', achievement: '', photoUrl: '', displayOrder: 0, isActive: true });
+  }
+
+  saveFaculty() {
+    if (this.facultyForm.invalid) return;
+    this.isSavingFaculty = true;
+    const val = this.facultyForm.value;
+    const req = this.isEditingFaculty 
+      ? this.cms.updateItem('FacultyExcellences', val.id, val)
+      : this.cms.addItem('FacultyExcellences', val);
+    
+    req.subscribe({
+      next: () => {
+        this.isSavingFaculty = false;
+        this.cancelFacultyEdit();
+        this.loadFaculty();
+      },
+      error: () => this.isSavingFaculty = false
+    });
+  }
+
+  deleteFaculty(id: number) {
+    if(confirm('Are you sure you want to delete this faculty member?')) {
+      this.cms.deleteItem('FacultyExcellences', id).subscribe(() => this.loadFaculty());
+    }
+  }
+
+  // --- Student Spotlight Logic ---
+  loadStudents() {
+    this.cms.getItems('StudentSpotlights').subscribe(res => this.studentsList = res);
+  }
+
+  uploadStudentImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.isUploadingStudentImage = true;
+      this.cms.uploadImage(file).subscribe({
+        next: (res) => {
+          this.studentForm.patchValue({ photoUrl: res.url });
+          this.isUploadingStudentImage = false;
+        },
+        error: () => this.isUploadingStudentImage = false
+      });
+    }
+  }
+
+  editStudent(item: StudentSpotlight) {
+    this.isEditingStudent = true;
+    this.studentForm.patchValue(item);
+  }
+
+  cancelStudentEdit() {
+    this.isEditingStudent = false;
+    this.studentForm.reset({ id: 0, name: '', class: '', achievement: '', photoUrl: '', displayOrder: 0, isActive: true });
+  }
+
+  saveStudent() {
+    if (this.studentForm.invalid) return;
+    this.isSavingStudent = true;
+    const val = this.studentForm.value;
+    const req = this.isEditingStudent 
+      ? this.cms.updateItem('StudentSpotlights', val.id, val)
+      : this.cms.addItem('StudentSpotlights', val);
+    
+    req.subscribe({
+      next: () => {
+        this.isSavingStudent = false;
+        this.cancelStudentEdit();
+        this.loadStudents();
+      },
+      error: () => this.isSavingStudent = false
+    });
+  }
+
+  deleteStudent(id: number) {
+    if(confirm('Are you sure you want to delete this student record?')) {
+      this.cms.deleteItem('StudentSpotlights', id).subscribe(() => this.loadStudents());
+    }
+  }
+
+  // --- Home Statistics Logic ---
+  loadStats() {
+    this.cms.getItems('HomeStatistics').subscribe(res => this.statsList = res);
+  }
+
+  editStat(item: HomeStatistic) {
+    this.isEditingStat = true;
+    this.statForm.patchValue(item);
+  }
+
+  cancelStatEdit() {
+    this.isEditingStat = false;
+    this.statForm.reset({ id: 0, label: '', value: '', displayOrder: 0, isActive: true });
+  }
+
+  saveStat() {
+    if (this.statForm.invalid) return;
+    this.isSavingStat = true;
+    const val = this.statForm.value;
+    const req = this.isEditingStat 
+      ? this.cms.updateItem('HomeStatistics', val.id, val)
+      : this.cms.addItem('HomeStatistics', val);
+    
+    req.subscribe({
+      next: () => {
+        this.isSavingStat = false;
+        this.cancelStatEdit();
+        this.loadStats();
+      },
+      error: () => this.isSavingStat = false
+    });
+  }
+
+  deleteStat(id: number) {
+    if(confirm('Are you sure you want to delete this statistic?')) {
+      this.cms.deleteItem('HomeStatistics', id).subscribe(() => this.loadStats());
     }
   }
 }
