@@ -27,6 +27,7 @@ import { AssignmentDetailsComponent } from './assignments/assignment-details.com
 import { AboutUs } from './about-us/about-us';
 import { Contact } from './contact/contact';
 import { TransportDrivers } from './transport-drivers/transport-drivers';
+import { PrincipalMessage } from './principal-message/principal-message';
 
 import { ParentProfile } from './parent-profile/parent-profile';
 import { Notifications } from './notifications/notifications';
@@ -45,6 +46,7 @@ export const routes: Routes = [
     { path: 'inquiry', component: PublicInquiryForm },
     { path: 'about', component: AboutUs },
     { path: 'contact', component: Contact },
+    { path: 'principal-message', component: PrincipalMessage },
     { 
       path: 'dashboard', 
       component: DashboardLayoutComponent,

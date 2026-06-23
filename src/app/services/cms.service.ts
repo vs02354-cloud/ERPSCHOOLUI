@@ -31,6 +31,7 @@ export interface HomeStatistic { id?: number; label: string; value: string; disp
 export interface NewsTicker { id?: number; noticeText: string; noticeType: string; priority: number; startDate: string; expiryDate: string; isActive: boolean; }
 export interface PortalCard { id?: number; title: string; description: string; iconSvg: string; url: string; themeColor: string; displayOrder: number; isActive: boolean; }
 export interface SocialMediaLink { id?: number; platform: string; url: string; isActive: boolean; }
+export interface Holiday { id?: number; title: string; date: string; type: string; description?: string; isActive: boolean; }
 
 @Injectable({
   providedIn: 'root'

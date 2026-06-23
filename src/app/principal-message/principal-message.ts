@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-contact',
+  selector: 'app-principal-message',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './contact.html',
-  styleUrls: ['./contact.css']
+  templateUrl: './principal-message.html',
+  styleUrls: ['./principal-message.css']
 })
-export class Contact implements OnInit {
+export class PrincipalMessage implements OnInit {
   isMobileMenuOpen = false;
   isDarkMode = false;
 

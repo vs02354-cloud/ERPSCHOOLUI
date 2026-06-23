@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent, RecentActivity, FacultyExcellence, StudentSpotlight, HomeStatistic } from '../services/cms.service';
+import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent, RecentActivity, FacultyExcellence, StudentSpotlight, HomeStatistic, NewsTicker, Holiday } from '../services/cms.service';
 
 @Component({
   selector: 'app-cms-dashboard',
@@ -731,6 +731,224 @@ import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent
             </div>
           </div>
 
+          <!-- Announcements Tab -->
+          <div *ngIf="activeTab === 'announcements'">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold">Manage Announcements</h2>
+                <p class="text-sm text-gray-500">Add, edit, or remove announcements displayed in the notice board.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <!-- Form Panel -->
+              <div class="lg:col-span-1">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 sticky top-6">
+                  <h3 class="font-bold text-gray-700 mb-4">{{ isEditingAnnouncement ? 'Edit Announcement' : 'Add New Announcement' }}</h3>
+                  <form [formGroup]="announcementForm" (ngSubmit)="saveAnnouncement()" class="space-y-4">
+                    
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Notice Text <span class="text-red-500">*</span></label>
+                      <textarea formControlName="noticeText" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border" placeholder="Enter notice text..."></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Type</label>
+                        <select formControlName="noticeType" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border bg-white">
+                          <option value="info">Info</option>
+                          <option value="warning">Warning</option>
+                          <option value="alert">Alert</option>
+                          <option value="event">Event</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Priority</label>
+                        <input type="number" formControlName="priority" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Start Date</label>
+                        <input type="date" formControlName="startDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Expiry Date</label>
+                        <input type="date" formControlName="expiryDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                    </div>
+
+                    <div class="flex items-center pt-2">
+                      <input type="checkbox" formControlName="isActive" class="h-4 w-4 text-indigo-600 rounded border-gray-300">
+                      <label class="ml-2 block text-sm text-gray-900">Active</label>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-4 border-t border-gray-200">
+                      <button type="submit" [disabled]="announcementForm.invalid || isSavingAnnouncement" class="flex-1 bg-indigo-600 text-white px-4 py-2 text-sm rounded shadow hover:bg-indigo-700 disabled:opacity-50">
+                        {{ isSavingAnnouncement ? 'Saving...' : (isEditingAnnouncement ? 'Update Notice' : 'Add Notice') }}
+                      </button>
+                      <button *ngIf="isEditingAnnouncement" type="button" (click)="cancelAnnouncementEdit()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm rounded hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- List Panel -->
+              <div class="lg:col-span-2">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg bg-white">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Notice Text</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Type</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr *ngFor="let item of announcementsList">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 max-w-[300px] truncate" [title]="item.noticeText">
+                          {{item.noticeText}}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold leading-5 uppercase" 
+                            [ngClass]="{
+                              'bg-blue-100 text-blue-800': item.noticeType === 'info',
+                              'bg-yellow-100 text-yellow-800': item.noticeType === 'warning',
+                              'bg-red-100 text-red-800': item.noticeType === 'alert',
+                              'bg-green-100 text-green-800': item.noticeType === 'event'
+                            }">
+                            {{item.noticeType}}
+                          </span>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5" [ngClass]="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            {{item.isActive ? 'Active' : 'Inactive'}}
+                          </span>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button (click)="editAnnouncement(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                          <button (click)="deleteAnnouncement(item.id!)" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="announcementsList.length === 0">
+                        <td colspan="4" class="py-8 text-center text-sm text-gray-500">No announcements found.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Holidays Tab -->
+          <div *ngIf="activeTab === 'holidays'">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold">Manage Holidays</h2>
+                <p class="text-sm text-gray-500">Add, edit, or remove holidays displayed in the school holiday calendar.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <!-- Form Panel -->
+              <div class="lg:col-span-1">
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 sticky top-6">
+                  <h3 class="font-bold text-gray-700 mb-4">{{ isEditingHoliday ? 'Edit Holiday' : 'Add New Holiday' }}</h3>
+                  <form [formGroup]="holidayForm" (ngSubmit)="saveHoliday()" class="space-y-4">
+                    
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Holiday Name <span class="text-red-500">*</span></label>
+                      <input type="text" formControlName="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border" placeholder="e.g. Independence Day">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Date <span class="text-red-500">*</span></label>
+                        <input type="date" formControlName="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border">
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-gray-700">Type</label>
+                        <select formControlName="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border bg-white">
+                          <option value="National">National</option>
+                          <option value="Regional">Regional</option>
+                          <option value="Restricted">Restricted</option>
+                          <option value="Observance">Observance</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-medium text-gray-700">Description</label>
+                      <textarea formControlName="description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm p-2 border" placeholder="Details..."></textarea>
+                    </div>
+
+                    <div class="flex items-center pt-2">
+                      <input type="checkbox" formControlName="isActive" class="h-4 w-4 text-indigo-600 rounded border-gray-300">
+                      <label class="ml-2 block text-sm text-gray-900">Active</label>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-4 border-t border-gray-200">
+                      <button type="submit" [disabled]="holidayForm.invalid || isSavingHoliday" class="flex-1 bg-indigo-600 text-white px-4 py-2 text-sm rounded shadow hover:bg-indigo-700 disabled:opacity-50">
+                        {{ isSavingHoliday ? 'Saving...' : (isEditingHoliday ? 'Update Holiday' : 'Add Holiday') }}
+                      </button>
+                      <button *ngIf="isEditingHoliday" type="button" (click)="cancelHolidayEdit()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm rounded hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- List Panel -->
+              <div class="lg:col-span-2">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg bg-white">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Holiday Name</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Type</th>
+                        <th class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr *ngFor="let item of holidaysList">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
+                          {{item.title}}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {{item.date | date:'mediumDate'}}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 bg-purple-100 text-purple-800">
+                            {{item.type}}
+                          </span>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                          <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5" [ngClass]="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            {{item.isActive ? 'Active' : 'Inactive'}}
+                          </span>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <button (click)="editHoliday(item)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                          <button (click)="deleteHoliday(item.id!)" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="holidaysList.length === 0">
+                        <td colspan="5" class="py-8 text-center text-sm text-gray-500">No holidays found.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -744,7 +962,9 @@ export class CmsDashboardComponent implements OnInit {
     { id: 'activities', name: 'Recent Activities' },
     { id: 'faculty', name: 'Faculty Excellence' },
     { id: 'students', name: 'Student Spotlight' },
-    { id: 'stats', name: 'Home Statistics' }
+    { id: 'stats', name: 'Home Statistics' },
+    { id: 'announcements', name: 'Announcements' },
+    { id: 'holidays', name: 'Holidays' }
   ];
   activeTab = 'settings';
 
@@ -790,6 +1010,16 @@ export class CmsDashboardComponent implements OnInit {
   statForm: FormGroup;
   isEditingStat = false;
   isSavingStat = false;
+
+  announcementsList: NewsTicker[] = [];
+  announcementForm!: FormGroup;
+  isEditingAnnouncement = false;
+  isSavingAnnouncement = false;
+
+  holidaysList: Holiday[] = [];
+  holidayForm!: FormGroup;
+  isEditingHoliday = false;
+  isSavingHoliday = false;
 
   constructor(private fb: FormBuilder, private cms: CmsService, private route: ActivatedRoute) {
     this.settingsForm = this.fb.group({
@@ -872,6 +1102,25 @@ export class CmsDashboardComponent implements OnInit {
       displayOrder: [0],
       isActive: [true]
     });
+
+    this.announcementForm = this.fb.group({
+      id: [0],
+      noticeText: ['', Validators.required],
+      noticeType: ['info', Validators.required],
+      priority: [1],
+      startDate: [''],
+      expiryDate: [''],
+      isActive: [true]
+    });
+
+    this.holidayForm = this.fb.group({
+      id: [0],
+      title: ['', Validators.required],
+      date: ['', Validators.required],
+      type: ['National', Validators.required],
+      description: [''],
+      isActive: [true]
+    });
   }
 
   ngOnInit() {
@@ -891,6 +1140,10 @@ export class CmsDashboardComponent implements OnInit {
           this.loadStudents();
         } else if (this.activeTab === 'stats') {
           this.loadStats();
+        } else if (this.activeTab === 'announcements') {
+          this.loadAnnouncements();
+        } else if (this.activeTab === 'holidays') {
+          this.loadHolidays();
         }
       }
     });
@@ -1249,6 +1502,102 @@ export class CmsDashboardComponent implements OnInit {
   deleteStat(id: number) {
     if(confirm('Are you sure you want to delete this statistic?')) {
       this.cms.deleteItem('HomeStatistics', id).subscribe(() => this.loadStats());
+    }
+  }
+
+  // --- Announcements Logic ---
+  loadAnnouncements() {
+    this.cms.getItems('NewsTickers').subscribe(res => {
+      this.announcementsList = res.map(a => ({
+        ...a,
+        startDate: a.startDate ? new Date(a.startDate).toISOString().split('T')[0] : '',
+        expiryDate: a.expiryDate ? new Date(a.expiryDate).toISOString().split('T')[0] : ''
+      }));
+    });
+  }
+
+  editAnnouncement(item: NewsTicker) {
+    this.isEditingAnnouncement = true;
+    this.announcementForm.patchValue({
+      ...item,
+      startDate: item.startDate ? new Date(item.startDate).toISOString().split('T')[0] : '',
+      expiryDate: item.expiryDate ? new Date(item.expiryDate).toISOString().split('T')[0] : ''
+    });
+  }
+
+  cancelAnnouncementEdit() {
+    this.isEditingAnnouncement = false;
+    this.announcementForm.reset({ id: 0, noticeText: '', noticeType: 'info', priority: 1, startDate: '', expiryDate: '', isActive: true });
+  }
+
+  saveAnnouncement() {
+    if (this.announcementForm.invalid) return;
+    this.isSavingAnnouncement = true;
+    const val = this.announcementForm.value;
+    const req = this.isEditingAnnouncement
+      ? this.cms.updateItem('NewsTickers', val.id, val)
+      : this.cms.addItem('NewsTickers', val);
+
+    req.subscribe({
+      next: () => {
+        this.isSavingAnnouncement = false;
+        this.cancelAnnouncementEdit();
+        this.loadAnnouncements();
+      },
+      error: () => this.isSavingAnnouncement = false
+    });
+  }
+
+  deleteAnnouncement(id: number) {
+    if (confirm('Are you sure you want to delete this announcement?')) {
+      this.cms.deleteItem('NewsTickers', id).subscribe(() => this.loadAnnouncements());
+    }
+  }
+
+  // --- Holidays Logic ---
+  loadHolidays() {
+    this.cms.getItems('Holidays').subscribe(res => {
+      this.holidaysList = res.map(h => ({
+        ...h,
+        date: h.date ? new Date(h.date).toISOString().split('T')[0] : ''
+      }));
+    });
+  }
+
+  editHoliday(item: Holiday) {
+    this.isEditingHoliday = true;
+    this.holidayForm.patchValue({
+      ...item,
+      date: item.date ? new Date(item.date).toISOString().split('T')[0] : ''
+    });
+  }
+
+  cancelHolidayEdit() {
+    this.isEditingHoliday = false;
+    this.holidayForm.reset({ id: 0, title: '', date: '', type: 'National', description: '', isActive: true });
+  }
+
+  saveHoliday() {
+    if (this.holidayForm.invalid) return;
+    this.isSavingHoliday = true;
+    const val = this.holidayForm.value;
+    const req = this.isEditingHoliday
+      ? this.cms.updateItem('Holidays', val.id, val)
+      : this.cms.addItem('Holidays', val);
+
+    req.subscribe({
+      next: () => {
+        this.isSavingHoliday = false;
+        this.cancelHolidayEdit();
+        this.loadHolidays();
+      },
+      error: () => this.isSavingHoliday = false
+    });
+  }
+
+  deleteHoliday(id: number) {
+    if (confirm('Are you sure you want to delete this holiday?')) {
+      this.cms.deleteItem('Holidays', id).subscribe(() => this.loadHolidays());
     }
   }
 }

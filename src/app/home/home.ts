@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CmsService, HomePageSettings, QuickLink, UpcomingEvent, RecentActivity, FacultyExcellence, StudentSpotlight, HomeStatistic, NewsTicker, PortalCard, SocialMediaLink } from '../services/cms.service';
+import { CmsService, HomePageSettings, QuickLink, UpcomingEvent, RecentActivity, FacultyExcellence, StudentSpotlight, HomeStatistic, NewsTicker, PortalCard, SocialMediaLink, Holiday } from '../services/cms.service';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +12,7 @@ import { CmsService, HomePageSettings, QuickLink, UpcomingEvent, RecentActivity,
 export class Home implements OnInit {
   isMobileMenuOpen = false;
   isLoading = true;
+  isDarkMode = false;
 
   settings: HomePageSettings | null = null;
   announcements: NewsTicker[] = [];
@@ -23,10 +24,13 @@ export class Home implements OnInit {
   quickLinks: QuickLink[] = [];
   portals: PortalCard[] = [];
   socialMediaLinks: SocialMediaLink[] = [];
+  holidays: Holiday[] = [];
 
   constructor(private cms: CmsService) {}
 
   ngOnInit() {
+    this.isDarkMode = document.documentElement.classList.contains('dark');
+
     this.cms.getHomePageData().subscribe({
       next: (data) => {
         this.settings = data.settings;
@@ -39,6 +43,7 @@ export class Home implements OnInit {
         this.quickLinks = data.quickLinks;
         this.portals = data.portalCards;
         this.socialMediaLinks = data.socialMediaLinks;
+        this.holidays = data.holidays || [];
         this.isLoading = false;
       },
       error: (err) => {
@@ -46,5 +51,16 @@ export class Home implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   }
 }
