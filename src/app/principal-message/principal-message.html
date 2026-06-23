@@ -5,8 +5,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-20 items-center">
         <a routerLink="/" class="flex items-center gap-3">
-          <img src="assets/logo.jpeg" alt="School Logo" class="h-12 object-contain rounded-lg">
-          <span class="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">EduSchool</span>
+          <img [src]="settings?.logoUrl || 'assets/logo.jpeg'" alt="School Logo" class="h-12 object-contain rounded-lg">
+          <span class="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">{{ settings?.schoolName || 'EduSchool' }}</span>
         </a>
         <div class="hidden md:flex space-x-8 items-center">
           <a routerLink="/about" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">About Us</a>
@@ -61,11 +61,11 @@
     <div class="grid lg:grid-cols-3 gap-12 items-start mb-24">
       <div class="lg:col-span-1 rounded-3xl overflow-hidden shadow-2xl relative bg-white dark:bg-gray-800 p-8 border border-gray-100 dark:border-gray-700 text-center transform hover:scale-[1.01] transition-transform duration-300">
         <div class="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 border-indigo-600 dark:border-indigo-400 shadow-lg">
-          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" alt="Principal Dr. Sarah Jenkins" class="w-full h-full object-cover">
+          <img [src]="settings?.principalImageUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop'" [alt]="settings?.principalName || 'Principal'" class="w-full h-full object-cover">
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Dr. Sarah Jenkins</h2>
-        <p class="text-indigo-600 dark:text-indigo-400 font-semibold mb-2">School Principal</p>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Ph.D. in Education Administration, Harvard University</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ settings?.principalName || 'Dr. Sarah Jenkins' }}</h2>
+        <p class="text-indigo-600 dark:text-indigo-400 font-semibold mb-2">{{ settings?.principalTitle || 'School Principal' }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ settings?.principalCredentials || 'Ph.D. in Education Administration, Harvard University' }}</p>
         <div class="mt-6 flex justify-center gap-4 border-t border-gray-100 dark:border-gray-700 pt-6">
           <div class="text-center">
             <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">15+</div>
@@ -82,24 +82,15 @@
       <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl p-8 lg:p-12 shadow-xl border border-gray-100 dark:border-gray-700 leading-relaxed">
         <div class="space-y-6 text-gray-600 dark:text-gray-300">
           <p class="text-xl text-gray-800 dark:text-gray-100 font-medium italic mb-4">
-            "Dear Students, Parents, and Friends of EduSchool,
+            "Dear Students, Parents, and Friends of {{ settings?.schoolName || 'EduSchool' }},
           </p>
-          <p>
-            Welcome to EduSchool, a place where we believe that education is not merely preparation for life, but is life itself. It is my absolute honor and privilege to lead this outstanding institution, which has served as a beacon of academic excellence and holistic child development in Madhya Pradesh.
-          </p>
-          <p>
-            In today's fast-paced, globalized world, our role as educators goes beyond traditional classroom instruction. We strive to create an environment where creativity, critical thinking, and character development are prioritized. We nurture our students to be compassionate, resilient, and ethical leaders who are prepared to make a positive impact on society.
-          </p>
-          <p>
-            Our state-of-the-art facilities, combined with our dedicated faculty, ensure that each student receives a world-class education. We encourage parents to be active partners in their child's educational journey, working hand-in-hand with us to support their growth.
-          </p>
-          <p class="pb-6">
-            Thank you for trusting us with your child's future. Together, let us continue to inspire excellence and mold the global citizens of tomorrow.
-          </p>
-          <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+          <div class="whitespace-pre-line text-base text-gray-600 dark:text-gray-300">
+            {{ settings?.principalMessage || 'Welcome to EduSchool, a place where we believe that education is not merely preparation for life, but is life itself. It is my absolute honor and privilege to lead this outstanding institution.' }}
+          </div>
+          <div class="border-t border-gray-100 dark:border-gray-700 pt-6 mt-6">
             <p class="text-base font-bold text-gray-900 dark:text-white">Warm regards,</p>
-            <p class="text-indigo-600 dark:text-indigo-400 font-bold text-lg">Dr. Sarah Jenkins</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Principal, EduSchool</p>
+            <p class="text-indigo-600 dark:text-indigo-400 font-bold text-lg">{{ settings?.principalName || 'Dr. Sarah Jenkins' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ settings?.principalTitle || 'Principal' }}, {{ settings?.schoolName || 'EduSchool' }}</p>
           </div>
         </div>
       </div>
@@ -112,8 +103,8 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         <div class="col-span-1 md:col-span-1">
           <div class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center text-white font-bold">E</div>
-            <span class="font-bold text-xl text-white">EduSchool</span>
+            <img [src]="settings?.logoUrl || 'assets/logo.jpeg'" class="w-8 h-8 rounded object-cover">
+            <span class="font-bold text-xl text-white">{{ settings?.schoolName || 'EduSchool' }}</span>
           </div>
           <p class="text-sm text-gray-400 mb-6">Empowering students with knowledge, character, and skills to succeed in the modern world.</p>
         </div>
@@ -133,11 +124,11 @@
           <ul class="space-y-3 text-sm">
             <li class="flex items-start gap-3">
               <svg class="w-5 h-5 text-indigo-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              <span>Super Corridor, Indore, Madhya Pradesh</span>
+              <span>{{ settings?.address || 'Super Corridor, Indore, Madhya Pradesh' }}</span>
             </li>
             <li class="flex items-center gap-3">
               <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-              <span>info@eduschool.edu</span>
+              <span>{{ settings?.email || 'info@eduschool.edu' }}</span>
             </li>
           </ul>
         </div>

@@ -19,6 +19,11 @@ export interface HomePageSettings {
   heroSecondaryButtonText: string;
   heroSecondaryButtonUrl: string;
   mapEmbedUrl: string;
+  principalName?: string;
+  principalTitle?: string;
+  principalCredentials?: string;
+  principalMessage?: string;
+  principalImageUrl?: string;
 }
 
 // ... other interfaces ... (I'll add the necessary ones simply)

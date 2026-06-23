@@ -22,34 +22,129 @@ import { CmsService, HomePageSettings, QuickLink, SocialMediaLink, UpcomingEvent
           <!-- General Settings Tab (Branding & Hero) -->
           <div *ngIf="activeTab === 'settings'">
             <h2 class="text-xl font-bold mb-4">Branding & Hero Settings</h2>
-            <form *ngIf="settingsForm" [formGroup]="settingsForm" (ngSubmit)="saveSettings()" class="space-y-4">
+            <form *ngIf="settingsForm" [formGroup]="settingsForm" (ngSubmit)="saveSettings()" class="space-y-6">
               
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">School Name</label>
-                  <input type="text" formControlName="schoolName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+              <!-- Branding Section -->
+              <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <h3 class="font-bold text-gray-800 mb-3">School Branding & Contact</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">School Name</label>
+                    <input type="text" formControlName="schoolName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Email Address</label>
+                    <input type="email" formControlName="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Phone Number</label>
+                    <input type="text" formControlName="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
                 </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Email Address</label>
-                  <input type="email" formControlName="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Logo URL</label>
+                    <input type="text" formControlName="logoUrl" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Website URL</label>
+                    <input type="text" formControlName="websiteUrl" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Map Embed URL (iframe src)</label>
+                    <input type="text" formControlName="mapEmbedUrl" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <label class="block text-xs font-medium text-gray-700">Campus Address</label>
+                  <input type="text" formControlName="address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
                 </div>
               </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Hero Heading</label>
-                <input type="text" formControlName="heroHeading" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+              <!-- Hero Section -->
+              <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <h3 class="font-bold text-gray-800 mb-3">Hero Section</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Hero Tagline</label>
+                    <input type="text" formControlName="heroTagline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Hero Heading</label>
+                    <input type="text" formControlName="heroHeading" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <label class="block text-xs font-medium text-gray-700">Hero Description</label>
+                  <textarea formControlName="heroDescription" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-3">
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Primary Button Text</label>
+                    <input type="text" formControlName="heroPrimaryButtonText" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Primary Button URL</label>
+                    <input type="text" formControlName="heroPrimaryButtonUrl" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Secondary Button Text</label>
+                    <input type="text" formControlName="heroSecondaryButtonText" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Secondary Button URL</label>
+                    <input type="text" formControlName="heroSecondaryButtonUrl" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white">
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Hero Description</label>
-                <textarea formControlName="heroDescription" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"></textarea>
+              <!-- Principal's Message Section -->
+              <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <h3 class="font-bold text-gray-800 mb-3">Principal's Message Section</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Principal Name</label>
+                    <input type="text" formControlName="principalName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white" placeholder="Dr. Sarah Jenkins">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Principal Title</label>
+                    <input type="text" formControlName="principalTitle" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white" placeholder="School Principal">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Principal Credentials</label>
+                    <input type="text" formControlName="principalCredentials" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white" placeholder="Ph.D. in Education Administration">
+                  </div>
+                </div>
+                
+                <div class="mt-3">
+                  <label class="block text-xs font-medium text-gray-700">Principal Message</label>
+                  <textarea formControlName="principalMessage" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm bg-white" placeholder="Enter principal message text..."></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 items-end">
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700">Principal Photo</label>
+                    <input type="file" (change)="uploadPrincipalImage($event)" accept="image/*" class="mt-1 block w-full text-xs text-slate-500">
+                    <div *ngIf="isUploadingPrincipalImage" class="text-xs text-indigo-600 mt-1">Uploading photo...</div>
+                  </div>
+                  <div class="flex gap-4 items-center">
+                    <div *ngIf="settingsForm.get('principalImageUrl')?.value" class="shrink-0">
+                      <img [src]="settingsForm.get('principalImageUrl')?.value" class="h-14 w-14 object-cover rounded-full border">
+                    </div>
+                    <div class="flex-1">
+                      <label class="block text-[10px] font-medium text-gray-500">Photo URL</label>
+                      <input type="text" formControlName="principalImageUrl" class="block w-full rounded-md border-gray-300 shadow-sm p-1 border text-xs bg-white">
+                    </div>
+                  </div>
+                </div>
               </div>
 
+              <!-- Submit Buttons -->
               <div class="pt-4 border-t border-gray-200">
-                <button type="submit" [disabled]="isSaving" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">
-                  {{ isSaving ? 'Saving...' : 'Save Settings' }}
+                <button type="submit" [disabled]="isSaving || isUploadingPrincipalImage" class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg shadow-md hover:bg-indigo-700 font-bold transition-colors disabled:opacity-50">
+                  {{ isSaving ? 'Saving...' : 'Save All Settings' }}
                 </button>
-                <span *ngIf="savedSuccess" class="ml-3 text-green-600 text-sm">Saved successfully!</span>
+                <span *ngIf="savedSuccess" class="ml-3 text-green-600 text-sm font-semibold">Settings saved successfully!</span>
               </div>
             </form>
           </div>
@@ -971,6 +1066,7 @@ export class CmsDashboardComponent implements OnInit {
   settingsForm: FormGroup;
   isSaving = false;
   savedSuccess = false;
+  isUploadingPrincipalImage = false;
 
   quickLinksList: QuickLink[] = [];
   quickLinkForm: FormGroup;
@@ -1037,7 +1133,12 @@ export class CmsDashboardComponent implements OnInit {
       heroPrimaryButtonUrl: [''],
       heroSecondaryButtonText: [''],
       heroSecondaryButtonUrl: [''],
-      mapEmbedUrl: ['']
+      mapEmbedUrl: [''],
+      principalName: [''],
+      principalTitle: [''],
+      principalCredentials: [''],
+      principalMessage: [''],
+      principalImageUrl: ['']
     });
 
     this.quickLinkForm = this.fb.group({
@@ -1163,6 +1264,20 @@ export class CmsDashboardComponent implements OnInit {
       },
       error: () => this.isSaving = false
     });
+  }
+
+  uploadPrincipalImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.isUploadingPrincipalImage = true;
+      this.cms.uploadImage(file).subscribe({
+        next: (res) => {
+          this.settingsForm.patchValue({ principalImageUrl: res.url });
+          this.isUploadingPrincipalImage = false;
+        },
+        error: () => this.isUploadingPrincipalImage = false
+      });
+    }
   }
 
   // --- Quick Links Logic ---

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CmsService, HomePageSettings } from '../services/cms.service';
 
 @Component({
   selector: 'app-principal-message',
@@ -12,9 +13,17 @@ import { RouterModule } from '@angular/router';
 export class PrincipalMessage implements OnInit {
   isMobileMenuOpen = false;
   isDarkMode = false;
+  settings: HomePageSettings | null = null;
+
+  constructor(private cms: CmsService) {}
 
   ngOnInit() {
     this.isDarkMode = document.documentElement.classList.contains('dark');
+    this.cms.getSettings().subscribe({
+      next: (res) => {
+        this.settings = res;
+      }
+    });
   }
 
   toggleTheme() {
