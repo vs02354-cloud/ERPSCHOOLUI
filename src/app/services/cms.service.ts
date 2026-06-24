@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { map } from 'rxjs/operators';
 
 export interface HomePageSettings {
   id?: number;
@@ -66,6 +66,11 @@ export class CmsService {
   uploadImage(file: File): Observable<{url: string}> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<{url: string}>(`${this.adminUrl}/UploadImage`, formData);
+    return this.http.post<{url: string}>(`${this.adminUrl}/UploadImage`, formData).pipe(
+      map(res => {
+        const baseUrl = this.apiUrl.replace('/api', '');
+        return { url: res.url.startsWith('http') ? res.url : `${baseUrl}${res.url}` };
+      })
+    );
   }
 }
