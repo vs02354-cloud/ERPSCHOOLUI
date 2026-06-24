@@ -16,8 +16,6 @@ export class Home implements OnInit, OnDestroy {
   isMobileMenuOpen = false;
   isLoading = true;
   currentLanguage: 'en' | 'hi' = 'en';
-  currentTimeString = '';
-  clockInterval: any;
   safeMapUrl: SafeResourceUrl | null = null;
 
   settings: HomePageSettings | null = null;
@@ -69,8 +67,6 @@ export class Home implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentLanguage = (localStorage.getItem('language') as 'en' | 'hi') || 'en';
-    
-    this.startClock();
 
     this.cms.getHomePageData().subscribe({
       next: (data) => {
@@ -100,46 +96,17 @@ export class Home implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.clockInterval) {
-      clearInterval(this.clockInterval);
-    }
   }
 
   onLanguageChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.currentLanguage = select.value as 'en' | 'hi';
     localStorage.setItem('language', this.currentLanguage);
-    this.updateClock();
     this.cdr.detectChanges();
   }
 
   toggleLanguage() {
     this.currentLanguage = this.currentLanguage === 'en' ? 'hi' : 'en';
     localStorage.setItem('language', this.currentLanguage);
-    this.updateClock();
-  }
-
-  startClock() {
-    this.updateClock();
-    this.clockInterval = setInterval(() => {
-      this.updateClock();
-    }, 1000);
-  }
-
-  updateClock() {
-    const now = new Date();
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true
-    };
-    const locale = this.currentLanguage === 'hi' ? 'hi-IN' : 'en-US';
-    this.currentTimeString = now.toLocaleString(locale, options);
-    this.cdr.detectChanges();
   }
 }

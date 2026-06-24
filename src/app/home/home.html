@@ -19,12 +19,7 @@
   <div class="relative z-10 flex flex-col flex-1">
     <!-- Top Utility Bar -->
     <div class="glass-panel border-b border-white/20 dark:border-gray-800/50 text-xs py-2.5 transition-colors duration-300 backdrop-blur-xl">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3">
-        <!-- Date and Time -->
-        <div class="flex items-center gap-2 font-medium text-gray-700 dark:text-gray-300">
-          <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span>{{ translations['currentTime'][currentLanguage] }}: <span class="font-bold text-indigo-900 dark:text-indigo-100">{{ currentTimeString }}</span></span>
-        </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-end items-center gap-3">
         <!-- Toggles & Language -->
         <div class="flex items-center gap-4">
           <!-- Language switcher Dropdown -->
