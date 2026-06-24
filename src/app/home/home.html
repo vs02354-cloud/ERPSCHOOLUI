@@ -17,32 +17,7 @@
   </div>
 
   <div class="relative z-10 flex flex-col flex-1">
-    <!-- Top Utility Bar -->
-    <div class="glass-panel border-b border-white/20 dark:border-gray-800/50 text-xs py-2.5 transition-colors duration-300 backdrop-blur-xl">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-end items-center gap-3">
-        <!-- Toggles & Language -->
-        <div class="flex items-center gap-4">
-          <!-- Language switcher Dropdown -->
-          <div class="relative group">
-            <select (change)="onLanguageChange($event)" class="appearance-none bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full pl-8 pr-6 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer hover:bg-white/80 dark:hover:bg-gray-700/80 transition-all backdrop-blur-md">
-              <option value="en" [selected]="currentLanguage === 'en'">English (EN)</option>
-              <option value="hi" [selected]="currentLanguage === 'hi'">Hindi (हिंदी)</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
-              <span class="text-sm">🌐</span>
-            </div>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
-              <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-          </div>
-          <!-- Theme toggle -->
-          <button (click)="themeService.toggleTheme()" class="p-1.5 rounded-full bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-indigo-600 dark:text-yellow-400 hover:bg-white/80 dark:hover:bg-gray-700/80 shadow-sm transition-all backdrop-blur-md" aria-label="Toggle Theme">
-            <svg *ngIf="!themeService.isDarkMode()" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-            <svg *ngIf="themeService.isDarkMode()" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
-          </button>
-        </div>
-      </div>
-    </div>
+
 
     <!-- Navbar -->
     <nav class="sticky top-0 z-40 glass-panel border-b border-white/20 dark:border-gray-800/50 shadow-sm transition-colors duration-300">
@@ -60,8 +35,28 @@
             <a routerLink="/inquiry" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition-colors">{{ translations['admissions'][currentLanguage] }}</a>
             <a routerLink="/contact" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition-colors">{{ translations['contactUs'][currentLanguage] }}</a>
           </div>
-          <div class="hidden md:flex">
-            <a routerLink="/login" class="px-7 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold shadow-[0_4px_15px_rgba(99,102,241,0.4)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.6)] hover:scale-105 transition-all duration-300 flex items-center gap-2">
+          <div class="hidden md:flex items-center gap-4">
+            <!-- Language switcher Dropdown -->
+            <div class="relative group">
+              <select (change)="onLanguageChange($event)" class="appearance-none bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full pl-8 pr-6 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer hover:bg-white/80 dark:hover:bg-gray-700/80 transition-all backdrop-blur-md">
+                <option value="en" [selected]="currentLanguage === 'en'">English (EN)</option>
+                <option value="hi" [selected]="currentLanguage === 'hi'">Hindi (हिंदी)</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
+                <span class="text-sm">🌐</span>
+              </div>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
+                <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+            </div>
+            
+            <!-- Theme toggle -->
+            <button (click)="themeService.toggleTheme()" class="p-2 rounded-full bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-indigo-600 dark:text-yellow-400 hover:bg-white/80 dark:hover:bg-gray-700/80 shadow-sm transition-all backdrop-blur-md" aria-label="Toggle Theme">
+              <svg *ngIf="!themeService.isDarkMode()" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+              <svg *ngIf="themeService.isDarkMode()" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
+            </button>
+
+            <a routerLink="/login" class="px-7 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold shadow-[0_4px_15px_rgba(99,102,241,0.4)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.6)] hover:scale-105 transition-all duration-300 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
               {{ translations['login'][currentLanguage] }}
             </a>
@@ -88,6 +83,26 @@
         <a routerLink="/principal-message" (click)="isMobileMenuOpen = false" class="block px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 hover:text-indigo-600 hover:bg-white/60 dark:hover:bg-gray-800/60">{{ translations['principalMessage'][currentLanguage] }}</a>
         <a routerLink="/inquiry" (click)="isMobileMenuOpen = false" class="block px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 hover:text-indigo-600 hover:bg-white/60 dark:hover:bg-gray-800/60">{{ translations['admissions'][currentLanguage] }}</a>
         <a routerLink="/contact" (click)="isMobileMenuOpen = false" class="block px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 hover:text-indigo-600 hover:bg-white/60 dark:hover:bg-gray-800/60">{{ translations['contactUs'][currentLanguage] }}</a>
+        <div class="border-t border-white/20 dark:border-gray-800/50 mt-2 pt-3 flex items-center justify-between px-2">
+          <!-- Language switcher Dropdown for Mobile -->
+          <div class="relative group flex-1 mr-4">
+            <select (change)="onLanguageChange($event)" class="w-full appearance-none bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full pl-8 pr-6 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer hover:bg-white/80 dark:hover:bg-gray-700/80 transition-all backdrop-blur-md">
+              <option value="en" [selected]="currentLanguage === 'en'">English (EN)</option>
+              <option value="hi" [selected]="currentLanguage === 'hi'">Hindi (हिंदी)</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
+              <span class="text-sm">🌐</span>
+            </div>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
+              <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+          <!-- Theme toggle for Mobile -->
+          <button (click)="themeService.toggleTheme()" class="p-2 rounded-full bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-indigo-600 dark:text-yellow-400 hover:bg-white/80 dark:hover:bg-gray-700/80 shadow-sm transition-all backdrop-blur-md" aria-label="Toggle Theme">
+            <svg *ngIf="!themeService.isDarkMode()" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg *ngIf="themeService.isDarkMode()" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
       </div>
     </nav>
 
