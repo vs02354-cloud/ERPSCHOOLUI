@@ -14,14 +14,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     };
   }
 
-  // Rewrite URL for local development if running on localhost (but NOT on Capacitor native mobile app)
-  const isCapacitorNative = !!(window as any).Capacitor?.isNativePlatform?.();
-  
-  if (!isCapacitorNative && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-    if (req.url.startsWith('https://erpschoolapi.onrender.com/api')) {
-      cloneParams.url = req.url.replace('https://erpschoolapi.onrender.com/api', 'http://localhost:5120/api');
-    }
-  }
+  // No URL rewriting. Always use the live API as defined in the service.
 
   if (token || cloneParams.url) {
     req = req.clone(cloneParams);
