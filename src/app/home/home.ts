@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CmsService, HomePageSettings, QuickLink, UpcomingEvent, RecentActivity, FacultyExcellence, StudentSpotlight, HomeStatistic, NewsTicker, PortalCard, SocialMediaLink, Holiday } from '../services/cms.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,6 @@ import { CmsService, HomePageSettings, QuickLink, UpcomingEvent, RecentActivity,
 export class Home implements OnInit, OnDestroy {
   isMobileMenuOpen = false;
   isLoading = true;
-  isDarkMode = false;
   currentLanguage: 'en' | 'hi' = 'en';
   currentTimeString = '';
   clockInterval: any;
@@ -60,10 +60,14 @@ export class Home implements OnInit, OnDestroy {
     contactUsNow: { en: 'Contact Us Now', hi: 'अभी संपर्क करें' }
   };
 
-  constructor(private cms: CmsService, private sanitizer: DomSanitizer) {}
+  constructor(
+    private cms: CmsService, 
+    private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef,
+    public themeService: ThemeService
+  ) {}
 
   ngOnInit() {
-    this.isDarkMode = document.documentElement.classList.contains('dark');
     this.currentLanguage = (localStorage.getItem('language') as 'en' | 'hi') || 'en';
     
     this.startClock();
@@ -85,10 +89,12 @@ export class Home implements OnInit, OnDestroy {
 
         const mapUrl = data.settings?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.529517170564!2d75.82025687590827!3d22.745700779368367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd02e2124cb1%3A0x67db238d212133b3!2sSuper%20Corridor%2C%20Indore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
         this.safeMapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error loading homepage data', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -99,15 +105,12 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+  onLanguageChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.currentLanguage = select.value as 'en' | 'hi';
+    localStorage.setItem('language', this.currentLanguage);
+    this.updateClock();
+    this.cdr.detectChanges();
   }
 
   toggleLanguage() {
@@ -137,5 +140,6 @@ export class Home implements OnInit, OnDestroy {
     };
     const locale = this.currentLanguage === 'hi' ? 'hi-IN' : 'en-US';
     this.currentTimeString = now.toLocaleString(locale, options);
+    this.cdr.detectChanges();
   }
 }

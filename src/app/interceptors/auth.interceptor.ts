@@ -17,7 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Rewrite URL for local development if running on localhost
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     if (req.url.startsWith('https://erpschoolapi.onrender.com/api')) {
-      cloneParams.url = req.url.replace('https://erpschoolapi.onrender.com/api', 'https://localhost:7007/api');
+      cloneParams.url = req.url.replace('https://erpschoolapi.onrender.com/api', 'http://localhost:5120/api');
     }
   }
 

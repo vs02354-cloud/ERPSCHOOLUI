@@ -8,16 +8,26 @@
           <img [src]="settings?.logoUrl || 'assets/logo.jpeg'" alt="School Logo" class="h-10 w-10 object-contain rounded-lg shadow-md">
           <span class="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-purple-700 dark:from-indigo-400 dark:to-purple-400">{{ settings?.schoolName || 'EduSchool' }}</span>
         </a>
-        <div class="hidden md:flex space-x-8 items-center">
+        <div class="hidden md:flex space-x-6 items-center">
           <a routerLink="/about" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">About Us</a>
           <a routerLink="/principal-message" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Principal's Message</a>
           <a routerLink="/inquiry" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Admissions</a>
           <a routerLink="/contact" class="text-indigo-600 dark:text-indigo-400 font-semibold transition-colors">Contact Us</a>
           
+          <!-- Language switcher Dropdown -->
+          <div class="relative inline-block text-left">
+            <select [value]="currentLanguage" (change)="onLanguageChange($event)" class="appearance-none pl-8 pr-7 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-transparent shadow-sm font-semibold text-xs transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+              <option value="en">English</option>
+              <option value="hi">हिंदी (Hindi)</option>
+            </select>
+            <span class="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">🌐</span>
+            <span class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[8px] text-gray-500">▼</span>
+          </div>
+
           <!-- Dark Mode Toggle Button -->
-          <button (click)="toggleTheme()" class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300 shadow-sm" aria-label="Toggle Theme">
-            <svg *ngIf="!isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-            <svg *ngIf="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+          <button (click)="themeService.toggleTheme()" class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300 shadow-sm" aria-label="Toggle Theme">
+            <svg *ngIf="!themeService.isDarkMode()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            <svg *ngIf="themeService.isDarkMode()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
           </button>
 
           <a routerLink="/login" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">Login</a>
@@ -25,10 +35,18 @@
         
         <!-- Mobile menu button & Login -->
         <div class="md:hidden flex items-center gap-2">
+          <!-- Language switcher Dropdown -->
+          <div class="relative inline-block text-left">
+            <select [value]="currentLanguage" (change)="onLanguageChange($event)" class="appearance-none pl-6 pr-4 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-transparent shadow-sm font-semibold text-[10px] transition-all focus:outline-none cursor-pointer">
+              <option value="en">EN</option>
+              <option value="hi">हि</option>
+            </select>
+          </div>
+
           <!-- Dark Mode Toggle -->
-          <button (click)="toggleTheme()" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300" aria-label="Toggle Theme">
-            <svg *ngIf="!isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-            <svg *ngIf="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+          <button (click)="themeService.toggleTheme()" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300" aria-label="Toggle Theme">
+            <svg *ngIf="!themeService.isDarkMode()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            <svg *ngIf="themeService.isDarkMode()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
           </button>
 
           <a routerLink="/login" class="px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-md text-sm">Login</a>

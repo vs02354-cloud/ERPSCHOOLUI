@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CmsService, HomePageSettings } from '../services/cms.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-principal-message',
@@ -12,28 +13,29 @@ import { CmsService, HomePageSettings } from '../services/cms.service';
 })
 export class PrincipalMessage implements OnInit {
   isMobileMenuOpen = false;
-  isDarkMode = false;
+  currentLanguage: 'en' | 'hi' = 'en';
   settings: HomePageSettings | null = null;
 
-  constructor(private cms: CmsService) {}
+  constructor(
+    private cms: CmsService,
+    private cdr: ChangeDetectorRef,
+    public themeService: ThemeService
+  ) {}
 
   ngOnInit() {
-    this.isDarkMode = document.documentElement.classList.contains('dark');
+    this.currentLanguage = (localStorage.getItem('language') as 'en' | 'hi') || 'en';
     this.cms.getSettings().subscribe({
       next: (res) => {
         this.settings = res;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+  onLanguageChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.currentLanguage = select.value as 'en' | 'hi';
+    localStorage.setItem('language', this.currentLanguage);
+    this.cdr.detectChanges();
   }
 }
