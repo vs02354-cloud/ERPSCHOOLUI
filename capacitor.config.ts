@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'dist/SchoolERP.UI/browser',
   plugins: {
     CapacitorHttp: {
-      enabled: true,
+      enabled: false,
     },
   },
 };
