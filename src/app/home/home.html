@@ -1,73 +1,78 @@
-<div class="min-h-screen bg-gray-50/50 dark:bg-gray-950/80 text-gray-800 dark:text-gray-100 font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-300 flex flex-col relative overflow-hidden">
-  
-  <!-- Global Animated Background -->
-  <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-    <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vh] bg-purple-400 dark:bg-purple-900 rounded-full mix-blend-multiply filter blur-[100px] opacity-30 animate-blob"></div>
-    <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vh] bg-indigo-400 dark:bg-indigo-900 rounded-full mix-blend-multiply filter blur-[120px] opacity-30 animate-blob animation-delay-2000"></div>
-    <div class="absolute bottom-[-10%] left-[20%] w-[40vw] h-[40vh] bg-pink-400 dark:bg-pink-900 rounded-full mix-blend-multiply filter blur-[100px] opacity-30 animate-blob animation-delay-4000"></div>
-  </div>
+<div class="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-300 flex flex-col relative">
 
   <!-- Loading State -->
-  <div *ngIf="isLoading" class="fixed inset-0 z-50 glass-panel flex flex-col items-center justify-center gap-4">
-    <div class="relative w-20 h-20">
-      <div class="absolute inset-0 rounded-full border-4 border-indigo-100 dark:border-indigo-950"></div>
-      <div class="absolute inset-0 rounded-full border-4 border-indigo-600 dark:border-indigo-400 border-t-transparent animate-spin"></div>
+  <div *ngIf="isLoading" class="fixed inset-0 z-50 bg-white dark:bg-gray-900 flex flex-col items-center justify-center gap-4">
+    <div class="relative w-16 h-16">
+      <div class="absolute inset-0 rounded-full border-4 border-indigo-100 dark:border-indigo-900"></div>
+      <div class="absolute inset-0 rounded-full border-4 border-indigo-600 border-t-transparent animate-spin"></div>
     </div>
-    <div class="text-lg font-bold text-indigo-600 dark:text-indigo-400 animate-pulse">Loading School ERP...</div>
+    <div class="text-sm font-semibold text-gray-600 dark:text-gray-400 animate-pulse">Loading Platform...</div>
   </div>
 
   <div class="relative z-10 flex flex-col flex-1">
 
+    <!-- Top Announcement Ticker -->
+    <div class="bg-indigo-900 dark:bg-indigo-950 text-white py-2 px-4 border-b border-indigo-800">
+      <div class="max-w-7xl mx-auto flex items-center">
+        <div class="text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-indigo-600 px-3 py-1 rounded-sm mr-4 flex-shrink-0 flex items-center gap-2">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+          {{ translations['latestNotifications'][currentLanguage] }}
+        </div>
+        <div class="overflow-hidden flex-1 relative h-5 fade-edges">
+          <div class="marquee-content flex gap-8 whitespace-nowrap items-center h-full">
+            <span *ngFor="let notice of announcements" class="text-indigo-100 text-xs sm:text-sm flex items-center">
+              <span class="text-[10px] font-bold uppercase mr-2 opacity-70">[{{ notice.noticeType }}]</span>
+              {{ notice.noticeText }} 
+            </span>
+            <span *ngIf="announcements.length === 0" class="text-indigo-300 text-xs italic">No new announcements at this time.</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-40 glass-panel border-b border-white/20 dark:border-gray-800/50 shadow-sm transition-colors duration-300">
+    <!-- Header / Navbar -->
+    <nav class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20 items-center">
-          <a routerLink="/" class="flex items-center gap-3 group">
-            <div class="relative w-12 h-12 rounded-xl overflow-hidden shadow-md group-hover:scale-105 transition-transform duration-300">
-              <img [src]="settings?.logoUrl || 'assets/logo.jpeg'" alt="School Logo" class="w-full h-full object-contain bg-white">
-            </div>
-            <span class="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-purple-600 dark:from-indigo-400 dark:to-purple-400 tracking-tight">{{ settings?.schoolName || 'EduSchool' }}</span>
+          
+          <!-- Logo -->
+          <a routerLink="/" class="flex items-center gap-3">
+            <img [src]="settings?.logoUrl || 'assets/logo.jpeg'" alt="School Logo" class="h-10 w-10 object-contain">
+            <span class="font-extrabold text-xl sm:text-2xl text-gray-900 dark:text-white tracking-tight">{{ settings?.schoolName || 'EduSchool' }}</span>
           </a>
-          <div class="hidden md:flex space-x-8 items-center bg-white/30 dark:bg-gray-800/30 px-6 py-2 rounded-full border border-white/40 dark:border-gray-700/40 backdrop-blur-md shadow-sm">
-            <a routerLink="/about" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition-colors">{{ translations['aboutUs'][currentLanguage] }}</a>
-            <a routerLink="/principal-message" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition-colors">{{ translations['principalMessage'][currentLanguage] }}</a>
-            <a routerLink="/inquiry" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition-colors">{{ translations['admissions'][currentLanguage] }}</a>
-            <a routerLink="/contact" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition-colors">{{ translations['contactUs'][currentLanguage] }}</a>
+
+          <!-- Desktop Nav -->
+          <div class="hidden md:flex space-x-8 items-center">
+            <a routerLink="/about" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ translations['aboutUs'][currentLanguage] }}</a>
+            <a routerLink="/principal-message" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ translations['principalMessage'][currentLanguage] }}</a>
+            <a routerLink="/inquiry" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ translations['admissions'][currentLanguage] }}</a>
+            <a routerLink="/contact" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ translations['contactUs'][currentLanguage] }}</a>
           </div>
+
+          <!-- Desktop Actions -->
           <div class="hidden md:flex items-center gap-4">
-            <!-- Language switcher Dropdown -->
-            <div class="relative group">
-              <select (change)="onLanguageChange($event)" class="appearance-none bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full pl-8 pr-6 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer hover:bg-white/80 dark:hover:bg-gray-700/80 transition-all backdrop-blur-md">
-                <option value="en" [selected]="currentLanguage === 'en'">English (EN)</option>
-                <option value="hi" [selected]="currentLanguage === 'hi'">Hindi (हिंदी)</option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
-                <span class="text-sm">🌐</span>
-              </div>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
-                <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-              </div>
-            </div>
             
-            <!-- Theme toggle -->
-            <button (click)="themeService.toggleTheme()" class="p-2 rounded-full bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-indigo-600 dark:text-yellow-400 hover:bg-white/80 dark:hover:bg-gray-700/80 shadow-sm transition-all backdrop-blur-md" aria-label="Toggle Theme">
-              <svg *ngIf="!themeService.isDarkMode()" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-              <svg *ngIf="themeService.isDarkMode()" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
+            <!-- Language Switcher -->
+            <select (change)="onLanguageChange($event)" class="appearance-none bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-md px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer transition-colors">
+              <option value="en" [selected]="currentLanguage === 'en'">English</option>
+              <option value="hi" [selected]="currentLanguage === 'hi'">हिंदी</option>
+            </select>
+            
+            <!-- Theme Toggle -->
+            <button (click)="themeService.toggleTheme()" class="p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle Theme">
+              <svg *ngIf="!themeService.isDarkMode()" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+              <svg *ngIf="themeService.isDarkMode()" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
             </button>
 
-            <a routerLink="/login" class="px-7 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold shadow-[0_4px_15px_rgba(99,102,241,0.4)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.6)] hover:scale-105 transition-all duration-300 flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+            <!-- Login CTA -->
+            <a routerLink="/login" class="px-6 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm transition-colors">
               {{ translations['login'][currentLanguage] }}
             </a>
           </div>
           
-          <!-- Mobile menu button -->
-          <div class="md:hidden flex items-center gap-3">
-            <a routerLink="/login" class="px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-md text-xs">
-              {{ translations['login'][currentLanguage] }}
-            </a>
-            <button (click)="isMobileMenuOpen = !isMobileMenuOpen" class="p-2 rounded-lg bg-white/50 dark:bg-gray-800/50 text-indigo-600 dark:text-indigo-400 hover:bg-white/80 focus:outline-none backdrop-blur-md" aria-label="Toggle Menu">
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden flex items-center gap-2">
+            <button (click)="isMobileMenuOpen = !isMobileMenuOpen" class="p-2 text-gray-600 dark:text-gray-300">
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -78,112 +83,109 @@
       </div>
       
       <!-- Mobile Menu Dropdown -->
-      <div *ngIf="isMobileMenuOpen" class="md:hidden glass-panel border-t border-white/20 dark:border-gray-800/50 px-4 pt-2 pb-4 space-y-2 absolute w-full shadow-2xl">
-        <a routerLink="/about" (click)="isMobileMenuOpen = false" class="block px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 hover:text-indigo-600 hover:bg-white/60 dark:hover:bg-gray-800/60">{{ translations['aboutUs'][currentLanguage] }}</a>
-        <a routerLink="/principal-message" (click)="isMobileMenuOpen = false" class="block px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 hover:text-indigo-600 hover:bg-white/60 dark:hover:bg-gray-800/60">{{ translations['principalMessage'][currentLanguage] }}</a>
-        <a routerLink="/inquiry" (click)="isMobileMenuOpen = false" class="block px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 hover:text-indigo-600 hover:bg-white/60 dark:hover:bg-gray-800/60">{{ translations['admissions'][currentLanguage] }}</a>
-        <a routerLink="/contact" (click)="isMobileMenuOpen = false" class="block px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 hover:text-indigo-600 hover:bg-white/60 dark:hover:bg-gray-800/60">{{ translations['contactUs'][currentLanguage] }}</a>
-        <div class="border-t border-white/20 dark:border-gray-800/50 mt-2 pt-3 flex items-center justify-between px-2">
-          <!-- Language switcher Dropdown for Mobile -->
-          <div class="relative group flex-1 mr-4">
-            <select (change)="onLanguageChange($event)" class="w-full appearance-none bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full pl-8 pr-6 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer hover:bg-white/80 dark:hover:bg-gray-700/80 transition-all backdrop-blur-md">
-              <option value="en" [selected]="currentLanguage === 'en'">English (EN)</option>
-              <option value="hi" [selected]="currentLanguage === 'hi'">Hindi (हिंदी)</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
-              <span class="text-sm">🌐</span>
-            </div>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
-              <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-          </div>
-          <!-- Theme toggle for Mobile -->
-          <button (click)="themeService.toggleTheme()" class="p-2 rounded-full bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700/50 text-indigo-600 dark:text-yellow-400 hover:bg-white/80 dark:hover:bg-gray-700/80 shadow-sm transition-all backdrop-blur-md" aria-label="Toggle Theme">
+      <div *ngIf="isMobileMenuOpen" class="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-4 space-y-3 shadow-lg">
+        <a routerLink="/about" (click)="isMobileMenuOpen = false" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 py-2 border-b border-gray-100 dark:border-gray-800">{{ translations['aboutUs'][currentLanguage] }}</a>
+        <a routerLink="/principal-message" (click)="isMobileMenuOpen = false" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 py-2 border-b border-gray-100 dark:border-gray-800">{{ translations['principalMessage'][currentLanguage] }}</a>
+        <a routerLink="/inquiry" (click)="isMobileMenuOpen = false" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 py-2 border-b border-gray-100 dark:border-gray-800">{{ translations['admissions'][currentLanguage] }}</a>
+        <a routerLink="/contact" (click)="isMobileMenuOpen = false" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 py-2 border-b border-gray-100 dark:border-gray-800">{{ translations['contactUs'][currentLanguage] }}</a>
+        
+        <div class="pt-4 flex items-center justify-between">
+          <select (change)="onLanguageChange($event)" class="appearance-none bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-md px-3 py-2 w-full mr-4 focus:outline-none">
+            <option value="en" [selected]="currentLanguage === 'en'">English</option>
+            <option value="hi" [selected]="currentLanguage === 'hi'">हिंदी</option>
+          </select>
+          <button (click)="themeService.toggleTheme()" class="p-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
             <svg *ngIf="!themeService.isDarkMode()" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
             <svg *ngIf="themeService.isDarkMode()" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
           </button>
         </div>
+        <a routerLink="/login" class="block w-full text-center mt-4 px-6 py-3 rounded-md bg-indigo-600 text-white font-bold text-sm">
+          {{ translations['login'][currentLanguage] }}
+        </a>
       </div>
     </nav>
 
-    <!-- Marquee Notifications (Moved up for better visibility) -->
-    <div class="glass-panel border-y border-white/30 dark:border-gray-700/50 bg-indigo-600/10 dark:bg-indigo-900/30 backdrop-blur-lg overflow-hidden py-3">
-      <div class="max-w-7xl mx-auto px-4 flex items-center">
-        <div class="font-bold flex-shrink-0 mr-4 flex items-center gap-2 text-xs sm:text-sm uppercase tracking-wider bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-full shadow-md z-10 relative">
-          <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-          <span>{{ translations['latestNotifications'][currentLanguage] }}</span>
-        </div>
-        <div class="overflow-hidden flex-1 relative h-6 fade-edges">
-          <div class="marquee-content flex gap-12 whitespace-nowrap items-center h-full">
-            <span *ngFor="let notice of announcements" class="text-indigo-900 dark:text-indigo-100 font-semibold text-sm flex items-center">
-              <span class="bg-white/50 dark:bg-gray-800/50 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold uppercase px-2 py-0.5 rounded mr-3 tracking-wide backdrop-blur-sm">{{ notice.noticeType }}</span>
-              {{ notice.noticeText }} <span class="text-indigo-500 dark:text-indigo-400 ml-2 text-xs opacity-80">({{ notice.startDate | date:'mediumDate' }})</span>
+    <!-- Professional Hero Section -->
+    <header class="relative bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 overflow-hidden" *ngIf="settings">
+      <div class="max-w-7xl mx-auto">
+        <div class="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:pb-28 xl:pb-32 pt-16 lg:pt-24 px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+          
+          <div class="sm:text-center lg:text-left">
+            <span class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-600 uppercase bg-indigo-100 dark:bg-indigo-900 dark:text-indigo-300 rounded-sm">
+              {{ settings.heroTagline }}
             </span>
-            <span *ngIf="announcements.length === 0" class="text-indigo-400 text-sm italic">No new notifications.</span>
+            <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl mb-6">
+              {{ settings.heroHeading }}
+            </h1>
+            <p class="mt-3 text-base text-gray-500 dark:text-gray-400 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+              {{ settings.heroDescription }}
+            </p>
+            <div class="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-4 sm:justify-center lg:justify-start">
+              <a [routerLink]="settings.heroPrimaryButtonUrl" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg transition-colors">
+                {{ settings.heroPrimaryButtonText }}
+              </a>
+              <a [routerLink]="settings.heroSecondaryButtonUrl" class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 md:py-4 md:text-lg transition-colors">
+                {{ settings.heroSecondaryButtonText }}
+              </a>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Hero Section -->
-    <header class="relative pt-20 pb-24 lg:pt-32 lg:pb-32 overflow-hidden flex items-center justify-center min-h-[70vh]">
-      <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center" *ngIf="settings">
-        <div class="inline-block animate-float mb-6">
-          <span class="glass-panel py-2 px-5 rounded-full text-indigo-700 dark:text-indigo-300 text-sm font-bold tracking-widest uppercase shadow-sm border border-white/50 dark:border-indigo-500/30">
-            {{ settings.heroTagline }}
-          </span>
-        </div>
-        <h1 class="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight drop-shadow-sm" [innerHTML]="settings.heroHeading">
-        </h1>
-        <p class="max-w-3xl text-lg sm:text-2xl text-gray-700 dark:text-gray-300 mx-auto mb-12 leading-relaxed font-medium">
-          {{ settings.heroDescription }}
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-5">
-          <a [routerLink]="settings.heroPrimaryButtonUrl" class="px-8 py-4 border border-transparent text-lg font-bold rounded-full shadow-[0_4px_20px_rgba(79,70,229,0.4)] text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(79,70,229,0.5)] transition-all duration-300 text-center">
-            {{ settings.heroPrimaryButtonText }}
-          </a>
-          <a [routerLink]="settings.heroSecondaryButtonUrl" class="px-8 py-4 glass-card text-lg font-bold rounded-full text-indigo-900 dark:text-white hover:bg-white/90 dark:hover:bg-gray-800/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
-            <span>{{ settings.heroSecondaryButtonText }}</span>
-            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          </a>
+          
+          <div class="relative hidden lg:block h-full w-full rounded-2xl overflow-hidden shadow-xl">
+            <img class="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Students">
+          </div>
+          
         </div>
       </div>
     </header>
 
-    <!-- Principal's Message & Core Values -->
-    <section class="py-24 relative z-10">
+    <!-- Quick Links (Portals) -->
+    <section class="py-16 bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800" *ngIf="portals && portals.length > 0">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-card rounded-[2.5rem] p-8 md:p-14 shadow-2xl border border-white/50 dark:border-gray-700/50 grid lg:grid-cols-12 gap-12 items-center relative overflow-hidden">
-          
-          <!-- Decorative element -->
-          <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/20 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-          <!-- Photo and Credentials -->
-          <div class="lg:col-span-5 text-center relative">
-            <div class="w-64 h-64 mx-auto rounded-full overflow-hidden mb-8 border-8 border-white/40 dark:border-gray-800/40 shadow-2xl relative group">
-              <div class="absolute inset-0 rounded-full border border-indigo-200 dark:border-indigo-800 z-10"></div>
-              <img [src]="settings?.principalImageUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop'" [alt]="settings?.principalName || 'Principal'" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <a *ngFor="let portal of portals" [routerLink]="portal.url" class="group flex flex-col items-center p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all text-center">
+            <div class="w-12 h-12 rounded-full mb-4 flex items-center justify-center text-white" [ngStyle]="{'background-color': portal.themeColor || '#4f46e5'}">
+              <!-- Render SVG icon if available, else fallback -->
+              <div *ngIf="portal.iconSvg" [innerHTML]="portal.safeIconSvg" class="w-6 h-6"></div>
+              <svg *ngIf="!portal.iconSvg" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
             </div>
-            <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">{{ settings?.principalName || 'Dr. Sarah Jenkins' }}</h3>
-            <p class="text-indigo-600 dark:text-indigo-400 font-bold tracking-widest uppercase text-sm mb-3">{{ settings?.principalTitle || 'School Principal' }}</p>
-            <p class="text-sm text-gray-600 dark:text-gray-400 font-medium px-4">{{ settings?.principalCredentials || 'Ph.D. in Education Administration' }}</p>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 transition-colors">{{ portal.title }}</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{{ portal.description }}</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Band -->
+    <section class="py-16 bg-indigo-900 text-white" *ngIf="stats && stats.length > 0">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-indigo-800">
+          <div *ngFor="let stat of stats" class="px-4">
+            <div class="text-4xl sm:text-5xl font-extrabold mb-2">{{ stat.value }}</div>
+            <div class="text-sm font-medium text-indigo-200 uppercase tracking-wide">{{ stat.label }}</div>
           </div>
-          
-          <!-- Message text -->
-          <div class="lg:col-span-7 flex flex-col justify-center h-full relative z-10">
-            <div class="mb-8">
-              <svg class="w-16 h-16 text-indigo-200 dark:text-indigo-900/50 mb-6 -ml-2" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-              <h4 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
-                {{ translations['principalMessage'][currentLanguage] }}
-              </h4>
-              <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg font-medium italic border-l-4 border-indigo-400 pl-6 mb-8 line-clamp-5">
-                {{ settings?.principalMessage || 'Welcome to our school. We are dedicated to providing a high-quality education for all students...' }}
-              </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Principal's Message -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col lg:flex-row">
+          <div class="lg:w-1/3 bg-gray-100 dark:bg-gray-900 p-10 flex flex-col items-center justify-center text-center border-r border-gray-200 dark:border-gray-700">
+            <img [src]="settings?.principalImageUrl || 'assets/placeholder-user.jpg'" [alt]="settings?.principalName" class="w-40 h-40 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-md mb-6">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ settings?.principalName || 'Principal' }}</h3>
+            <p class="text-indigo-600 dark:text-indigo-400 font-semibold mb-2">{{ settings?.principalTitle || 'Head of School' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ settings?.principalCredentials }}</p>
+          </div>
+          <div class="lg:w-2/3 p-10 lg:p-14 flex flex-col justify-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-6">{{ translations['principalMessage'][currentLanguage] }}</h2>
+            <div class="text-gray-600 dark:text-gray-300 space-y-4 text-lg leading-relaxed italic mb-8 border-l-4 border-indigo-500 pl-6 line-clamp-4">
+              "{{ settings?.principalMessage }}"
             </div>
             <div>
-              <a routerLink="/principal-message" class="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 font-bold text-sm transition-all hover:shadow-lg hover:-translate-y-0.5 group">
-                <span>{{ translations['readMore'][currentLanguage] }}</span>
-                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              <a routerLink="/principal-message" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-800 transition-colors">
+                {{ translations['readMore'][currentLanguage] }}
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </a>
             </div>
           </div>
@@ -191,229 +193,233 @@
       </div>
     </section>
 
-    <!-- Excellence Section (Teachers & Students) -->
-    <section class="py-24 relative z-10">
+    <!-- Recent Activities (Gallery) -->
+    <section class="py-20 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800" *ngIf="recentActivities && recentActivities.length > 0">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ translations['recentActivities'][currentLanguage] }}</h2>
+          <div class="mt-2 w-24 h-1 bg-indigo-600 mx-auto rounded-full"></div>
+        </div>
         
-        <!-- Top Teachers -->
-        <div class="mb-24">
-          <div class="text-center mb-16">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 text-xs font-extrabold uppercase tracking-widest mb-4 border border-purple-200 dark:border-purple-800/50">Leadership & Mentors</span>
-            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ translations['topTeachers'][currentLanguage] }}</h2>
-          </div>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div *ngFor="let teacher of topTeachers" class="glass-card rounded-[2rem] p-8 text-center group hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_10px_40px_rgba(0,0,0,0.4)] relative overflow-hidden border border-white/60 dark:border-gray-700/60">
-              <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div class="relative z-10">
-                <div class="w-28 h-28 mx-auto rounded-full mb-6 p-1 bg-gradient-to-tr from-purple-500 to-indigo-500 shadow-lg">
-                  <img [src]="teacher.photoUrl" [alt]="teacher.name" class="w-full h-full rounded-full object-cover border-4 border-white dark:border-gray-900">
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ teacher.name }}</h3>
-                <p class="text-indigo-600 dark:text-indigo-400 font-bold text-sm mb-4 tracking-wide uppercase">{{ teacher.designation }}</p>
-                <div class="inline-flex items-center gap-2 bg-yellow-100/80 dark:bg-yellow-900/40 backdrop-blur-sm border border-yellow-200 dark:border-yellow-700/50 rounded-full px-5 py-2 text-xs text-yellow-800 dark:text-yellow-400 font-extrabold shadow-sm">
-                  <span>⭐</span>
-                  <span>{{ teacher.achievement }}</span>
-                </div>
-              </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div *ngFor="let activity of recentActivities" class="bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+            <div class="h-48 overflow-hidden bg-gray-200 dark:bg-gray-800">
+              <img [src]="activity.imageUrl || 'assets/placeholder.jpg'" [alt]="activity.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-6">
+              <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2 line-clamp-1">{{ activity.title }}</h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">{{ activity.description }}</p>
             </div>
           </div>
         </div>
-
-        <!-- Top Students -->
-        <div>
-          <div class="text-center mb-16">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300 text-xs font-extrabold uppercase tracking-widest mb-4 border border-pink-200 dark:border-pink-800/50">Student Excellence</span>
-            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ translations['topPerformers'][currentLanguage] }}</h2>
-          </div>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div *ngFor="let student of topStudents" class="glass-card rounded-[2rem] p-8 text-center group hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_10px_40px_rgba(0,0,0,0.4)] relative overflow-hidden border border-white/60 dark:border-gray-700/60">
-              <div class="absolute top-0 right-0 bg-gradient-to-bl from-pink-500 to-rose-500 text-white text-xs font-bold px-4 py-2 rounded-bl-[2rem] shadow-md z-20">
-                {{ student.class }}
-              </div>
-              <div class="relative z-10 pt-4">
-                <div class="w-24 h-24 mx-auto rounded-full mb-6 p-1 bg-gradient-to-tr from-pink-400 to-rose-500 shadow-lg">
-                  <img [src]="student.photoUrl" [alt]="student.name" class="w-full h-full rounded-full object-cover border-4 border-white dark:border-gray-900">
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ student.name }}</h3>
-                <p class="text-sm text-gray-700 dark:text-gray-300 italic bg-white/50 dark:bg-gray-800/50 p-4 rounded-2xl border border-white/40 dark:border-gray-700/40 shadow-inner font-medium">"{{ student.achievement }}"</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <!-- Events & Information Grid -->
-    <section class="py-24 relative z-10">
+    <!-- Faculty & Students Excellence -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div class="grid lg:grid-cols-2 gap-16">
+          
+          <!-- Faculty Excellence -->
+          <div *ngIf="topTeachers && topTeachers.length > 0">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 border-l-4 border-indigo-600 pl-4">{{ translations['topTeachers'][currentLanguage] }}</h2>
+            <div class="space-y-6">
+              <div *ngFor="let teacher of topTeachers" class="flex items-center gap-6 bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                <img [src]="teacher.photoUrl || 'assets/placeholder-user.jpg'" [alt]="teacher.name" class="w-20 h-20 rounded-full object-cover border-2 border-gray-100 dark:border-gray-700">
+                <div>
+                  <h3 class="font-bold text-lg text-gray-900 dark:text-white">{{ teacher.name }}</h3>
+                  <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mb-1">{{ teacher.designation }} &bull; {{ teacher.department }}</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">⭐ {{ teacher.achievement }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Student Spotlight (Success Stories) -->
+          <div *ngIf="topStudents && topStudents.length > 0">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 border-l-4 border-purple-600 pl-4">Student Spotlight</h2>
+            <div class="space-y-6">
+              <div *ngFor="let student of topStudents" class="flex items-center gap-6 bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                <img [src]="student.photoUrl || 'assets/placeholder-user.jpg'" [alt]="student.name" class="w-20 h-20 rounded-full object-cover border-2 border-gray-100 dark:border-gray-700">
+                <div>
+                  <h3 class="font-bold text-lg text-gray-900 dark:text-white">{{ student.name }}</h3>
+                  <p class="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-1">Class: {{ student.class }}</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 italic line-clamp-2">"{{ student.achievement }}"</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Events & Calendar Grid -->
+    <section class="py-20 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12">
           
           <!-- Upcoming Events -->
-          <div class="glass-panel rounded-[2.5rem] p-8 md:p-10 border border-white/50 dark:border-gray-700/50 shadow-xl">
-            <div class="flex items-center gap-4 mb-8 border-b border-gray-200/50 dark:border-gray-700/50 pb-6">
-              <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-inner">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              </div>
-              <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ translations['upcomingEvents'][currentLanguage] }}</h2>
-            </div>
-            <div class="space-y-5 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              <div *ngIf="upcomingEvents.length === 0" class="text-gray-500 font-medium py-10 text-center glass-card rounded-2xl">
-                No upcoming events scheduled.
-              </div>
-              <div *ngFor="let event of upcomingEvents" class="group flex gap-5 p-5 bg-white/60 dark:bg-gray-800/60 rounded-2xl hover:bg-white dark:hover:bg-gray-800 transition-all border border-white/40 dark:border-gray-700/40 hover:shadow-md cursor-pointer">
-                <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl flex flex-col items-center justify-center font-bold shadow-md group-hover:scale-105 transition-transform">
-                  <span class="text-xs uppercase tracking-wider opacity-90">{{ event.eventDate | date:'MMM' }}</span>
-                  <span class="text-2xl leading-none mt-1">{{ event.eventDate | date:'dd' }}</span>
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{{ event.title }}</h3>
-                  <div class="text-xs text-indigo-600 dark:text-indigo-400 font-bold mb-2 flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-900/30 w-max px-2.5 py-1 rounded-md">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ event.time }}</span>
-                  </div>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-medium line-clamp-2">{{ event.description }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Holidays -->
-          <div class="glass-panel rounded-[2.5rem] p-8 md:p-10 border border-white/50 dark:border-gray-700/50 shadow-xl">
-            <div class="flex items-center gap-4 mb-8 border-b border-gray-200/50 dark:border-gray-700/50 pb-6">
-              <div class="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center text-pink-600 dark:text-pink-400 shadow-inner">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-              </div>
-              <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ translations['holidayCalendar'][currentLanguage] }}</h2>
-            </div>
-            <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              <div *ngIf="holidays.length === 0" class="text-gray-500 font-medium py-10 text-center glass-card rounded-2xl">
-                No scheduled holidays.
-              </div>
-              <div *ngFor="let holiday of holidays" class="p-5 bg-white/60 dark:bg-gray-800/60 rounded-2xl border border-white/40 dark:border-gray-700/40 flex justify-between items-center hover:bg-white dark:hover:bg-gray-800 transition-colors hover:shadow-md">
-                <div class="flex-1 pr-4">
-                  <h4 class="font-extrabold text-gray-900 dark:text-white text-lg leading-snug mb-1">{{ holiday.title }}</h4>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 font-medium line-clamp-1">{{ holiday.description }}</p>
-                  <span class="inline-block mt-3 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm" 
-                        [ngClass]="{
-                          'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400': holiday.type === 'Public Holiday',
-                          'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400': holiday.type === 'Government Holiday',
-                          'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400': holiday.type === 'Optional Holiday'
-                        }">
-                    {{ holiday.type }}
-                  </span>
-                </div>
-                <div class="text-center flex-shrink-0 bg-gray-50/80 dark:bg-gray-900/80 px-4 py-3 rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-inner">
-                  <span class="text-xs font-bold text-gray-500 dark:text-gray-400 block uppercase tracking-wider mb-1">{{ holiday.date | date:'EEEE' }}</span>
-                  <span class="text-xl font-black text-indigo-600 dark:text-indigo-400 block">{{ holiday.date | date:'dd MMM' }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact Us / Map Section -->
-    <section class="py-24 relative z-10 bg-indigo-900 dark:bg-gray-950 text-white overflow-hidden">
-      <!-- Decor -->
-      <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
-      
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span class="inline-block py-1 px-3 rounded-md bg-indigo-500/30 text-indigo-200 text-sm font-bold tracking-widest uppercase mb-4">{{ translations['getInTouch']?.[currentLanguage] || 'Get In Touch' }}</span>
-            <h2 class="text-4xl md:text-6xl font-extrabold mb-8 leading-tight tracking-tight">{{ translations['contactUsNow']?.[currentLanguage] || 'Contact Us Now' }}</h2>
-            <p class="text-indigo-200 text-lg mb-10 max-w-lg font-medium leading-relaxed">We're here to answer any questions you may have. Reach out to us and we'll respond as soon as we can.</p>
-            
-            <div class="space-y-6">
-              <div class="flex items-start gap-5 glass-card !bg-white/10 !border-white/20 p-5 rounded-2xl">
-                <div class="w-12 h-12 rounded-full bg-indigo-500/40 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                </div>
-                <div>
-                  <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-1">Address</h4>
-                  <p class="text-lg font-semibold">{{ settings?.address || 'Super Corridor, Indore, Madhya Pradesh' }}</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-5 glass-card !bg-white/10 !border-white/20 p-5 rounded-2xl">
-                <div class="w-12 h-12 rounded-full bg-indigo-500/40 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                </div>
-                <div>
-                  <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-1">Email</h4>
-                  <p class="text-lg font-semibold">{{ settings?.email || 'info@eduschool.edu' }}</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-5 glass-card !bg-white/10 !border-white/20 p-5 rounded-2xl">
-                <div class="w-12 h-12 rounded-full bg-indigo-500/40 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                </div>
-                <div>
-                  <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wider mb-1">Phone</h4>
-                  <p class="text-lg font-semibold">{{ settings?.phone || '+1 (555) 123-4567' }}</p>
-                </div>
-              </div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ translations['upcomingEvents'][currentLanguage] }}</h2>
+            <div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+              <div *ngIf="upcomingEvents.length === 0" class="p-8 text-center text-gray-500">No events scheduled.</div>
+              <ul class="divide-y divide-gray-200 dark:divide-gray-800 max-h-[400px] overflow-y-auto custom-scrollbar">
+                <li *ngFor="let event of upcomingEvents" class="p-6 hover:bg-white dark:hover:bg-gray-800 transition-colors flex gap-6 items-start">
+                  <div class="flex-shrink-0 text-center bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg p-3 w-20 shadow-sm">
+                    <span class="block text-xs font-bold uppercase text-red-500">{{ event.eventDate | date:'MMM' }}</span>
+                    <span class="block text-2xl font-black text-gray-900 dark:text-white">{{ event.eventDate | date:'dd' }}</span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-1">{{ event.title }}</h4>
+                    <p class="text-sm text-indigo-600 font-semibold mb-2 flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      {{ event.time }}
+                    </p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ event.description }}</p>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div class="h-[500px] bg-white/5 rounded-[2.5rem] p-3 border border-white/20 shadow-2xl backdrop-blur-md">
-            <div class="w-full h-full rounded-[2rem] overflow-hidden bg-gray-900 relative">
-              <iframe *ngIf="safeMapUrl" [src]="safeMapUrl" width="100%" height="100%" style="border:0; filter: contrast(1.1) saturate(1.2);" allowfullscreen="" loading="lazy"></iframe>
+          <!-- Holidays Calendar -->
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">{{ translations['holidayCalendar'][currentLanguage] }}</h2>
+            <div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+              <div *ngIf="holidays.length === 0" class="p-8 text-center text-gray-500">No holidays scheduled.</div>
+              <ul class="divide-y divide-gray-200 dark:divide-gray-800 max-h-[400px] overflow-y-auto custom-scrollbar">
+                <li *ngFor="let holiday of holidays" class="p-6 hover:bg-white dark:hover:bg-gray-800 transition-colors flex justify-between items-center">
+                  <div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-1">{{ holiday.title }}</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{{ holiday.description }}</p>
+                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                      {{ holiday.type }}
+                    </span>
+                  </div>
+                  <div class="text-right flex-shrink-0 ml-4">
+                    <span class="block font-bold text-gray-900 dark:text-white">{{ holiday.date | date:'dd MMM' }}</span>
+                    <span class="block text-xs text-gray-500 uppercase">{{ holiday.date | date:'EEEE' }}</span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-950 text-gray-400 py-12 border-t border-gray-900 transition-colors duration-300 mt-auto relative z-10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div class="flex items-center gap-3">
-            <img [src]="settings?.logoUrl || 'assets/logo.jpeg'" alt="School Logo" class="h-10 w-10 object-contain rounded-xl bg-white p-1">
-            <span class="font-bold text-2xl text-white tracking-tight">{{ settings?.schoolName || 'EduSchool' }}</span>
-          </div>
-          
-          <div class="flex gap-4" *ngIf="socialMediaLinks && socialMediaLinks.length > 0">
-            <a *ngFor="let link of socialMediaLinks" [href]="link.url" target="_blank" class="w-10 h-10 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md group" [title]="link.platform">
-              
-              <!-- Facebook -->
-              <svg *ngIf="link.platform.toLowerCase().includes('facebook')" class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
-              
-              <!-- Instagram -->
-              <svg *ngIf="link.platform.toLowerCase().includes('instagram') || link.platform.toLowerCase().includes('insta')" class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"/></svg>
-              
-              <!-- X (Twitter) -->
-              <svg *ngIf="link.platform.toLowerCase() === 'x' || link.platform.toLowerCase().includes('twitter')" class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-
-              <!-- YouTube -->
-              <svg *ngIf="link.platform.toLowerCase().includes('youtube') || link.platform.toLowerCase().includes('yt')" class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-
-              <!-- LinkedIn -->
-              <svg *ngIf="link.platform.toLowerCase().includes('linkedin') || link.platform.toLowerCase().includes('linked')" class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-
-              <!-- WhatsApp -->
-              <svg *ngIf="link.platform.toLowerCase().includes('whatsapp') || link.platform.toLowerCase().includes('whats')" class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 .003 5.381.003 12.029c0 2.127.556 4.2 1.609 6.03L.022 24l6.099-1.6c1.781.968 3.791 1.478 5.908 1.478 6.648 0 12.032-5.381 12.032-12.031S18.679 0 12.031 0zm0 21.849a9.98 9.98 0 0 1-5.088-1.385l-.364-.216-3.784.992.996-3.69-.237-.376A9.957 9.957 0 0 1 2.032 12.03c0-5.514 4.491-10.005 10-10.005 5.51 0 10.005 4.491 10.005 10.005S17.541 21.849 12.031 21.849zm5.495-7.5c-.302-.15-1.786-.882-2.062-.983-.277-.101-.479-.151-.681.15-.202.302-.781.983-.957 1.184-.176.202-.352.227-.655.076-.301-.151-1.274-.469-2.427-1.501-.896-.803-1.503-1.796-1.68-2.098-.176-.302-.019-.465.132-.616.136-.136.301-.352.453-.528.151-.176.202-.301.302-.503.1-.201.05-.378-.026-.528-.075-.151-.681-1.642-.933-2.247-.245-.589-.494-.509-.681-.518-.176-.008-.378-.008-.579-.008a1.116 1.116 0 0 0-.806.378c-.277.302-1.058 1.034-1.058 2.52 0 1.486 1.083 2.923 1.234 3.125.151.202 2.133 3.256 5.166 4.566.721.312 1.284.498 1.722.637.724.23 1.383.197 1.899.119.58-.088 1.786-.73 2.038-1.434.252-.704.252-1.309.176-1.434-.076-.126-.277-.202-.579-.352z"/></svg>
-
-              <!-- Default Fallback -->
-              <span *ngIf="!link.platform.toLowerCase().includes('facebook') && !link.platform.toLowerCase().includes('instagram') && !link.platform.toLowerCase().includes('insta') && link.platform.toLowerCase() !== 'x' && !link.platform.toLowerCase().includes('twitter') && !link.platform.toLowerCase().includes('youtube') && !link.platform.toLowerCase().includes('yt') && !link.platform.toLowerCase().includes('linkedin') && !link.platform.toLowerCase().includes('linked') && !link.platform.toLowerCase().includes('whatsapp') && !link.platform.toLowerCase().includes('whats')" class="text-xs font-bold group-hover:scale-110 transition-transform">{{ link.platform | slice:0:2 }}</span>
-            </a>
+    <!-- Map & Contact Banner -->
+    <section class="bg-gray-900 text-white relative">
+      <div class="grid lg:grid-cols-2">
+        <div class="p-12 lg:p-20 flex flex-col justify-center">
+          <h2 class="text-3xl font-extrabold mb-8">{{ translations['getInTouch']?.[currentLanguage] || 'Contact Information' }}</h2>
+          <div class="space-y-8">
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-indigo-600 rounded-lg shrink-0">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+              </div>
+              <div>
+                <p class="text-sm text-indigo-300 font-semibold uppercase tracking-wider mb-1">Address</p>
+                <p class="text-lg">{{ settings?.address }}</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-indigo-600 rounded-lg shrink-0">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              </div>
+              <div>
+                <p class="text-sm text-indigo-300 font-semibold uppercase tracking-wider mb-1">Email</p>
+                <p class="text-lg">{{ settings?.email }}</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-indigo-600 rounded-lg shrink-0">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+              </div>
+              <div>
+                <p class="text-sm text-indigo-300 font-semibold uppercase tracking-wider mb-1">Phone</p>
+                <p class="text-lg">{{ settings?.phone }}</p>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <div class="border-t border-gray-900 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm font-medium">
-          <p>&copy; 2026 {{ settings?.schoolName || 'EduSchool' }} ERP. All rights reserved.</p>
-          <div class="mt-4 md:mt-0 flex gap-6">
-            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-          </div>
+        <div class="h-96 lg:h-auto bg-gray-800">
+          <iframe *ngIf="safeMapUrl" [src]="safeMapUrl" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
       </div>
-    </footer>
+    </section>
 
-  </div>
-</div>
+    <!-- Professional Footer -->
+    <footer class="bg-gray-950 text-gray-400 py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 border-b border-gray-800 pb-12">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center gap-3 mb-6">
+              <img [src]="settings?.logoUrl || 'assets/logo.jpeg'" alt="School Logo" class="h-10 w-10 object-contain bg-white rounded-sm p-1">
+              <span class="font-extrabold text-2xl text-white">{{ settings?.schoolName || 'EduSchool' }}</span>
+            </div>
+            <p class="text-sm leading-relaxed mb-6 max-w-sm">{{ settings?.heroDescription }}</p>
+            <div class="flex gap-4">
+              <a *ngFor="let link of socialMediaLinks" [href]="link.url" target="_blank" class="w-10 h-10 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all group" [title]="link.platform">
+                
+                <!-- Facebook -->
+                <svg *ngIf="link.platform.toLowerCase().includes('facebook')" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                
+                <!-- Instagram -->
+                <svg *ngIf="link.platform.toLowerCase().includes('instagram') || link.platform.toLowerCase().includes('insta')" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"/></svg>
+389:                 
+390:                 <!-- X (Twitter) -->
+391:                 <svg *ngIf="link.platform.toLowerCase() === 'x' || link.platform.toLowerCase().includes('twitter')" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+392: 
+393:                 <!-- YouTube -->
+394:                 <svg *ngIf="link.platform.toLowerCase().includes('youtube') || link.platform.toLowerCase().includes('yt')" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+395: 
+396:                 <!-- LinkedIn -->
+397:                 <svg *ngIf="link.platform.toLowerCase().includes('linkedin') || link.platform.toLowerCase().includes('linked')" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+398: 
+399:                 <!-- WhatsApp -->
+400:                 <svg *ngIf="link.platform.toLowerCase().includes('whatsapp') || link.platform.toLowerCase().includes('whats')" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 .003 5.381.003 12.029c0 2.127.556 4.2 1.609 6.03L.022 24l6.099-1.6c1.781.968 3.791 1.478 5.908 1.478 6.648 0 12.032-5.381 12.032-12.031S18.679 0 12.031 0zm0 21.849a9.98 9.98 0 0 1-5.088-1.385l-.364-.216-3.784.992.996-3.69-.237-.376A9.957 9.957 0 0 1 2.032 12.03c0-5.514 4.491-10.005 10-10.005 5.51 0 10.005 4.491 10.005 10.005S17.541 21.849 12.031 21.849zm5.495-7.5c-.302-.15-1.786-.882-2.062-.983-.277-.101-.479-.151-.681.15-.202.302-.781.983-.957 1.184-.176.202-.352.227-.655.076-.301-.151-1.274-.469-2.427-1.501-.896-.803-1.503-1.796-1.68-2.098-.176-.302-.019-.465.132-.616.136-.136.301-.352.453-.528.151-.176.202-.301.302-.503.1-.201.05-.378-.026-.528-.075-.151-.681-1.642-.933-2.247-.245-.589-.494-.509-.681-.518-.176-.008-.378-.008-.579-.008a1.116 1.116 0 0 0-.806.378c-.277.302-1.058 1.034-1.058 2.52 0 1.486 1.083 2.923 1.234 3.125.151.202 2.133 3.256 5.166 4.566.721.312 1.284.498 1.722.637.724.23 1.383.197 1.899.119.58-.088 1.786-.73 2.038-1.434.252-.704.252-1.309.176-1.434-.076-.126-.277-.202-.579-.352z"/></svg>
+401: 
+402:               <!-- Default Fallback -->
+403:               <span *ngIf="!link.platform.toLowerCase().includes('facebook') && !link.platform.toLowerCase().includes('instagram') && !link.platform.toLowerCase().includes('insta') && link.platform.toLowerCase() !== 'x' && !link.platform.toLowerCase().includes('twitter') && !link.platform.toLowerCase().includes('youtube') && !link.platform.toLowerCase().includes('yt') && !link.platform.toLowerCase().includes('linkedin') && !link.platform.toLowerCase().includes('linked') && !link.platform.toLowerCase().includes('whatsapp') && !link.platform.toLowerCase().includes('whats')" class="text-[10px] font-bold">{{ link.platform | slice:0:2 }}</span>
+404:             </a>
+405:             <span *ngIf="socialMediaLinks.length === 0" class="text-sm italic">No social media links configured.</span>
+406:             </div>
+407:           </div>
+408:           
+409:           <!-- Quick Links Footer -->
+410:           <div>
+411:             <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Quick Links</h4>
+412:             <ul class="space-y-3">
+413:               <li><a routerLink="/about" class="text-sm hover:text-indigo-400 transition-colors">About Us</a></li>
+414:               <li><a routerLink="/inquiry" class="text-sm hover:text-indigo-400 transition-colors">Admissions Inquiry</a></li>
+415:               <li *ngFor="let ql of quickLinks | slice:0:3"><a [href]="ql.url" class="text-sm hover:text-indigo-400 transition-colors">{{ql.title}}</a></li>
+416:             </ul>
+417:           </div>
+418:           
+419:           <!-- Contact Info Footer -->
+420:           <div>
+421:             <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Contact</h4>
+422:             <ul class="space-y-3">
+423:               <li class="text-sm">Phone: {{ settings?.phone }}</li>
+424:               <li class="text-sm">Email: {{ settings?.email }}</li>
+425:               <li class="text-sm">Web: {{ settings?.websiteUrl }}</li>
+426:             </ul>
+427:           </div>
+428:         </div>
+429:         
+430:         <div class="flex flex-col md:flex-row justify-between items-center text-xs font-medium">
+431:           <p>&copy; 2026 {{ settings?.schoolName || 'EduSchool' }}. All rights reserved.</p>
+432:           <div class="mt-4 md:mt-0 flex gap-6">
+433:             <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+434:             <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+435:           </div>
+436:         </div>
+437:       </div>
+438:     </footer>
+439: 
+440:   </div>
+441: </div>

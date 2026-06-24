@@ -78,7 +78,10 @@ export class Home implements OnInit, OnDestroy {
         this.recentActivities = data.recentActivities;
         this.stats = data.homeStatistics;
         this.quickLinks = data.quickLinks;
-        this.portals = data.portalCards;
+        this.portals = (data.portalCards || []).map((p: any) => ({
+          ...p,
+          safeIconSvg: p.iconSvg ? this.sanitizer.bypassSecurityTrustHtml(p.iconSvg) : null
+        }));
         this.socialMediaLinks = data.socialMediaLinks;
         this.holidays = data.holidays || [];
         this.isLoading = false;
