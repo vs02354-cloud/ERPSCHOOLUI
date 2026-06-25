@@ -58,6 +58,13 @@ export class Home implements OnInit, OnDestroy {
     contactUsNow: { en: 'Contact Us Now', hi: 'अभी संपर्क करें' }
   };
 
+  private timerInterval: any;
+  currentTime: string = '--:--:--';
+  countdownDays: string = '00';
+  countdownHours: string = '00';
+  countdownMins: string = '00';
+  countdownSecs: string = '00';
+
   constructor(
     private cms: CmsService, 
     private sanitizer: DomSanitizer,
@@ -67,6 +74,13 @@ export class Home implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentLanguage = (localStorage.getItem('language') as 'en' | 'hi') || 'en';
+
+    this.timerInterval = setInterval(() => {
+      this.updateTime();
+      this.updateCountdown();
+    }, 1000);
+    this.updateTime();
+    this.updateCountdown();
 
     this.cms.getHomePageData().subscribe({
       next: (data) => {
@@ -99,6 +113,33 @@ export class Home implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  }
+
+  updateTime() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    const s = now.getSeconds().toString().padStart(2, '0');
+    this.currentTime = `${h}:${m}:${s}`;
+  }
+
+  updateCountdown() {
+    const target = new Date('2026-07-15T09:00:00');
+    const now = new Date();
+    const diff = target.getTime() - now.getTime();
+    if (diff > 0) {
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      this.countdownDays = String(d).padStart(2, '0');
+      this.countdownHours = String(h).padStart(2, '0');
+      this.countdownMins = String(m).padStart(2, '0');
+      this.countdownSecs = String(s).padStart(2, '0');
+    }
   }
 
   onLanguageChange(event: Event) {
@@ -111,5 +152,9 @@ export class Home implements OnInit, OnDestroy {
   toggleLanguage() {
     this.currentLanguage = this.currentLanguage === 'en' ? 'hi' : 'en';
     localStorage.setItem('language', this.currentLanguage);
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 }
