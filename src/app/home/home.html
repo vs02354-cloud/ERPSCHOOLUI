@@ -34,7 +34,8 @@
         <p>{{ settings?.heroTagline || 'विद्या मंदिर इंटरनेशनल स्कूल · Est. 1985' }}</p>
       </div>
     </div>
-    <nav>
+    <button class="mobile-menu-btn" (click)="isMobileMenuOpen = !isMobileMenuOpen">☰</button>
+    <nav [class.open]="isMobileMenuOpen">
       <a href="#" class="active">{{ translations['home']?.[currentLanguage] || 'Home' }}</a>
       <a href="#about">{{ translations['aboutUs']?.[currentLanguage] || 'About' }}</a>
       <a href="#events">{{ translations['upcomingEvents']?.[currentLanguage] || 'Events' }}</a>
@@ -70,7 +71,7 @@
       <h2>{{ settings?.heroHeading || 'Where Excellence Meets Endless Possibility' }}</h2>
       <p>{{ settings?.heroDescription || 'Nurturing young minds with world-class education, values, and innovation since 1985.' }}</p>
       <div class="hero-btns">
-        <a routerLink="/login" class="btn-primary">Apply Now →</a>
+        <a routerLink="/login" class="btn-primary">Login →</a>
         <a href="#about" class="btn-outline">Explore School</a>
         <a href="#contact" class="btn-outline">Contact Us</a>
       </div>
