@@ -10,6 +10,7 @@ export interface HomePageSettings {
   address: string;
   email: string;
   phone: string;
+  mobileNumber?: string;
   websiteUrl: string;
   heroTagline: string;
   heroHeading: string;

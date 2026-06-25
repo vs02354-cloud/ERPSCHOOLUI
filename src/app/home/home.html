@@ -9,6 +9,7 @@
   <div class="header-top">
     <div class="header-top-left">
       <span>📞 {{ settings?.phone || '+91-755-2345678' }}</span>
+      <span *ngIf="settings?.mobileNumber">📱 {{ settings?.mobileNumber }}</span>
       <span>✉️ {{ settings?.email || 'info@vidyamandir.edu.in' }}</span>
       <span>🕐 {{ translations['workingHours']?.[currentLanguage] || 'Mon–Sat: 8:00 AM – 3:00 PM' }}</span>
     </div>
@@ -76,21 +77,18 @@
         <a href="#contact" class="btn-outline">Contact Us</a>
       </div>
       <div class="hero-stats">
-        <div class="stat-card" *ngFor="let stat of stats.slice(0,4)">
+        <div class="stat-card">
+          <div class="stat-num">{{ totalStudents }}</div>
+          <div class="stat-label">Total Students</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">{{ totalTeachers }}</div>
+          <div class="stat-label">Total Teachers</div>
+        </div>
+        <div class="stat-card" *ngFor="let stat of stats.slice(0,2)">
           <div class="stat-num">{{ stat.value }}</div>
           <div class="stat-label">{{ stat.label }}</div>
         </div>
-        <!-- Fallbacks if no stats -->
-        <ng-container *ngIf="stats.length === 0">
-            <div class="stat-card">
-            <div class="stat-num">5200+</div>
-            <div class="stat-label">Total Students</div>
-            </div>
-            <div class="stat-card">
-            <div class="stat-num">180+</div>
-            <div class="stat-label">Expert Teachers</div>
-            </div>
-        </ng-container>
       </div>
     </div>
     <div class="hero-right">
@@ -131,10 +129,11 @@
         <div class="bday-icon">🎂</div>
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">Today's Birthdays 🎉</div>
-          <div class="bday-names">
-            <span class="bday-tag">Priya Sharma (IX-A)</span>
-            <span class="bday-tag">Arjun Patel (XI-B)</span>
-            <span class="bday-tag">Ms. Sunita Rao</span>
+          <div class="bday-names" *ngIf="todaysBirthdays.length > 0">
+            <span class="bday-tag" *ngFor="let bday of todaysBirthdays">{{ bday.name }} ({{ bday.class }})</span>
+          </div>
+          <div class="bday-names" *ngIf="todaysBirthdays.length === 0">
+            <span style="font-size:11px;color:var(--muted)">No birthdays today.</span>
           </div>
         </div>
       </div>
@@ -347,7 +346,6 @@
         </div>
         <div class="event-body">
           <p>{{ event.description }}</p>
-          <a href="#" class="event-link">Register Now</a>
         </div>
       </div>
     </div>
@@ -662,6 +660,7 @@
         <div class="footer-contact">
           <div class="footer-contact-item"><span>📍</span><span>{{ settings?.address || '45, Arera Colony, Bhopal' }}</span></div>
           <div class="footer-contact-item"><span>📞</span><span>{{ settings?.phone || '+91-755-2345678' }}</span></div>
+          <div class="footer-contact-item" *ngIf="settings?.mobileNumber"><span>📱</span><span>{{ settings?.mobileNumber }}</span></div>
           <div class="footer-contact-item"><span>✉️</span><span>{{ settings?.email || 'info@vidyamandir.edu.in' }}</span></div>
         </div>
       </div>

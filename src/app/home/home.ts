@@ -30,6 +30,10 @@ export class Home implements OnInit, OnDestroy {
   socialMediaLinks: SocialMediaLink[] = [];
   holidays: Holiday[] = [];
 
+  totalStudents: number = 0;
+  totalTeachers: number = 0;
+  todaysBirthdays: {name: string, class: string}[] = [];
+
   translations: { [key: string]: { [lang: string]: string } } = {
     aboutUs: { en: 'About Us', hi: 'हमारे बारे में' },
     principalMessage: { en: "Principal's Message", hi: 'प्राचार्य का संदेश' },
@@ -98,6 +102,9 @@ export class Home implements OnInit, OnDestroy {
         }));
         this.socialMediaLinks = data.socialMediaLinks;
         this.holidays = data.holidays || [];
+        this.totalStudents = data.totalStudents || 0;
+        this.totalTeachers = data.totalTeachers || 0;
+        this.todaysBirthdays = data.todaysBirthdays || [];
         this.isLoading = false;
 
         const mapUrl = data.settings?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.529517170564!2d75.82025687590827!3d22.745700779368367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd02e2124cb1%3A0x67db238d212133b3!2sSuper%20Corridor%2C%20Indore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
