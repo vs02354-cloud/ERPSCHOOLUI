@@ -52,6 +52,10 @@
       <a href="#gallery">{{ translations['recentActivities']?.[currentLanguage] || 'Gallery' }}</a>
       <a href="#faculty">{{ translations['topTeachers']?.[currentLanguage] || 'Faculty' }}</a>
       <a href="#contact">{{ translations['contactUs']?.[currentLanguage] || 'Contact' }}</a>
+      <div class="mobile-only-menu">
+        <button class="lang-btn" (click)="toggleLanguage()">{{ currentLanguage === 'en' ? 'हिंदी' : 'English' }}</button>
+        <button class="theme-btn" (click)="toggleTheme()">{{ themeService.isDarkMode() ? '☀️ Light' : '🌙 Dark' }}</button>
+      </div>
     </nav>
   </div>
 </header>
