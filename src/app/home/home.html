@@ -10,7 +10,7 @@
     <div class="header-top-left">
       <span>📞 {{ settings?.phone || '+91-755-2345678' }}</span>
       <span *ngIf="settings?.mobileNumber">📱 {{ settings?.mobileNumber }}</span>
-      <span>✉️ {{ settings?.email || 'info@vidyamandir.edu.in' }}</span>
+      <span>✉️ {{ settings?.email || 'info@eduschool.edu' }}</span>
       <span>🕐 {{ translations['workingHours']?.[currentLanguage] || 'Mon–Sat: 8:00 AM – 3:00 PM' }}</span>
     </div>
     <div class="header-top-right">
@@ -31,7 +31,7 @@
         <span *ngIf="!settings?.logoUrl">{{ (settings?.schoolName || 'V')[0] }}</span>
       </div>
       <div class="school-name">
-        <h1>{{ settings?.schoolName || 'Vidya Mandir International School' }}</h1>
+        <h1>{{ settings?.schoolName || 'EduSchool' }}</h1>
         <p>{{ settings?.heroTagline || 'विद्या मंदिर इंटरनेशनल स्कूल · Est. 1985' }}</p>
       </div>
     </div>
@@ -68,7 +68,7 @@
   <img src="assets/hero.jpg" class="hero-photo" alt="Hero">
   <div class="hero-content">
     <div class="hero-left">
-      <div class="hero-badge">Ranked #1 School in Bhopal – 2025</div>
+      <div class="hero-badge">Ranked #1 School in City – 2025</div>
       <h2>{{ settings?.heroHeading || 'Where Excellence Meets Endless Possibility' }}</h2>
       <p>{{ settings?.heroDescription || 'Nurturing young minds with world-class education, values, and innovation since 1985.' }}</p>
       <div class="hero-btns">
@@ -113,7 +113,7 @@
       <div class="weather-widget">
         <div class="weather-icon">⛅</div>
         <div class="weather-info">
-          <h4>34°C · Bhopal</h4>
+          <h4>34°C · City</h4>
           <p>Madhya Pradesh</p>
           <p style="font-size:11px;color:var(--muted)">Partly Cloudy · Humidity 72%</p>
         </div>
@@ -177,10 +177,10 @@
             <div class="principal-avatar">👨‍💼</div>
             <div class="principal-info">
               <h4>{{ settings?.principalName || 'Dr. Ramesh Kumar Sharma' }}</h4>
-              <p>Principal, {{ settings?.schoolName || 'Vidya Mandir International School' }}</p>
+              <p>Principal, {{ settings?.schoolName || 'EduSchool' }}</p>
             </div>
           </div>
-          <blockquote>{{ settings?.principalMessage || 'Education is not the filling of a pail, but the lighting of a fire. At Vidya Mandir, we believe every child carries within them the spark of extraordinary potential. Our duty is to fan that flame.' }}</blockquote>
+          <blockquote>{{ settings?.principalMessage || 'Education is not the filling of a pail, but the lighting of a fire. At EduSchool, we believe every child carries within them the spark of extraordinary potential. Our duty is to fan that flame.' }}</blockquote>
           <a href="#" style="font-size:12px;color:#1565C0;text-decoration:none;font-weight:600;display:inline-block;margin-top:12px">Read Full Message →</a>
         </div>
       </div>
@@ -412,7 +412,7 @@
       <div class="facility-card">
         <span class="fac-icon">🚌</span>
         <div class="fac-title">GPS Transport</div>
-        <div class="fac-desc">Fleet of 25 GPS-tracked, AC buses covering all major areas of Bhopal with live tracking for parents</div>
+        <div class="fac-desc">Fleet of 25 GPS-tracked, AC buses covering all major areas of the city with live tracking for parents</div>
       </div>
     </div>
 
@@ -502,7 +502,7 @@
             <div class="timeline-dot"></div>
             <div class="timeline-year">1985</div>
             <h4>Foundation</h4>
-            <p>Vidya Mandir International School founded with 120 students and 8 teachers.</p>
+            <p>EduSchool founded with 120 students and 8 teachers.</p>
           </div>
           <div class="timeline-item">
             <div class="timeline-dot"></div>
@@ -539,7 +539,7 @@
     <div class="testimonials-grid" style="margin-top:32px">
       <div class="testi-card">
         <div class="testi-stars">★★★★★</div>
-        <p>My daughter Priya joined Vidya Mandir in class VI. The transformation has been remarkable — she's now a confident, curious, and compassionate young woman ready for IIT.</p>
+        <p>My daughter Priya joined EduSchool in class VI. The transformation has been remarkable — she's now a confident, curious, and compassionate young woman ready for IIT.</p>
         <div class="testi-author">
           <div class="testi-avatar">R</div>
           <div class="testi-name"><h5>Rajesh Sharma</h5><span>Parent</span></div>
@@ -582,7 +582,7 @@
             <div class="contact-icon">📍</div>
             <div>
               <h4>Our Address</h4>
-              <p>{{ settings?.address || '45, Arera Colony, Near DB Mall, Bhopal, Madhya Pradesh – 462016' }}</p>
+              <p>{{ settings?.address || '45, Arera Colony, Near DB Mall, City, State – 462016' }}</p>
             </div>
           </div>
           <div class="contact-item">
@@ -596,7 +596,7 @@
             <div class="contact-icon">✉️</div>
             <div>
               <h4>Email Addresses</h4>
-              <p>{{ settings?.email || 'info@vidyamandir.edu.in' }}</p>
+              <p>{{ settings?.email || 'info@eduschool.edu' }}</p>
             </div>
           </div>
         </div>
@@ -634,7 +634,7 @@
             <img *ngIf="settings?.logoUrl" [src]="settings?.logoUrl" alt="Logo">
             <span *ngIf="!settings?.logoUrl">V</span>
           </div>
-          <span>{{ settings?.schoolName || 'Vidya Mandir International School' }}</span>
+          <span>{{ settings?.schoolName || 'EduSchool' }}</span>
         </div>
         <p>{{ settings?.heroTagline || 'Empowering students through academic excellence, character development, and innovation.' }}</p>
       </div>
@@ -658,15 +658,15 @@
       <div>
         <h4>Contact Information</h4>
         <div class="footer-contact">
-          <div class="footer-contact-item"><span>📍</span><span>{{ settings?.address || '45, Arera Colony, Bhopal' }}</span></div>
+          <div class="footer-contact-item"><span>📍</span><span>{{ settings?.address || '45, Arera Colony, City' }}</span></div>
           <div class="footer-contact-item"><span>📞</span><span>{{ settings?.phone || '+91-755-2345678' }}</span></div>
           <div class="footer-contact-item" *ngIf="settings?.mobileNumber"><span>📱</span><span>{{ settings?.mobileNumber }}</span></div>
-          <div class="footer-contact-item"><span>✉️</span><span>{{ settings?.email || 'info@vidyamandir.edu.in' }}</span></div>
+          <div class="footer-contact-item"><span>✉️</span><span>{{ settings?.email || 'info@eduschool.edu' }}</span></div>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 {{ settings?.schoolName || 'Vidya Mandir International School' }}. All Rights Reserved.</span>
+      <span>© 2026 {{ settings?.schoolName || 'EduSchool' }}. All Rights Reserved.</span>
       <div style="display:flex;gap:16px">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms & Conditions</a>
