@@ -110,6 +110,7 @@ export class LoginComponent {
     this.forgotSuccessMessage.set('');
 
     const payload = {
+      username: this.forgotUsername(),
       email: this.forgotEmail(),
       otp: this.forgotOtp(),
       newPassword: this.newPassword()
