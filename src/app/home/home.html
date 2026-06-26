@@ -52,6 +52,7 @@
       <a href="#gallery">{{ translations['recentActivities']?.[currentLanguage] || 'Gallery' }}</a>
       <a href="#faculty">{{ translations['topTeachers']?.[currentLanguage] || 'Faculty' }}</a>
       <a href="#contact">{{ translations['contactUs']?.[currentLanguage] || 'Contact' }}</a>
+      <a routerLink="/inquiry">Admission Inquiry</a>
       <div class="mobile-only-menu">
         <button class="lang-btn" (click)="toggleLanguage()">{{ currentLanguage === 'en' ? 'हिंदी' : 'English' }}</button>
         <button class="theme-btn" (click)="toggleTheme()">{{ themeService.isDarkMode() ? '☀️ Light' : '🌙 Dark' }}</button>
@@ -457,7 +458,7 @@
     </div>
     <!-- Static Fallbacks -->
     <div class="quick-grid" *ngIf="!quickLinks || quickLinks.length === 0">
-      <a href="#" class="quick-card"><span class="quick-icon">📝</span><div class="quick-label">Online Admission</div></a>
+      <a routerLink="/inquiry" class="quick-card"><span class="quick-icon">📝</span><div class="quick-label">Admission Inquiry</div></a>
       <a href="#" class="quick-card"><span class="quick-icon">💳</span><div class="quick-label">Fee Payment</div></a>
       <a href="#" class="quick-card"><span class="quick-icon">📊</span><div class="quick-label">Result Portal</div></a>
       <a href="#" class="quick-card"><span class="quick-icon">✅</span><div class="quick-label">Attendance</div></a>
@@ -657,7 +658,7 @@
           <li><a href="#">Home</a></li>
           <li><a href="#about">About Us</a></li>
           <li><a href="#faculty">Faculty</a></li>
-          <li><a href="#events">Admissions</a></li>
+          <li><a routerLink="/inquiry">Admissions</a></li>
         </ul>
       </div>
       <div>
