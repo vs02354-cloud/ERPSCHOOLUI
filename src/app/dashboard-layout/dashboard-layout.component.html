@@ -176,6 +176,8 @@
             <div *ngIf="expandedSubMenu === 'admission'" class="pl-4 space-y-1 mt-1 border-l-2 border-slate-800 ml-2">
               <a routerLink="/dashboard/admission" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Admission</a>
               <a routerLink="/dashboard/students" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" [routerLinkActiveOptions]="{exact: true}" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Student List</a>
+              <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/student-promotion" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Promote Students</a>
+              <a *ngIf="userRole === 'Admin' || userRole === 'Super Admin' || userRole === 'School Admin' || userRole === 'Principal' || userRole === 'Teacher'" routerLink="/dashboard/promotion-report" (click)="closeMobileMenu()" routerLinkActive="text-brand-400 font-bold bg-slate-800" class="block px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Promotion Report</a>
             </div>
 
             <!-- Assignments Submenu -->

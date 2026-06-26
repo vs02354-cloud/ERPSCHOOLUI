@@ -5,6 +5,8 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { StudentsListComponent } from './students-list/students-list.component';
+import { StudentPromotionComponent } from './student-promotion/student-promotion';
+import { PromotionReportComponent } from './promotion-report/promotion-report';
 import { BroadcastComponent } from './broadcast/broadcast.component';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { FeeStructureComponent } from './fee-structure/fee-structure.component';
@@ -54,6 +56,8 @@ export const routes: Routes = [
         { path: '', component: AdminDashboardComponent, pathMatch: 'full' },
         { path: 'employees', component: EmployeeListComponent },
         { path: 'students', component: StudentsListComponent },
+        { path: 'student-promotion', component: StudentPromotionComponent },
+        { path: 'promotion-report', component: PromotionReportComponent },
         { path: 'admission', component: AdmissionFormComponent },
         { path: 'students/edit/:id', component: AdmissionFormComponent },
         { path: 'broadcast', component: BroadcastComponent },

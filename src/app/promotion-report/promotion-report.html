@@ -1,0 +1,73 @@
+<div class="p-6">
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Promotion Report</h2>
+    <p class="text-slate-500 dark:text-slate-400 mt-1">View the history of student promotions.</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 flex items-center">
+    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    {{ errorMessage }}
+  </div>
+
+  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Filter by Class</label>
+        <select [(ngModel)]="selectedClass" (change)="fetchReport()" class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 focus:ring-2 focus:ring-brand-500 outline-none text-slate-800 dark:text-white">
+          <option value="">-- All Classes --</option>
+          <option *ngFor="let cls of classes" [value]="cls">{{ cls }}</option>
+        </select>
+      </div>
+      <div>
+        <button (click)="fetchReport()" class="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition-colors">
+          Refresh Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-12">
+    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-brand-500 border-t-transparent"></div>
+    <p class="mt-4 text-slate-500 font-medium">Loading report data...</p>
+  </div>
+
+  <div *ngIf="!isLoading && reportData.length === 0" class="text-center py-12 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+    <p class="text-slate-500 font-medium">No promotion records found.</p>
+  </div>
+
+  <div *ngIf="!isLoading && reportData.length > 0" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+    <div class="p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+      <h3 class="text-lg font-bold text-slate-800 dark:text-white">Promotion Logs</h3>
+      <p class="text-sm text-slate-500">{{ reportData.length }} records found</p>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700">
+            <th class="py-4 px-6 font-bold text-sm text-slate-500 dark:text-slate-400">Date</th>
+            <th class="py-4 px-6 font-bold text-sm text-slate-500 dark:text-slate-400">Admission No.</th>
+            <th class="py-4 px-6 font-bold text-sm text-slate-500 dark:text-slate-400">Student Name</th>
+            <th class="py-4 px-6 font-bold text-sm text-slate-500 dark:text-slate-400">From Class</th>
+            <th class="py-4 px-6 font-bold text-sm text-slate-500 dark:text-slate-400">To Class</th>
+            <th class="py-4 px-6 font-bold text-sm text-slate-500 dark:text-slate-400">Promoted By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of reportData" class="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+            <td class="py-3 px-6 text-sm text-slate-600 dark:text-slate-400 whitespace-nowrap">{{ record.promotionDate | date:'mediumDate' }}</td>
+            <td class="py-3 px-6 text-sm font-medium text-slate-900 dark:text-white">{{ record.admissionNumber }}</td>
+            <td class="py-3 px-6 font-bold text-slate-800 dark:text-white">{{ record.studentName }}</td>
+            <td class="py-3 px-6 text-sm font-bold text-slate-600 dark:text-slate-400">
+              <span class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">{{ record.fromClass }}</span>
+            </td>
+            <td class="py-3 px-6 text-sm font-bold text-brand-600 dark:text-brand-400">
+              <span class="bg-brand-50 dark:bg-brand-900/30 px-2 py-1 rounded-md">→ {{ record.toClass }}</span>
+            </td>
+            <td class="py-3 px-6 text-sm text-slate-600 dark:text-slate-400">{{ record.promotedBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
