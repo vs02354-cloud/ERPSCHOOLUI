@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { InquiryService } from '../services/inquiry';
+import { CmsService, HomePageSettings } from '../services/cms.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-public-inquiry-form',
@@ -12,15 +14,22 @@ import { InquiryService } from '../services/inquiry';
   templateUrl: './public-inquiry-form.html',
   styleUrl: './public-inquiry-form.css'
 })
-export class PublicInquiryForm {
+export class PublicInquiryForm implements OnInit {
   private fb = inject(FormBuilder);
   private inquiryService = inject(InquiryService);
   private router = inject(Router);
+  private cms = inject(CmsService);
+  private cdr = inject(ChangeDetectorRef);
+  public themeService = inject(ThemeService);
 
   inquiryForm: FormGroup;
   isSubmitting = false;
   successMessage = '';
   errorMessage = '';
+
+  isMobileMenuOpen = false;
+  currentLanguage: 'en' | 'hi' = 'en';
+  settings: HomePageSettings | null = null;
 
   classes = [
     'Pre-Nursery', 'Nursery', 'LKG', 'UKG',
@@ -50,6 +59,23 @@ export class PublicInquiryForm {
       inquirySource: [''],
       remarks: ['']
     });
+  }
+
+  ngOnInit() {
+    this.currentLanguage = (localStorage.getItem('language') as 'en' | 'hi') || 'en';
+    this.cms.getSettings().subscribe({
+      next: (res) => {
+        this.settings = res;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  onLanguageChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.currentLanguage = select.value as 'en' | 'hi';
+    localStorage.setItem('language', this.currentLanguage);
+    this.cdr.detectChanges();
   }
 
   onSubmit() {
