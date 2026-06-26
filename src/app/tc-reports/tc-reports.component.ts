@@ -194,14 +194,11 @@ export class TcReportsComponent implements OnInit {
     });
   }
 
-  printTC(tc: any) {
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
-
+  private generateTCHtml(tc: any): string {
     const issueDate = new Date(tc.issueDate).toLocaleDateString();
     const student = tc.student;
 
-    const htmlContent = `
+    return `
       <html>
         <head>
           <title>Transfer Certificate - ${tc.tcNumber}</title>
@@ -259,8 +256,27 @@ export class TcReportsComponent implements OnInit {
         </body>
       </html>
     `;
+  }
 
+  printTC(tc: any) {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const htmlContent = this.generateTCHtml(tc);
     printWindow.document.write(htmlContent);
     printWindow.document.close();
+  }
+
+  downloadTC(tc: any) {
+    const htmlContent = this.generateTCHtml(tc);
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Transfer_Certificate_${tc.tcNumber}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   }
 }
