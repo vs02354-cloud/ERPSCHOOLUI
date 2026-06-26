@@ -18,7 +18,8 @@ export class LoginComponent {
 
   // Forgot Password State
   showForgotModal = signal(false);
-  forgotStep = signal(1); // 1 = Email, 2 = OTP & New Password
+  forgotStep = signal(1); // 1 = Username & Email, 2 = OTP & New Password
+  forgotUsername = signal('');
   forgotEmail = signal('');
   forgotOtp = signal('');
   newPassword = signal('');
@@ -58,6 +59,7 @@ export class LoginComponent {
     event.preventDefault();
     this.showForgotModal.set(true);
     this.forgotStep.set(1);
+    this.forgotUsername.set('');
     this.forgotEmail.set('');
     this.forgotOtp.set('');
     this.newPassword.set('');
@@ -71,15 +73,15 @@ export class LoginComponent {
   }
 
   requestOtp() {
-    if (!this.forgotEmail()) {
-      this.forgotErrorMessage.set('Please enter your email.');
+    if (!this.forgotUsername() || !this.forgotEmail()) {
+      this.forgotErrorMessage.set('Please enter both username and email.');
       return;
     }
     this.forgotIsSubmitting.set(true);
     this.forgotErrorMessage.set('');
     this.forgotSuccessMessage.set('');
 
-    this.authService.forgotPassword({ email: this.forgotEmail() }).subscribe({
+    this.authService.forgotPassword({ username: this.forgotUsername(), email: this.forgotEmail() }).subscribe({
       next: (res: any) => {
         this.forgotIsSubmitting.set(false);
         this.forgotSuccessMessage.set(res.message || 'OTP sent successfully.');
