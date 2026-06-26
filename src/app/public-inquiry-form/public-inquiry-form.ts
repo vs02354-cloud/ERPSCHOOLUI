@@ -53,11 +53,7 @@ export class PublicInquiryForm implements OnInit {
       emailId: ['', [Validators.email]],
       currentSchool: [''],
       address: [''],
-      city: [''],
-      stateName: [''],
-      pincode: [''],
-      inquirySource: [''],
-      remarks: ['']
+      inquirySource: ['']
     });
   }
 
