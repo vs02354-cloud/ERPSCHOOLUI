@@ -12,7 +12,7 @@ import { TranslatePipe } from '../services/language.service';
   styleUrls: []
 })
 export class StudentPromotionComponent implements OnInit {
-  classes: string[] = ['Nursery', 'LKG', 'UKG', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', 'Alumni'];
+  classes: string[] = ['Nursery', 'LKG', 'UKG', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'Alumni'];
   selectedClass: string = '';
   nextClass: string = '';
   
