@@ -35,6 +35,14 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
+  forgotPassword(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, data);
+  }
+
+  resetPassword(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, data);
+  }
+
   logout() {
     localStorage.removeItem('jwt_token');
     this.authState.next(false);
