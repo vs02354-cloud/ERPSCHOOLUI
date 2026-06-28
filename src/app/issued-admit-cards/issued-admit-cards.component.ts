@@ -62,6 +62,6 @@ export class IssuedAdmitCardsComponent implements OnInit {
     // Give Angular a tick to render the hidden print area, then print
     setTimeout(() => {
       window.print();
-    }, 100);
+    }, 300);
   }
 }
