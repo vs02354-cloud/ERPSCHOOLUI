@@ -104,9 +104,9 @@
 </div>
 
 <!-- Print Only Section -->
-<div class="hidden print:block font-sans text-black" *ngIf="studentToPrint">
+<div class="hidden print:block font-sans text-black print:w-full print:h-[98vh] break-inside-avoid page-break-inside-avoid" *ngIf="studentToPrint">
   <!-- Outer Border to match ASCII box -->
-  <div class="border-2 border-black p-4 max-w-4xl mx-auto mt-10 text-sm">
+  <div class="border-2 border-black p-4 w-full h-full max-w-none mx-0 mt-0 text-sm flex flex-col justify-between">
     
     <!-- Header Section -->
     <div class="flex items-center justify-between border-b-2 border-black pb-4 mb-4">
