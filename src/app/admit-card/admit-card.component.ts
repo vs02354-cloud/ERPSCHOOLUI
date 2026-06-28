@@ -13,7 +13,7 @@ import { TranslatePipe } from '../services/language.service';
   styleUrls: []
 })
 export class AdmitCardComponent implements OnInit {
-  classes: string[] = ['LKG', 'UKG', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12'];
+  classes: string[] = ['LKG', 'UKG', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
   selectedClass: string = '';
   
   students: any[] = [];
