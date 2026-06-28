@@ -41,6 +41,8 @@ import { TransportRoutes } from './transport-routes/transport-routes';
 import { TransportVehicles } from './transport-vehicles/transport-vehicles';
 import { TransportGatepass } from './transport-gatepass/transport-gatepass';
 import { CmsDashboardComponent } from './cms-dashboard/cms-dashboard.component';
+import { AdmitCardComponent } from './admit-card/admit-card.component';
+import { IssuedAdmitCardsComponent } from './issued-admit-cards/issued-admit-cards.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -58,6 +60,8 @@ export const routes: Routes = [
         { path: 'students', component: StudentsListComponent },
         { path: 'student-promotion', component: StudentPromotionComponent },
         { path: 'promotion-report', component: PromotionReportComponent },
+        { path: 'admit-card', component: AdmitCardComponent },
+        { path: 'issued-admit-cards', component: IssuedAdmitCardsComponent },
         { path: 'admission', component: AdmissionFormComponent },
         { path: 'students/edit/:id', component: AdmissionFormComponent },
         { path: 'broadcast', component: BroadcastComponent },
