@@ -58,10 +58,13 @@ export class IssuedAdmitCardsComponent implements OnInit {
   printAdmitCard(student: any) {
     this.studentToPrint = student;
     this.cdr.detectChanges();
-    
-    // Give Angular a tick to render the hidden print area, then print
-    setTimeout(() => {
-      window.print();
-    }, 300);
+  }
+
+  closePreview() {
+    this.studentToPrint = null;
+  }
+
+  executePrint() {
+    window.print();
   }
 }
