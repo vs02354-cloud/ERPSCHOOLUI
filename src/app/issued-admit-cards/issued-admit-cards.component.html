@@ -105,75 +105,119 @@
 
 <!-- Print Only Section -->
 <div class="hidden print:block font-sans text-black" *ngIf="studentToPrint">
-  <div class="border-4 border-double border-slate-800 p-8 max-w-3xl mx-auto mt-10 relative">
+  <!-- Outer Border to match ASCII box -->
+  <div class="border-2 border-black p-4 max-w-4xl mx-auto mt-10 text-sm">
     
-    <!-- Watermark -->
-    <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none z-0">
-      <span class="text-8xl font-black rotate-[-30deg]">VIDYA MANDIR</span>
+    <!-- Header Section -->
+    <div class="flex items-center justify-between border-b-2 border-black pb-4 mb-4">
+      <div class="w-24 h-24 border border-black flex items-center justify-center text-xs font-bold text-center bg-gray-100">
+        [School Logo]
+      </div>
+      <div class="flex-1 text-center">
+        <h1 class="text-2xl font-black uppercase tracking-widest">School Name</h1>
+        <p class="text-base font-semibold">School Address</p>
+        <p class="text-sm font-medium">CBSE / MP Board / Affiliation No.</p>
+      </div>
+      <div class="w-24 h-24"></div> <!-- Spacer for center alignment -->
     </div>
-    
-    <!-- Header -->
-    <div class="text-center border-b-2 border-slate-800 pb-4 mb-6 relative z-10">
-      <h1 class="text-3xl font-black uppercase tracking-widest mb-1">Vidya Mandir International School</h1>
-      <p class="text-sm uppercase tracking-widest text-slate-600 mb-2">Affiliated to CBSE, New Delhi</p>
-      <div class="inline-block bg-slate-800 text-white font-bold py-1 px-6 rounded-full uppercase tracking-widest text-lg">
-        Admit Card 2026-27
+
+    <!-- Title -->
+    <div class="border-b-2 border-black pb-2 mb-4 text-center">
+      <h2 class="text-lg font-bold uppercase tracking-widest">ADMIT CARD - ANNUAL EXAM 2026-27</h2>
+    </div>
+
+    <!-- Student Information & Photo -->
+    <div class="flex justify-between border-b-2 border-black pb-4 mb-4">
+      <div class="w-32 h-40 border-2 border-black flex items-center justify-center bg-gray-50 flex-col mr-6">
+        <span class="text-xs font-bold text-gray-500">[Photo]</span>
+      </div>
+      <div class="flex-1 grid grid-cols-1 gap-2">
+        <div class="flex"><span class="w-32 font-bold">Admission No</span><span>: {{ studentToPrint.admissionNumber }}</span></div>
+        <div class="flex"><span class="w-32 font-bold">Roll No</span><span>: ________________</span></div>
+        <div class="flex"><span class="w-32 font-bold">Class</span><span>: {{ studentToPrint.currentClass }}</span></div>
+        <div class="flex"><span class="w-32 font-bold">Section</span><span>: {{ studentToPrint.section || 'A' }}</span></div>
+        <div class="flex"><span class="w-32 font-bold">Student Name</span><span>: {{ studentToPrint.firstName }} {{ studentToPrint.lastName }}</span></div>
+        <div class="flex"><span class="w-32 font-bold">Father's Name</span><span>: {{ studentToPrint.fatherName || '________________' }}</span></div>
+        <div class="flex"><span class="w-32 font-bold">Mother's Name</span><span>: {{ studentToPrint.motherName || '________________' }}</span></div>
+        <div class="flex"><span class="w-32 font-bold">Date of Birth</span><span>: {{ studentToPrint.dateOfBirth | date:'dd-MMM-yyyy' }}</span></div>
       </div>
     </div>
-    
-    <!-- Content -->
-    <div class="flex gap-8 relative z-10">
-      <div class="flex-1 space-y-4">
-        <div class="grid grid-cols-3 gap-2 border-b border-slate-200 pb-2">
-          <span class="font-bold text-slate-600 uppercase text-sm col-span-1">Admission No.</span>
-          <span class="font-bold text-lg col-span-2">{{ studentToPrint.admissionNumber }}</span>
-        </div>
-        <div class="grid grid-cols-3 gap-2 border-b border-slate-200 pb-2">
-          <span class="font-bold text-slate-600 uppercase text-sm col-span-1">Student Name</span>
-          <span class="font-bold text-lg col-span-2">{{ studentToPrint.firstName }} {{ studentToPrint.lastName }}</span>
-        </div>
-        <div class="grid grid-cols-3 gap-2 border-b border-slate-200 pb-2">
-          <span class="font-bold text-slate-600 uppercase text-sm col-span-1">Class & Section</span>
-          <span class="font-bold text-lg col-span-2">{{ studentToPrint.currentClass }} <span *ngIf="studentToPrint.section"> - {{ studentToPrint.section }}</span></span>
-        </div>
-        <div class="grid grid-cols-3 gap-2 border-b border-slate-200 pb-2">
-          <span class="font-bold text-slate-600 uppercase text-sm col-span-1">Father's Name</span>
-          <span class="font-bold text-lg col-span-2">{{ studentToPrint.fatherName || '________________' }}</span>
-        </div>
-        <div class="grid grid-cols-3 gap-2 border-b border-slate-200 pb-2">
-          <span class="font-bold text-slate-600 uppercase text-sm col-span-1">Mother's Name</span>
-          <span class="font-bold text-lg col-span-2">{{ studentToPrint.motherName || '________________' }}</span>
-        </div>
+
+    <!-- Examination Details & QR -->
+    <div class="flex justify-between border-b-2 border-black pb-4 mb-4">
+      <div class="flex-1 space-y-2">
+        <div class="flex"><span class="w-32 font-bold">Examination</span><span>: Annual Examination 2026-27</span></div>
+        <div class="flex"><span class="w-32 font-bold">Center</span><span>: Krishna Public School</span></div>
+        <div class="flex"><span class="w-32 font-bold">Timing</span><span>: 09:00 AM - 12:00 PM</span></div>
       </div>
-      
-      <!-- Photo Area -->
-      <div class="w-32 h-40 border-2 border-slate-400 border-dashed rounded-lg flex items-center justify-center bg-slate-50 flex-col">
-        <svg class="w-10 h-10 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-        <span class="text-xs text-slate-400 font-bold uppercase text-center">Paste Photo<br>Here</span>
+      <div class="flex flex-col items-center justify-center border-2 border-black p-2 w-24 h-24">
+        <span class="text-xs font-bold text-gray-500">[ QR ]</span>
+        <span class="text-[10px] font-bold mt-1">Verify</span>
       </div>
     </div>
-    
+
+    <!-- Subject Wise Schedule -->
+    <div class="border-b-2 border-black pb-4 mb-4">
+      <h3 class="font-bold mb-2">Subject Wise Schedule</h3>
+      <table class="w-full border-collapse border border-black text-left">
+        <thead>
+          <tr>
+            <th class="border border-black px-2 py-1">Date</th>
+            <th class="border border-black px-2 py-1">Day</th>
+            <th class="border border-black px-2 py-1">Subject</th>
+            <th class="border border-black px-2 py-1">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border border-black px-2 py-1">10-Mar-2027</td>
+            <td class="border border-black px-2 py-1">Monday</td>
+            <td class="border border-black px-2 py-1">English</td>
+            <td class="border border-black px-2 py-1">09:00 - 12:00</td>
+          </tr>
+          <tr>
+            <td class="border border-black px-2 py-1">12-Mar-2027</td>
+            <td class="border border-black px-2 py-1">Wednesday</td>
+            <td class="border border-black px-2 py-1">Mathematics</td>
+            <td class="border border-black px-2 py-1">09:00 - 12:00</td>
+          </tr>
+          <tr>
+            <td class="border border-black px-2 py-1">15-Mar-2027</td>
+            <td class="border border-black px-2 py-1">Saturday</td>
+            <td class="border border-black px-2 py-1">Science</td>
+            <td class="border border-black px-2 py-1">09:00 - 12:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <!-- Instructions -->
-    <div class="mt-8 border border-slate-300 rounded-lg p-4 relative z-10 bg-slate-50">
-      <h3 class="font-bold uppercase text-sm mb-2 text-slate-800">Important Instructions</h3>
-      <ul class="text-xs list-disc pl-5 space-y-1 text-slate-700">
-        <li>Students must carry this admit card to the examination hall every day.</li>
-        <li>Without this admit card, entry to the examination hall will be strictly prohibited.</li>
-        <li>Please report to the examination hall 15 minutes before the scheduled time.</li>
-        <li>Any form of malpractice will lead to immediate cancellation of the exam.</li>
+    <div class="border-b-2 border-black pb-4 mb-16">
+      <h3 class="font-bold mb-2">Instructions</h3>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>Reach examination center 30 minutes before exam.</li>
+        <li>Carry this admit card every day.</li>
+        <li>Electronic gadgets are prohibited.</li>
+        <li>Follow examination rules strictly.</li>
       </ul>
     </div>
-    
+
     <!-- Signatures -->
-    <div class="mt-16 flex justify-between px-4 relative z-10">
+    <div class="flex justify-between px-4 pb-4">
       <div class="text-center">
-        <div class="border-b border-slate-800 w-32 mb-2"></div>
-        <span class="font-bold text-xs uppercase text-slate-600">Class Teacher</span>
+        <div class="border-b-2 border-black w-40 mb-2"></div>
+        <span class="font-bold">Student Signature</span>
       </div>
       <div class="text-center">
-        <div class="border-b border-slate-800 w-32 mb-2"></div>
-        <span class="font-bold text-xs uppercase text-slate-600">Principal</span>
+        <div class="border-b-2 border-black w-40 mb-2"></div>
+        <span class="font-bold">Class Teacher</span>
+      </div>
+      <div class="text-center">
+        <div class="border-b-2 border-black w-48 mb-2"></div>
+        <span class="font-bold">Principal Signature & Seal</span>
       </div>
     </div>
+
   </div>
 </div>
+
