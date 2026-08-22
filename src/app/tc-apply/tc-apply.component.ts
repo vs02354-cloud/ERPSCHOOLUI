@@ -36,9 +36,9 @@ export class TcApplyComponent implements OnInit {
   }
 
   loadStudents() {
-    let endpoint = 'https://erpschoolapi.onrender.com/api/Students';
+    let endpoint = 'http://localhost:5120/api/Students';
     if (this.userRole === 'Parent') {
-      endpoint = 'https://erpschoolapi.onrender.com/api/Students/MyChildren';
+      endpoint = 'http://localhost:5120/api/Students/MyChildren';
     }
 
     this.http.get<any[]>(endpoint).subscribe({
@@ -66,7 +66,7 @@ export class TcApplyComponent implements OnInit {
       reasonForLeaving: this.newTc.reasonForLeaving
     };
 
-    this.http.post('https://erpschoolapi.onrender.com/api/TC/Apply', payload).subscribe({
+    this.http.post('http://localhost:5120/api/TC/Apply', payload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.successMessage = 'Transfer Certificate application submitted successfully! It will be reviewed by the administration.';

@@ -29,7 +29,7 @@ export class StudentsListComponent implements OnInit {
 
   fetchStudents() {
     this.isLoading = true;
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Students').subscribe({
       next: (data) => {
         this.students = data;
         this.isLoading = false;

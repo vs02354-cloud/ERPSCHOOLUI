@@ -123,7 +123,7 @@ export class FeePaymentsComponent implements OnInit {
   // --- Parent Pay Online Logic ---
   loadParentChildren() {
     this.isLoading = true;
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Students/MyChildren').subscribe({
       next: (data) => {
         this.parentChildren = data;
         if (data.length > 0) {
@@ -147,7 +147,7 @@ export class FeePaymentsComponent implements OnInit {
     this.errorMessage = '';
 
     if (this.selectedStudent) {
-      this.http.get<any>(`https://erpschoolapi.onrender.com/api/Fees/Parent/Pending/Student/${studentId}`).subscribe({
+      this.http.get<any>(`http://localhost:5120/api/Fees/Parent/Pending/Student/${studentId}`).subscribe({
         next: (data) => {
           this.pendingFeeDetails = data;
           if (data.pendingFee === 0) {
@@ -198,7 +198,7 @@ export class FeePaymentsComponent implements OnInit {
       const payload = this.collectForm.value;
       payload.receiptNumber = 'TBD';
       
-      this.http.post<FeePayment>('https://erpschoolapi.onrender.com/api/Fees/Payment', payload).subscribe({
+      this.http.post<FeePayment>('http://localhost:5120/api/Fees/Payment', payload).subscribe({
         next: (response) => {
           this.successMessage = 'Payment successful! Receipt generated.';
           this.isSubmitting = false;
@@ -220,8 +220,8 @@ export class FeePaymentsComponent implements OnInit {
 
   loadDashboardStats() {
     const endpoint = this.userRole === 'Parent' 
-      ? 'https://erpschoolapi.onrender.com/api/Fees/Parent/DashboardStats'
-      : 'https://erpschoolapi.onrender.com/api/Fees/DashboardStats';
+      ? 'http://localhost:5120/api/Fees/Parent/DashboardStats'
+      : 'http://localhost:5120/api/Fees/DashboardStats';
       
     this.http.get<any>(endpoint).subscribe({
       next: (data) => {
@@ -235,8 +235,8 @@ export class FeePaymentsComponent implements OnInit {
   loadPendingReport() {
     this.isLoading = true;
     const endpoint = this.userRole === 'Parent' 
-      ? 'https://erpschoolapi.onrender.com/api/Fees/Parent/PendingReport'
-      : 'https://erpschoolapi.onrender.com/api/Fees/PendingReport';
+      ? 'http://localhost:5120/api/Fees/Parent/PendingReport'
+      : 'http://localhost:5120/api/Fees/PendingReport';
       
     this.http.get<any[]>(endpoint).subscribe({
       next: (data) => {
@@ -276,8 +276,8 @@ export class FeePaymentsComponent implements OnInit {
   loadPaymentHistory() {
     this.isLoading = true;
     const endpoint = this.userRole === 'Parent' 
-      ? 'https://erpschoolapi.onrender.com/api/Fees/Parent/Payment'
-      : 'https://erpschoolapi.onrender.com/api/Fees/Payment';
+      ? 'http://localhost:5120/api/Fees/Parent/Payment'
+      : 'http://localhost:5120/api/Fees/Payment';
       
     this.http.get<FeePayment[]>(endpoint).subscribe({
       next: (data) => {
@@ -314,7 +314,7 @@ export class FeePaymentsComponent implements OnInit {
 
   deletePayment(id: number) {
     if (confirm('Are you sure you want to delete this payment record? This action cannot be undone.')) {
-      this.http.delete(`https://erpschoolapi.onrender.com/api/Fees/Payment/${id}`).subscribe({
+      this.http.delete(`http://localhost:5120/api/Fees/Payment/${id}`).subscribe({
         next: () => {
           this.successMessage = 'Payment deleted successfully.';
           this.loadPaymentHistory();
@@ -346,7 +346,7 @@ export class FeePaymentsComponent implements OnInit {
   // --- Collect Fee ---
 
   loadStudents() {
-    this.http.get<Student[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
+    this.http.get<Student[]>('http://localhost:5120/api/Students').subscribe({
       next: (data) => {
         this.students = data;
         this.cdr.detectChanges();
@@ -363,7 +363,7 @@ export class FeePaymentsComponent implements OnInit {
     this.errorMessage = '';
 
     if (this.selectedStudent) {
-      this.http.get<any>(`https://erpschoolapi.onrender.com/api/Fees/Pending/Student/${id}`).subscribe({
+      this.http.get<any>(`http://localhost:5120/api/Fees/Pending/Student/${id}`).subscribe({
         next: (data) => {
           this.pendingFeeDetails = data;
           if (data.pendingFee === 0) {
@@ -414,7 +414,7 @@ export class FeePaymentsComponent implements OnInit {
     const payload = this.collectForm.value;
     payload.receiptNumber = 'TBD'; // Dummy value to pass [Required] backend validation, backend overwrites this
     
-    this.http.post<FeePayment>('https://erpschoolapi.onrender.com/api/Fees/Payment', payload).subscribe({
+    this.http.post<FeePayment>('http://localhost:5120/api/Fees/Payment', payload).subscribe({
       next: (response) => {
         this.successMessage = 'Payment collected successfully!';
         this.isSubmitting = false;

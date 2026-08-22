@@ -35,7 +35,7 @@ export class StudentPromotionComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
     
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Students').subscribe({
       next: (data) => {
         this.students = data.filter(s => s.currentClass === this.selectedClass);
         this.selectedStudentIds.clear();
@@ -91,7 +91,7 @@ export class StudentPromotionComponent implements OnInit {
       nextClass: this.nextClass
     };
 
-    this.http.post('https://erpschoolapi.onrender.com/api/Promotion/Promote', request).subscribe({
+    this.http.post('http://localhost:5120/api/Promotion/Promote', request).subscribe({
       next: (res: any) => {
         this.successMessage = res.message || 'Students promoted successfully.';
         this.isPromoting = false;

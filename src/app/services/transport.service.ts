@@ -72,7 +72,7 @@ export interface TransportGatePass {
   providedIn: 'root'
 })
 export class TransportService {
-  private apiUrl = 'https://erpschoolapi.onrender.com/api';
+  private apiUrl = 'http://localhost:5120/api';
 
   constructor(private http: HttpClient) { }
 

@@ -43,7 +43,7 @@ export interface Holiday { id?: number; title: string; date: string; type: strin
   providedIn: 'root'
 })
 export class CmsService {
-  private apiUrl = 'https://erpschoolapi.onrender.com/api';
+  private apiUrl = 'http://localhost:5120/api';
   private publicUrl = `${this.apiUrl}/Public`;
   private adminUrl = `${this.apiUrl}/CmsAdmin`;
 

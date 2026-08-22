@@ -33,7 +33,7 @@ export class IssuedAdmitCardsComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Students').subscribe({
       next: (data) => {
         // Filter students where IsAdmitCardIssued is true
         let filtered = data.filter(s => s.isAdmitCardIssued);

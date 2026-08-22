@@ -97,7 +97,7 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
 
         if (this.userRole === 'Parent') {
           this.hasTransportFacility = false; // default to false until we verify
-          this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
+          this.http.get<any[]>('http://localhost:5120/api/Students/MyChildren').subscribe({
             next: (children) => {
               this.hasTransportFacility = children.some(c => c.transportRequired);
             },
@@ -129,7 +129,7 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   }
 
   fetchRecentActivities() {
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/SystemActivity/recent').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/SystemActivity/recent').subscribe({
       next: (activities) => {
         this.recentActivities = activities.map(a => ({
           text: a.text,
@@ -189,7 +189,7 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   }
 
   openProfile() {
-    this.http.get('https://erpschoolapi.onrender.com/api/Auth/profile').subscribe({
+    this.http.get('http://localhost:5120/api/Auth/profile').subscribe({
       next: (data) => {
         this.userProfile = data;
         this.showProfileModal = true;

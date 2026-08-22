@@ -18,7 +18,7 @@ export interface LeaveRequest {
   providedIn: 'root'
 })
 export class LeaveService {
-  private apiUrl = 'https://erpschoolapi.onrender.com/api/LeaveRequests';
+  private apiUrl = 'http://localhost:5120/api/LeaveRequests';
   // Use localhost if running locally: private apiUrl = 'https://localhost:7153/api/LeaveRequests';
 
   constructor(private http: HttpClient) { }

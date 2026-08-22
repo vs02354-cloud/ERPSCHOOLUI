@@ -32,7 +32,7 @@ export interface AssignmentSubmission {
   providedIn: 'root'
 })
 export class AssignmentService {
-  private apiUrl = 'https://erpschoolapi.onrender.com/api/Assignments';
+  private apiUrl = 'http://localhost:5120/api/Assignments';
   // Use localhost for local dev if needed: private apiUrl = 'http://localhost:5242/api/Assignments';
 
   constructor(private http: HttpClient) {}

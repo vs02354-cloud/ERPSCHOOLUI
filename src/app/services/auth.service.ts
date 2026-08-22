@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://erpschoolapi.onrender.com/api/Auth';
+  private apiUrl = 'http://localhost:5120/api/Auth';
   
   private authState = new BehaviorSubject<boolean>(this.hasToken());
 

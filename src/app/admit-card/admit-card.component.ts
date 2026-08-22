@@ -40,7 +40,7 @@ export class AdmitCardComponent implements OnInit {
     this.successMessage = '';
     this.selectAll = false;
 
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Students').subscribe({
       next: (data) => {
         // Filter students by selected class and where IsAdmitCardIssued is false or not set
         this.students = data.filter(s => s.currentClass === this.selectedClass && !s.isAdmitCardIssued).map(s => ({
@@ -79,7 +79,7 @@ export class AdmitCardComponent implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    this.http.post('https://erpschoolapi.onrender.com/api/Students/IssueAdmitCards', selectedStudentIds).subscribe({
+    this.http.post('http://localhost:5120/api/Students/IssueAdmitCards', selectedStudentIds).subscribe({
       next: (res: any) => {
         this.successMessage = res.message || 'Admit cards issued successfully.';
         this.isIssuing = false;

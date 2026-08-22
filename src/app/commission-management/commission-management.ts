@@ -28,8 +28,8 @@ export class CommissionManagementComponent implements OnInit {
   filterStartDate: string = '';
   filterEndDate: string = '';
 
-  private readonly API_URL = 'https://erpschoolapi.onrender.com/api/Commission';
-  private readonly HR_API_URL = 'https://erpschoolapi.onrender.com/api/HR/Teachers';
+  private readonly API_URL = 'http://localhost:5120/api/Commission';
+  private readonly HR_API_URL = 'http://localhost:5120/api/HR/Teachers';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.settingsForm = this.fb.group({

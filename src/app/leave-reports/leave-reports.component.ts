@@ -42,7 +42,7 @@ export class LeaveReportsComponent implements OnInit {
 
   loadReports() {
     this.isLoading = true;
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/LeaveRequests').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/LeaveRequests').subscribe({
       next: (data) => {
         this.allReports = data || [];
         this.extractUniqueClasses();
@@ -148,7 +148,7 @@ export class LeaveReportsComponent implements OnInit {
       managerRemarks: this.managerRemarks
     };
 
-    this.http.put(`https://erpschoolapi.onrender.com/api/LeaveRequests/${this.currentLeave.id}/Status`, payload).subscribe({
+    this.http.put(`http://localhost:5120/api/LeaveRequests/${this.currentLeave.id}/Status`, payload).subscribe({
       next: () => {
         this.successMessage = `Leave application ${this.actionType === 'approve' ? 'approved' : 'rejected'} successfully.`;
         this.isProcessing = false;

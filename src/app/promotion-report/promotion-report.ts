@@ -29,7 +29,7 @@ export class PromotionReportComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     
-    let url = 'https://erpschoolapi.onrender.com/api/Promotion/Report';
+    let url = 'http://localhost:5120/api/Promotion/Report';
     if (this.selectedClass) {
       url += `?classFilter=${encodeURIComponent(this.selectedClass)}`;
     }

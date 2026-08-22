@@ -45,7 +45,7 @@ export class TcReportsComponent implements OnInit {
 
   loadReports() {
     this.isLoading = true;
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/TC').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/TC').subscribe({
       next: (data) => {
         this.allReports = data || [];
         this.extractUniqueClasses();
@@ -139,7 +139,7 @@ export class TcReportsComponent implements OnInit {
       conduct: this.approveData.conduct
     };
 
-    this.http.put(`https://erpschoolapi.onrender.com/api/TC/${this.currentTC.id}/Status`, payload).subscribe({
+    this.http.put(`http://localhost:5120/api/TC/${this.currentTC.id}/Status`, payload).subscribe({
       next: () => {
         this.successMessage = 'Transfer Certificate approved and generated successfully!';
         this.isProcessing = false;
@@ -176,7 +176,7 @@ export class TcReportsComponent implements OnInit {
       conduct: ''
     };
 
-    this.http.put(`https://erpschoolapi.onrender.com/api/TC/${tc.id}/Status`, payload).subscribe({
+    this.http.put(`http://localhost:5120/api/TC/${tc.id}/Status`, payload).subscribe({
       next: () => {
         this.successMessage = 'Transfer Certificate application rejected.';
         this.loadReports(); // Refresh the list

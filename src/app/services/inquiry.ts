@@ -37,7 +37,7 @@ export interface InquirySummary {
 })
 export class InquiryService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://erpschoolapi.onrender.com/api/AdmissionInquiry';
+  private apiUrl = 'http://localhost:5120/api/AdmissionInquiry';
 
   submitInquiry(data: any): Observable<any> {
     return this.http.post(this.apiUrl, data);

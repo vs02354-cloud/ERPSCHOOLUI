@@ -25,7 +25,7 @@ export class AssignmentDetailsComponent implements OnInit {
   
   isLoading = true;
   userRole = '';
-  apiUrl = 'https://erpschoolapi.onrender.com';
+  apiUrl = 'http://localhost:5120';
 
   // Student submission vars
   selectedFile: File | null = null;

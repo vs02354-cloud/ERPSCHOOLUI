@@ -15,7 +15,7 @@ export interface Notification {
   providedIn: 'root'
 })
 export class NotificationService {
-  private apiUrl = 'https://erpschoolapi.onrender.com/api/Notifications';
+  private apiUrl = 'http://localhost:5120/api/Notifications';
   
   constructor(private http: HttpClient) { }
 

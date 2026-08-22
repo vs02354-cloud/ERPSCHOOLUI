@@ -70,7 +70,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     if (this.userRole === 'Parent') {
       this.userName = this.authService.getUserName() || 'Parent';
       
-      this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students/MyChildren').subscribe({
+      this.http.get<any[]>('http://localhost:5120/api/Students/MyChildren').subscribe({
         next: (childrenData) => {
           // Initialize children with mock attendance/notifications (assignments will be real)
           this.myChildren = childrenData.map(child => ({
@@ -127,7 +127,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
           });
 
           // Fetch real attendance
-          this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Attendance/Parent/Today').subscribe({
+          this.http.get<any[]>('http://localhost:5120/api/Attendance/Parent/Today').subscribe({
             next: (attendances) => {
               let allPresent = true;
               let anyAbsent = false;
@@ -181,7 +181,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     }
 
     // Fetch Total Students
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Students').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Students').subscribe({
       next: (students) => {
         this.metrics[0].value = students.length.toString();
         this.cdr.detectChanges();
@@ -194,7 +194,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
 
     // Fetch Total Teachers
-    this.http.get<any>('https://erpschoolapi.onrender.com/api/HR/Employees?pageSize=1&searchTerm=Teacher').subscribe({
+    this.http.get<any>('http://localhost:5120/api/HR/Employees?pageSize=1&searchTerm=Teacher').subscribe({
       next: (response) => {
         // The API returns a PaginatedResponse with a totalCount property
         this.metrics[1].value = response.totalCount ? response.totalCount.toString() : '0';
@@ -208,7 +208,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
 
     // Fetch Real-time Fee Collection & Pending Fees
-    this.http.get<any>('https://erpschoolapi.onrender.com/api/Fees/DashboardStats').subscribe({
+    this.http.get<any>('http://localhost:5120/api/Fees/DashboardStats').subscribe({
       next: (stats) => {
         // Format to Indian Rupee
         const formatCurrency = (val: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
@@ -230,7 +230,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
 
     // Fetch Trends
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Fees/Trends').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Fees/Trends').subscribe({
       next: (data) => {
         this.trends = data;
         const maxRev = Math.max(...data.map(d => d.revenue));
@@ -243,7 +243,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
 
     // Fetch Activity Trends
-    this.http.get<any[]>('https://erpschoolapi.onrender.com/api/Dashboard/ActivityTrends').subscribe({
+    this.http.get<any[]>('http://localhost:5120/api/Dashboard/ActivityTrends').subscribe({
       next: (data) => {
         this.activityTrends = data;
         const maxAdm = Math.max(...data.map(d => d.admissions));

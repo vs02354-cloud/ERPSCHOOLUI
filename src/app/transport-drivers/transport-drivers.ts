@@ -28,7 +28,7 @@ export class TransportDrivers implements OnInit {
     isActive: true
   };
 
-  apiUrl = 'https://erpschoolapi.onrender.com/api/HR';
+  apiUrl = 'http://localhost:5120/api/HR';
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
